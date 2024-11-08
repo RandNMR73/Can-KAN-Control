@@ -159,7 +159,7 @@ class PPO:
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
-  parser.add_argument("--max_evals", type=int, default=30000)
+  parser.add_argument("--max_evals", type=int, default=50000)
   parser.add_argument("--env_bs", type=int, default=1000)
   parser.add_argument("--save_model", default=False)
   parser.add_argument("--noise_mode", default=None)
@@ -174,12 +174,13 @@ if __name__ == "__main__":
     model = KANActorCritic(env.observation_space.shape[-1], {"pi": [32], "vf": [32]}, env.action_space.shape[-1])
   else:
     model = ActorCritic(env.observation_space.shape[-1], {"pi": [32], "vf": [32]}, env.action_space.shape[-1])
-  ppo = PPO(env, model, env_bs=args.env_bs, seed=args.seed)
+  device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+  ppo = PPO(env, model, env_bs=args.env_bs, device=device, seed=args.seed)
   best_model, hist = ppo.train(args.max_evals)
 
   print(f"rolling out best model") 
   env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
-  states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=200, deterministic=True)
+  states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=200, device=device, deterministic=True)
   print(f"reward {sum(rewards)}")
 
   if args.save_model:
