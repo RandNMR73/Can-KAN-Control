@@ -159,7 +159,7 @@ class PPO:
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
-  parser.add_argument("--max_evals", type=int, default=30000)
+  parser.add_argument("--max_evals", type=int, default=50000)
   parser.add_argument("--env_bs", type=int, default=1000)
   parser.add_argument("--save_model", default=False)
   parser.add_argument("--noise_mode", default=None)

@@ -1,6 +1,5 @@
 import torch
 from torch import nn
-torch.manual_seed(42)
 
 def mlp(hidden_sizes, activation=nn.Tanh, output_activation=nn.Identity):
   layers = []
@@ -12,7 +11,6 @@ def mlp(hidden_sizes, activation=nn.Tanh, output_activation=nn.Identity):
 class MLPGaussian(nn.Module):
   def __init__(self, obs_dim, hidden_sizes, act_dim, activation=nn.Tanh, log_std=3., seed=42):
     super(MLPGaussian, self).__init__()
-    torch.manual_seed(seed)  # Seed weight initialization
     self.mlp = mlp([obs_dim] + list(hidden_sizes) + [act_dim], activation)
     self.log_std = torch.nn.Parameter(torch.full((act_dim,), log_std, dtype=torch.float32))
     self.register_buffer('std', self.log_std.exp())
@@ -34,7 +32,6 @@ class MLPGaussian(nn.Module):
 class MLPCritic(nn.Module):
   def __init__(self, obs_dim, hidden_sizes, activation=nn.Tanh, seed=42):
     super(MLPCritic, self).__init__()
-    torch.manual_seed(seed)  # Seed weight initialization
     self.mlp = mlp([obs_dim] + list(hidden_sizes) + [1], activation)
 
   def forward(self, x: torch.Tensor):
@@ -59,7 +56,6 @@ from efficient_kan import KAN
 class KANGaussian(nn.Module):
   def __init__(self, obs_dim, hidden_sizes, act_dim, grid_size=5, spline_order=3, log_std=3., seed=42):
     super(KANGaussian, self).__init__()
-    torch.manual_seed(seed)  # Seed weight initialization
     layers = [obs_dim] + list(hidden_sizes) + [act_dim]
     self.kan = KAN(
       layers, 
@@ -89,15 +85,14 @@ class KANGaussian(nn.Module):
     logprob = -0.5 * (((act - mean)**2) / self.std**2 + 2 * self.log_std + torch.log(torch.tensor(2*torch.pi)))
     return logprob.sum(dim=-1)
 
-class KANCritic(nn.Module):
-  def __init__(self, obs_dim, hidden_sizes, grid_size=5, spline_order=3, seed=42):
-    super(KANCritic, self).__init__()
-    torch.manual_seed(seed)  # Seed weight initialization
-    layers = [obs_dim] + list(hidden_sizes) + [1]
-    self.kan = KAN(layers, grid_size=grid_size, spline_order=spline_order)
+# class KANCritic(nn.Module):
+#   def __init__(self, obs_dim, hidden_sizes, grid_size=5, spline_order=3, seed=42):
+#     super(KANCritic, self).__init__()
+#     layers = [obs_dim] + list(hidden_sizes) + [1]
+#     self.kan = KAN(layers, grid_size=grid_size, spline_order=spline_order)
 
-  def forward(self, x: torch.Tensor):
-    return self.kan(x)
+#   def forward(self, x: torch.Tensor):
+#     return self.kan(x)
 
 class KANActorCritic(nn.Module):
   def __init__(self, obs_dim, hidden_sizes, act_dim):
