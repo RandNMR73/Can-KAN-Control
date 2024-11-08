@@ -75,7 +75,6 @@ class BatchedCartLatAccelEnv(gym.Env):
 
     if self.moving_target:
       self.x_targets = self.generate_traj(self.bs)
-      print(self.x_targets)
     else:
       self.x_targets = np.full((self.bs, self.max_episode_steps), self.state[-1]) # fixed target
     self.noise_model = SimNoise(self.max_episode_steps, 1/self.tau, self.noise_mode, seed=seed)
