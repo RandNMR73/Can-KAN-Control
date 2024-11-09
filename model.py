@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+torch.manual_seed(42)
 
 def mlp(hidden_sizes, activation=nn.Tanh, output_activation=nn.Identity):
   layers = []

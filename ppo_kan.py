@@ -33,14 +33,16 @@ class PPO:
     self.start = time.time()
     self.device = device
     self.debug = debug
-
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    if device == 'cuda':
-      torch.cuda.manual_seed(seed)
-    self.env.reset(seed=seed)
-
+    self.seed = seed
+    self.seed_env()
     self.is_mlp = isinstance(self.model, ActorCritic)
+
+  def seed_env(self):
+    np.random.seed(self.seed)
+    torch.manual_seed(self.seed)
+    if self.device == 'cuda':
+      torch.cuda.manual_seed(self.seed)
+    self.env.reset(seed=self.seed)
 
   def compute_gae(self, rewards, values, done, next_value):
     returns, advantages = np.zeros_like(rewards), np.zeros_like(rewards)
@@ -151,6 +153,9 @@ class PPO:
         break
       else:
         # print(f'actor KAN weights {self.model.actor.kan.layers[0].scaled_spline_weight.mean():3f}')
+        # check weights of mlp to make sure seeded properly
+        if self.is_mlp:
+          print(f"mlp weights {self.model.actor.mlp[0].weight.mean().item()}")
         print(f"mean action {np.mean(abs(np.array(actions)))} std {self.model.actor.std.mean().item()}")
         print(f"eps {eps:.2f}, reward {avg_reward:.3f}, t {time.time()-self.start:.2f}")
         print(f"Runtimes: rollout {rollout_time:.3f}, gae {gae_time:.3f}, buffer {buffer_time:.3f}, update {update_time:.3f}")
@@ -183,8 +188,9 @@ if __name__ == "__main__":
   print(f"rolling out best model") 
   # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
   env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
-  states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=200, device=device, deterministic=True)
-  print(f"reward {sum(rewards)}")
+  env.reset(seed=args.seed)
+  states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=200, deterministic=True)
+  print(f"reward {sum(rewards)[0]}")
 
   if args.save_model:
     os.makedirs('out', exist_ok=True)
