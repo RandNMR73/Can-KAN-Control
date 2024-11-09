@@ -153,9 +153,6 @@ class PPO:
         break
       else:
         # print(f'actor KAN weights {self.model.actor.kan.layers[0].scaled_spline_weight.mean():3f}')
-        # check weights of mlp to make sure seeded properly
-        if self.is_mlp:
-          print(f"mlp weights {self.model.actor.mlp[0].weight.mean().item()}")
         print(f"mean action {np.mean(abs(np.array(actions)))} std {self.model.actor.std.mean().item()}")
         print(f"eps {eps:.2f}, reward {avg_reward:.3f}, t {time.time()-self.start:.2f}")
         print(f"Runtimes: rollout {rollout_time:.3f}, gae {gae_time:.3f}, buffer {buffer_time:.3f}, update {update_time:.3f}")
