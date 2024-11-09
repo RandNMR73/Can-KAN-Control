@@ -132,13 +132,12 @@ class PPO:
       eps += self.env_bs
       avg_reward = np.sum(rewards)/self.env_bs
 
+      print(f"eps {eps:.2f}, reward {avg_reward:.3f}, t {time.time()-self.start:.2f}")
+      print(f"Runtimes: rollout {rollout_time:.3f}, gae {gae_time:.3f}, buffer {buffer_time:.3f}, update {update_time:.3f}")
+      self.hist.append((eps, avg_reward))
       if eps > max_evals:
         print(f"Total time: {time.time() - self.start}")
         break
-      else:
-        print(f"eps {eps:.2f}, reward {avg_reward:.3f}, t {time.time()-self.start:.2f}")
-        print(f"Runtimes: rollout {rollout_time:.3f}, gae {gae_time:.3f}, buffer {buffer_time:.3f}, update {update_time:.3f}")
-        self.hist.append((eps, avg_reward))
 
     return self.model.actor, self.hist
 

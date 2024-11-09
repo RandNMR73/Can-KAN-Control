@@ -54,12 +54,10 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.noise_mode = noise_mode
     self.moving_target = moving_target
 
-    np.random.seed(42)
-
   def generate_traj(self, n_traj=1, n_points=10):
     # generates smooth curve using cubic interpolation
     t_control = np.linspace(0, self.max_episode_steps - 1, n_points)
-    control_points = np.random.uniform(-2, 2, (n_traj, n_points)) # slightly less than max x
+    control_points = self.np_random.uniform(-2, 2, (n_traj, n_points)) # slightly less than max x
     f = interp1d(t_control, control_points, kind='cubic')
     t = np.arange(self.max_episode_steps)
     return f(t)
