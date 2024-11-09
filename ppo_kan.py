@@ -189,7 +189,7 @@ if __name__ == "__main__":
   # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
   env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
   env.reset(seed=args.seed)
-  states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=200, deterministic=True)
+  states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=200, device=device, deterministic=True)
   print(f"reward {sum(rewards)[0]}")
 
   if args.save_model:
