@@ -54,7 +54,8 @@ class PPO:
     return returns, advantages
 
   def evaluate_cost(self, states, actions, returns, advantages, logprob):
-    kan_reg_loss = 0.01 * (self.model.actor.kan.regularization_loss()) if not self.is_mlp else 0
+    kan_reg_loss = 0
+    # kan_reg_loss = 0.01 * (self.model.actor.kan.regularization_loss()) if not self.is_mlp else 0
     new_logprob = self.model.actor.get_logprob(states, actions)
     entropy = (torch.log(self.model.actor.std) + 0.5 * (1 + torch.log(torch.tensor(2 * torch.pi)))).sum(dim=-1)
     ratio = torch.exp(new_logprob-logprob).squeeze()
@@ -169,7 +170,8 @@ if __name__ == "__main__":
   args = parser.parse_args()
 
   print(f"training ppo with max_evals {args.max_evals}") 
-  env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=args.env_bs)
+  # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=args.env_bs)
+  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=args.env_bs)
   if args.model == "kan":
     model = KANActorCritic(env.observation_space.shape[-1], {"pi": [32], "vf": [32]}, env.action_space.shape[-1])
   else:
@@ -179,7 +181,8 @@ if __name__ == "__main__":
   best_model, hist = ppo.train(args.max_evals)
 
   print(f"rolling out best model") 
-  env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
+  # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
+  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
   states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=200, device=device, deterministic=True)
   print(f"reward {sum(rewards)}")
 
