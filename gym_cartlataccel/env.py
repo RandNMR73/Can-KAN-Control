@@ -95,26 +95,26 @@ class BatchedCartLatAccelEnv(gym.Env):
     stiffness_term = 0.15 * np.sin(3 * x)  # Nonlinear position dependent force
     
     # Updated dynamics with nonlinear terms
-    new_x = (0.5 * new_a * self.tau**2 + 
-             v * self.tau + 
-             x - 
-             friction_term * self.tau - 
-             nonlinear_coupling * self.tau -
-             stiffness_term * self.tau)
+    # new_x = (0.5 * new_a * self.tau**2 + 
+    #          v * self.tau + 
+    #          x - 
+    #          friction_term * self.tau - 
+    #          nonlinear_coupling * self.tau -
+    #          stiffness_term * self.tau)
     
-    new_x = np.clip(new_x, -self.max_x, self.max_x)
-    new_v = ((new_a - friction_term - nonlinear_coupling - stiffness_term) * 
-             self.tau + v)
-    new_x_target = self.x_targets[:, self.curr_step]
-
-    self.state = np.stack([new_x, new_v, new_x_target], axis=1)
-
-    # new_x = 0.5 * new_a * self.tau**2 + v * self.tau + x
     # new_x = np.clip(new_x, -self.max_x, self.max_x)
-    # new_v = new_a * self.tau + v
+    # new_v = ((new_a - friction_term - nonlinear_coupling - stiffness_term) * 
+    #          self.tau + v)
     # new_x_target = self.x_targets[:, self.curr_step]
 
     # self.state = np.stack([new_x, new_v, new_x_target], axis=1)
+
+    new_x = 0.5 * new_a * self.tau**2 + v * self.tau + x
+    new_x = np.clip(new_x, -self.max_x, self.max_x)
+    new_v = new_a * self.tau + v
+    new_x_target = self.x_targets[:, self.curr_step]
+
+    self.state = np.stack([new_x, new_v, new_x_target], axis=1)
 
     error = abs(new_x - new_x_target)
     reward = -error/self.max_episode_steps # scale reward

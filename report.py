@@ -10,7 +10,7 @@ from model import KANActorCritic, ActorCritic
 from ppo_kan import PPO
 
 class ReportConfig(BaseModel):
-  model: str = "kan"
+  model: str = "mlp"
   max_evals: int = 50000
   env_bs: int = 1000
   noise_mode: str = None
@@ -94,8 +94,8 @@ def make_report(cfg: ReportConfig):
     torch.save(best_model, f"{cfg.out_dir}/best_model_run_{run}.pt")
   
   # Generate report
-  report_path = f"{cfg.out_dir}/report.html"
-  loss_plot_path = f"{cfg.out_dir}/loss_curves.html"
+  report_path = f"{cfg.out_dir}/{cfg.model}_report.html"
+  loss_plot_path = f"{cfg.out_dir}/{cfg.model}_loss_curves.html"
   plot_loss_curves(histories, loss_plot_path)
   
   with open(report_path, 'w') as f:
@@ -112,7 +112,7 @@ def make_report(cfg: ReportConfig):
     f.write(f"<p>Mean final reward: {np.mean(final_rewards):.2f} ± {np.std(final_rewards):.2f}</p>\n")
     
     f.write(f"<h2>Learning Curves</h2>\n")
-    f.write(f'<iframe src="loss_curves.html" width="100%" height="600"></iframe>\n')
+    f.write(f'<iframe src="{cfg.model}_loss_curves.html" width="100%" height="600"></iframe>\n')
     
     f.write(f"</body></html>\n")
   

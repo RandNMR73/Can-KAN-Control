@@ -172,15 +172,16 @@ if __name__ == "__main__":
   parser.add_argument("--model", default="kan")
   parser.add_argument("--seed", type=int, default=42)
   parser.add_argument("--render", default="human")
+  parser.add_argument("--hidden_sizes", type=int, default=32)
   args = parser.parse_args()
 
   print(f"training ppo with max_evals {args.max_evals}") 
   # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=args.env_bs)
   env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=args.env_bs)
   if args.model == "kan":
-    model = KANActorCritic(env.observation_space.shape[-1], {"pi": [32], "vf": [32]}, env.action_space.shape[-1])
+    model = KANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1])
   else:
-    model = ActorCritic(env.observation_space.shape[-1], {"pi": [32], "vf": [32]}, env.action_space.shape[-1])
+    model = ActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1])
   device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
   ppo = PPO(env, model, env_bs=args.env_bs, device=device, seed=args.seed)
   best_model, hist = ppo.train(args.max_evals)
