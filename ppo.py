@@ -12,7 +12,7 @@ from tensordict import TensorDict
 from model import ActorCritic
 
 class PPO:
-  def __init__(self, env, model, lr=1e-1, gamma=0.99, lam=0.95, clip_range=0.2, epochs=1, n_steps=100, ent_coeff=0.01, bs=100, env_bs=1, device='cuda', debug=False):
+  def __init__(self, env, model, lr=1e-1, gamma=0.99, lam=0.95, clip_range=0.2, epochs=1, n_steps=100, ent_coeff=0.01, bs=100, env_bs=1, device='cuda', debug=False, seed=42):
     self.env = env
     self.env_bs = env_bs
     self.model = model.to(device)
@@ -29,6 +29,15 @@ class PPO:
     self.start = time.time()
     self.device = device
     self.debug = debug
+    self.seed = seed
+    self.seed_env()
+
+  def seed_env(self):
+    np.random.seed(self.seed)
+    torch.manual_seed(self.seed)
+    if self.device == 'cuda':
+      torch.cuda.manual_seed(self.seed)
+    self.env.reset(seed=self.seed)
 
   def compute_gae(self, rewards, values, done, next_value):
     returns, advantages = np.zeros_like(rewards), np.zeros_like(rewards)
@@ -147,17 +156,20 @@ if __name__ == "__main__":
   parser.add_argument("--env_bs", type=int, default=1000)
   parser.add_argument("--save_model", default=False)
   parser.add_argument("--noise_mode", default=None)
+  parser.add_argument("--seed", type=int, default=42)
   args = parser.parse_args()
 
   print(f"training ppo with max_evals {args.max_evals}") 
   env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=args.env_bs)
   model = ActorCritic(env.observation_space.shape[-1], {"pi": [32], "vf": [32]}, env.action_space.shape[-1])
-  ppo = PPO(env, model, env_bs=args.env_bs)
+  device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+  ppo = PPO(env, model, device=device, env_bs=args.env_bs, seed=args.seed)
   best_model, hist = ppo.train(args.max_evals)
 
   print(f"rolling out best model") 
   env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=1, render_mode="human")
-  states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=200, deterministic=True)
+  env.reset(seed=args.seed)
+  states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=200, device=device, deterministic=True)
   print(f"reward {sum(rewards)}")
 
   if args.save_model:
