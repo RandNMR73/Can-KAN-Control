@@ -186,7 +186,8 @@ if __name__ == "__main__":
 
   print(f"rolling out best model") 
   # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
-  # env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
+  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
+  env.reset(seed=args.seed)
   states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=200, deterministic=True)
   print(f"reward {sum(rewards)[0]}")
 
