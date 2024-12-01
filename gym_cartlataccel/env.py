@@ -61,6 +61,14 @@ class BatchedCartLatAccelEnv(gym.Env):
     f = interp1d(t_control, control_points, kind='cubic')
     t = np.arange(self.max_episode_steps)
     return f(t)
+  
+  def generate_feynman_traj(self, n_traj=1, eq = "test"):
+    # generates smooth curve using cubic interpolation
+    t_control = np.linspace(0, self.max_episode_steps - 1, n_points)
+    control_points = self.np_random.uniform(-2, 2, (n_traj, n_points)) # slightly less than max x
+    f = interp1d(t_control, control_points, kind='cubic')
+    t = np.arange(self.max_episode_steps)
+    return f(t)
 
   def reset(self, seed=None, options=None):
     super().reset(seed=seed)
@@ -112,7 +120,7 @@ class BatchedCartLatAccelEnv(gym.Env):
     new_x = 0.5 * new_a * self.tau**2 + v * self.tau + x
     new_x = np.clip(new_x, -self.max_x, self.max_x)
     new_v = new_a * self.tau + v
-    new_x_target = self.x_targets[:, self.curr_step]
+
 
     self.state = np.stack([new_x, new_v, new_x_target], axis=1)
 
