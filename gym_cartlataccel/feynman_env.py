@@ -1,9 +1,11 @@
 import pygame
 import numpy as np
+import torch
 import gymnasium as gym
 from gymnasium import spaces
 from scipy.interpolate import interp1d
 from gym_cartlataccel.noise import SimNoise
+from gym_cartlataccel.feynman import get_feynman_dataset
 
 class BatchedCartLatAccelEnv(gym.Env):
   """
@@ -54,13 +56,27 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.noise_mode = noise_mode
     self.moving_target = moving_target
 
-  def generate_traj(self, n_traj=1, n_points=10):
-    # generates smooth curve using cubic interpolation
+  def generate_traj(self, n_traj=1, eq = 2, n_points=10):
+    _, _, f, ranges = get_feynman_dataset(eq)
+    n_var = len(ranges)
+    lows = [x[0] for x in ranges]
+    highs = [x[1] for x in ranges]
+    
     t_control = np.linspace(0, self.max_episode_steps - 1, n_points)
-    control_points = self.np_random.uniform(-2, 2, (n_traj, n_points)) # slightly less than max x
-    f = interp1d(t_control, control_points, kind='cubic')
-    t = np.arange(self.max_episode_steps)
-    return f(t)
+    t_full = np.arange(self.max_episode_steps)
+
+    trajectories = np.zeros((n_traj, self.max_episode_steps, n_var))
+
+    for traj in range(n_traj):
+        for var in range(n_var):
+          control_points = self.np_random.uniform(lows[var], highs[var], n_points)
+          f_interp = interp1d(t_control, control_points, kind='cubic')
+          trajectories[traj, :, var] = f_interp(t_full)
+
+    reshaped_points = torch.tensor(trajectories).reshape(-1, n_var)
+    out = f(reshaped_points).reshape(n_traj, self.max_episode_steps)
+
+    return trajectories, out.detach().cpu().numpy()
 
   def reset(self, seed=None, options=None):
     super().reset(seed=seed)
@@ -72,7 +88,7 @@ class BatchedCartLatAccelEnv(gym.Env):
     )
 
     if self.moving_target:
-      self.x_targets = self.generate_traj(self.bs)
+      _, self.x_targets = self.generate_traj(self.bs)
     else:
       self.x_targets = np.full((self.bs, self.max_episode_steps), self.state[-1]) # fixed target
     self.noise_model = SimNoise(self.max_episode_steps, 1/self.tau, self.noise_mode, seed=seed)

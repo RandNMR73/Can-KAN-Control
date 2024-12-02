@@ -1,7 +1,6 @@
 from sympy import *
 import torch
 
-
 def get_feynman_dataset(name):
     
     global symbols
