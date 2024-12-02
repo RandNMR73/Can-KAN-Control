@@ -18,6 +18,7 @@ class MLPGaussian(nn.Module):
 
   def forward(self, x: torch.Tensor):
     x = x.unsqueeze(0)
+    print(x.shape)
     return self.mlp(x)
 
   def get_action(self, obs: torch.Tensor, deterministic=False):
