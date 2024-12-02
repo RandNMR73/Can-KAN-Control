@@ -146,36 +146,40 @@ class ActorCritic(nn.Module):
 from efficient_kan import KAN
 
 class KANGaussian(nn.Module):
-  def __init__(self, obs_dim, hidden_sizes, act_dim, grid_size=5, spline_order=3, log_std=3., seed=42):
-    super(KANGaussian, self).__init__()
-    layers = [obs_dim] + list(hidden_sizes) + [act_dim]
-    self.kan = KAN(
-      layers, 
-      grid_size=grid_size, 
-      spline_order=spline_order,
-      scale_noise=0.01,
-      scale_base=1, 
-      scale_spline=1,
-      base_activation=torch.nn.SiLU,
-      grid_eps=0.02,
-      grid_range=[-1, 1]
-    )
-    self.log_std = torch.nn.Parameter(torch.full((act_dim,), log_std, dtype=torch.float32))
-    self.register_buffer('std', self.log_std.exp())
+    def __init__(self, obs_dim, hidden_sizes, act_dim, grid_size=5, spline_order=3, log_std=0.):
+        super(KANGaussian, self).__init__()
+        layers = [obs_dim] + list(hidden_sizes) + [act_dim]
+        self.kan = KAN(
+            layers, 
+            grid_size=grid_size, 
+            spline_order=spline_order,
+            scale_noise=0.01,
+            scale_base=1, 
+            scale_spline=1,
+            base_activation=torch.nn.SiLU,
+            grid_eps=0.02,
+            grid_range=[-1, 1]
+        )
+        self.log_std = torch.nn.Parameter(torch.full((act_dim,), log_std, dtype=torch.float32))
 
-  def forward(self, x: torch.Tensor):
-    x = x.unsqueeze(0)
-    return self.kan(x)
+    def forward(self, x: torch.Tensor):
+        return self.kan(x)
 
-  def get_action(self, obs: torch.Tensor, deterministic=False):
-    mean = self.forward(obs)
-    action = mean[0] if deterministic else torch.normal(mean, self.std)[0]
-    return action.detach().cpu().numpy()
+    def get_policy(self, obs: torch.Tensor):
+        mean = self.forward(obs)
+        std = self.log_std.exp()
+        return mean, std
 
-  def get_logprob(self, obs: torch.Tensor, act: torch.Tensor):
-    mean = self.forward(obs)
-    logprob = -0.5 * (((act - mean)**2) / self.std**2 + 2 * self.log_std + torch.log(torch.tensor(2*torch.pi)))
-    return logprob.sum(dim=-1)
+    def get_action(self, obs: torch.Tensor, deterministic=False):
+        mean, std = self.get_policy(obs)
+        action = mean if deterministic else torch.normal(mean, std)
+        return action.detach().cpu().numpy()
+
+    def get_logprob(self, obs: torch.Tensor, act: torch.Tensor):
+        mean, std = self.get_policy(obs)
+        logprob = -0.5 * (((act - mean)**2) / std**2 + 2 * self.log_std + torch.log(torch.tensor(2*torch.pi)))
+        entropy = (torch.log(std) + 0.5 * (1 + torch.log(torch.tensor(2*torch.pi))))
+        return logprob.sum(dim=-1), entropy.sum(dim=-1)
 
 # class KANCritic(nn.Module):
 #   def __init__(self, obs_dim, hidden_sizes, grid_size=5, spline_order=3, seed=42):
@@ -186,12 +190,57 @@ class KANGaussian(nn.Module):
 #   def forward(self, x: torch.Tensor):
 #     return self.kan(x)
 
+class KANBeta(nn.Module):
+    '''Beta distribution for bounded continuous control using KAN architecture, output between 0 and 1'''
+    def __init__(self, obs_dim, hidden_sizes, act_dim, grid_size=5, spline_order=3, act_bound=(0, 1)):
+        super(KANBeta, self).__init__()
+        layers = [obs_dim] + list(hidden_sizes) + [act_dim * 2]  # *2 for alpha and beta parameters
+        self.kan = KAN(
+            layers,
+            grid_size=grid_size,
+            spline_order=spline_order,
+            scale_noise=0.01,
+            scale_base=1,
+            scale_spline=1,
+            base_activation=torch.nn.SiLU,
+            grid_eps=0.02,
+            grid_range=[-1, 1]
+        )
+        self.act_dim = act_dim
+        self.act_bound = act_bound
+
+    def forward(self, x: torch.Tensor):
+        return self.kan(x)
+
+    def get_policy(self, obs: torch.Tensor):
+        alpha_beta = self.forward(obs)
+        alpha, beta = torch.split(alpha_beta, self.act_dim, dim=-1)
+        alpha = F.softplus(alpha) + 1
+        beta = F.softplus(beta) + 1
+        return alpha, beta
+
+    def get_action(self, obs: torch.Tensor, deterministic=False):
+        alpha, beta = self.get_policy(obs)
+        action = alpha / (alpha + beta) if deterministic else torch.distributions.Beta(alpha, beta).sample()
+        return action.detach().cpu().numpy()
+
+    def get_logprob(self, obs: torch.Tensor, act: torch.Tensor):
+        alpha, beta = self.get_policy(obs)
+        dist = torch.distributions.Beta(alpha, beta)
+        logprob = dist.log_prob(act)
+        entropy = dist.entropy()
+        return logprob.sum(dim=-1), entropy.sum(dim=-1)
+
 class KANActorCritic(nn.Module):
-  def __init__(self, obs_dim, hidden_sizes, act_dim):
+  def __init__(self, obs_dim, hidden_sizes, act_dim, act_bound=None):
     super(KANActorCritic, self).__init__()
-    self.actor = KANGaussian(obs_dim, hidden_sizes["pi"], act_dim)
+    model_class = KANGaussian if not act_bound else KANBeta
+    
+    if model_class == KANBeta:
+      self.actor = model_class(obs_dim, hidden_sizes["pi"], act_dim, act_bound=act_bound)
+    else:
+      self.actor = model_class(obs_dim, hidden_sizes["pi"], act_dim)
     self.critic = MLPCritic(obs_dim, hidden_sizes["vf"])
-    # self.critic = KANCritic(obs_dim, hidden_sizes["vf"], grid_size, spline_order)
 
   def forward(self, x: torch.Tensor):
     actor_out = self.actor(x)
