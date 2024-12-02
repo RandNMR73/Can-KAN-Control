@@ -1,9 +1,11 @@
 import pygame
 import numpy as np
+import torch
 import gymnasium as gym
 from gymnasium import spaces
 from scipy.interpolate import interp1d
 from gym_cartlataccel.noise import SimNoise
+from feynman import get_feynman_dataset
 
 class BatchedCartLatAccelEnv(gym.Env):
   """
@@ -62,13 +64,19 @@ class BatchedCartLatAccelEnv(gym.Env):
     t = np.arange(self.max_episode_steps)
     return f(t)
   
-  def generate_feynman_traj(self, n_traj=1, eq = "test"):
-    # generates smooth curve using cubic interpolation
-    t_control = np.linspace(0, self.max_episode_steps - 1, n_points)
-    control_points = self.np_random.uniform(-2, 2, (n_traj, n_points)) # slightly less than max x
-    f = interp1d(t_control, control_points, kind='cubic')
-    t = np.arange(self.max_episode_steps)
-    return f(t)
+  def generate_feynman_traj(self, n_traj=1, eq = 2):
+    symbol, expr, f, ranges = get_feynman_dataset(eq)
+    n_var = len(ranges)
+    lows = [x[0] for x in ranges]
+    highs = [x[1] for x in ranges]
+    starts = self.np_random.uniform(lows, highs, (n_traj, n_var))
+    ends = self.np_random.uniform(lows, highs, (n_traj, n_var))
+    points = torch.tensor(np.linspace(starts, ends, self.max_episode_steps, axis=1))
+    print(points.shape)
+    reshaped_points = points.reshape(-1, n_var)
+    out = f(reshaped_points)
+    print(out.shape)
+    return points.detach().cpu().numpy(), out.reshape(n_traj, self.max_episode_steps).detach().cpu().numpy()
 
   def reset(self, seed=None, options=None):
     super().reset(seed=seed)
