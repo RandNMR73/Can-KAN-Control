@@ -1,9 +1,11 @@
 import pygame
 import numpy as np
+import torch
 import gymnasium as gym
 from gymnasium import spaces
 from scipy.interpolate import interp1d
 from gym_cartlataccel.noise import SimNoise
+from gym_cartlataccel.feynman import get_feynman_dataset
 
 class BatchedCartLatAccelEnv(gym.Env):
   """
@@ -22,7 +24,7 @@ class BatchedCartLatAccelEnv(gym.Env):
     "render_fps": 50,
   }
 
-  def __init__(self, render_mode: str = None, noise_mode: str = None, moving_target: bool = True, env_bs: int = 1):
+  def __init__(self, render_mode: str = None, noise_mode: str = None, moving_target: bool = True, env_bs: int = 1, eq = 2):
     self.force_mag = 10.0 # steer -> accel
     self.tau = 0.02  # Time step
     self.max_u = 10.0 # steer/action
@@ -30,18 +32,29 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.max_x = 10.0 # max x to clip
     self.max_x_frame = 2.2 # size of render frame
 
+    _, _, self.f, self.ranges = get_feynman_dataset(eq)
+    self.action_dim = len(self.ranges)
+
     self.bs = env_bs
-    # Action space is continuous steer/accel
+
+    low = [x[0] for x in self.ranges]
+    high = [x[1] for x in self.ranges]
+
+    # Action space is theta
+    action_low = np.stack([np.array(low) for _ in range(self.bs)])
+    action_high = np.stack([np.array(high) for _ in range(self.bs)])
     self.action_space = spaces.Box(
-      low=-self.max_u, high=self.max_u, shape=(self.bs, 1), dtype=np.float32
+      low=action_low, high=action_high, shape=(self.bs, self.action_dim), dtype=np.float32
     )
 
-    # Obs space is [pos, velocity, target]
-    obs_low = np.stack([np.array([-self.max_x, -self.max_v, -self.max_x]) for _ in range(self.bs)])
+    # Obs space is [theta_prev, target]
+    obs_low = np.stack([np.array(low + [-self.max_x]) for _ in range(self.bs)])
+    obs_high = np.stack([np.array(high + [self.max_x]) for _ in range(self.bs)])
+
     self.observation_space = spaces.Box(
       low=obs_low,
-      high=-obs_low,
-      shape=(self.bs, 3),
+      high=obs_high,
+      shape=(self.bs, self.action_dim+1),
       dtype=np.float32
     )
 
@@ -83,40 +96,19 @@ class BatchedCartLatAccelEnv(gym.Env):
     return np.array(self.state, dtype=np.float32), {}
 
   def step(self, action):
-    x = self.state[:,0]
-    v = self.state[:,1]
-    action = action.squeeze()
-    noisy_action = self.noise_model.add_lat_noise(self.curr_step, action)
+    theta_prev = np.transpose(self.state[:,:-1])
+    target = self.state[:,-1]
+    theta = np.transpose(action.squeeze())
+    # noisy_theta = self.noise_model.add_lat_noise(self.curr_step, action)
+    x = self.f(torch.tensor(theta)).detach().cpu().numpy()
 
-    # CHANGE HERE
-    new_a = noisy_action * self.force_mag # steer * force
-    friction_term = 0.1 * np.sign(v) * v**2  # Quadratic drag
-    nonlinear_coupling = 0.05 * np.sin(2 * x) * v  # Position-velocity coupling
-    stiffness_term = 0.15 * np.sin(3 * x)  # Nonlinear position dependent force
-    
-    # Updated dynamics with nonlinear terms
-    # new_x = (0.5 * new_a * self.tau**2 + 
-    #          v * self.tau + 
-    #          x - 
-    #          friction_term * self.tau - 
-    #          nonlinear_coupling * self.tau -
-    #          stiffness_term * self.tau)
-    
-    # new_x = np.clip(new_x, -self.max_x, self.max_x)
-    # new_v = ((new_a - friction_term - nonlinear_coupling - stiffness_term) * 
-    #          self.tau + v)
-    # new_x_target = self.x_targets[:, self.curr_step]
+    new_target = self.x_targets[:, self.curr_step]
 
-    # self.state = np.stack([new_x, new_v, new_x_target], axis=1)
+    self.state = np.stack(np.concatenate((theta, new_target.reshape(1, -1)), axis=0), axis=1)
 
-    new_x = 0.5 * new_a * self.tau**2 + v * self.tau + x
-    new_x = np.clip(new_x, -self.max_x, self.max_x)
-    new_v = new_a * self.tau + v
-    new_x_target = self.x_targets[:, self.curr_step]
+    alpha = 0.5
 
-    self.state = np.stack([new_x, new_v, new_x_target], axis=1)
-
-    error = abs(new_x - new_x_target)
+    error = abs(x - target) + alpha * abs(theta - theta_prev)
     reward = -error/self.max_episode_steps # scale reward
 
     if self.render_mode == "human":
@@ -124,7 +116,7 @@ class BatchedCartLatAccelEnv(gym.Env):
 
     self.curr_step += 1
     truncated = self.curr_step >= self.max_episode_steps
-    info = {"action": action, "noisy_action": noisy_action, "x": new_x, "x_target": new_x_target}
+    info = {"action": action, "noisy_action": theta, "x": x, "x_target": new_target}
     return np.array(self.state, dtype=np.float32), reward, False, truncated, info
 
   def render(self):
