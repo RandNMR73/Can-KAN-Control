@@ -96,22 +96,17 @@ class BatchedCartLatAccelEnv(gym.Env):
     return np.array(self.state, dtype=np.float32), {}
 
   def step(self, action):
-    theta_prev = self.state[:,:-1]
-    target = self.state[:,-1].reshape(-1, 1)
-    theta = action.squeeze()
+    theta_prev = np.transpose(self.state[:,:-1])
+    target = self.state[:,-1]
+    theta = np.transpose(action.squeeze())
     # noisy_theta = self.noise_model.add_lat_noise(self.curr_step, action)
     x = self.f(torch.tensor(theta)).detach().cpu().numpy()
 
-    new_target = self.x_targets[:, self.curr_step].reshape(-1,1)
+    new_target = self.x_targets[:, self.curr_step]
 
-    self.state = np.stack(theta + new_target, axis=1)
+    self.state = np.stack(np.concatenate((theta, new_target.reshape(1, -1)), axis=0), axis=1)
 
     alpha = 0.5
-
-    print(x.shape)
-    print(target.shape)
-    print(theta.shape)
-    print(theta_prev.shape)
 
     error = abs(x - target) + alpha * abs(theta - theta_prev)
     reward = -error/self.max_episode_steps # scale reward

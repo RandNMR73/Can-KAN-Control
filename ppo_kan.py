@@ -175,8 +175,6 @@ if __name__ == "__main__":
   print(f"training ppo with max_evals {args.max_evals}") 
   # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=args.env_bs)
   env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=args.env_bs)
-  print(env.observation_space.shape[-1])
-  print(env.action_space.shape[-1])
   if args.model == "kan":
     model = KANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1])
   else:
