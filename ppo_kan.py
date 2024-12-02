@@ -178,7 +178,7 @@ if __name__ == "__main__":
   # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=args.env_bs)
   env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=args.env_bs)
   if args.model == "kan":
-    model = KANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1])
+    model = KANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))
   else:
     model = ActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))
   device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
