@@ -80,11 +80,11 @@ class MLPBeta(nn.Module):
     alpha, beta = self.get_policy(obs)
     action = alpha / (alpha + beta) if deterministic else torch.distributions.Beta(alpha, beta).sample()
     action = action.detach()
-    scaled_action = action * (self.act_bound[1] - self.act_bound[0]) + self.act_bound[0] # scale to act_bound
-    return scaled_action.detach().cpu().numpy() #.squeeze(-1)
+    # scaled_action = action * (self.act_bound[1] - self.act_bound[0]) + self.act_bound[0] # scale to act_bound
+    return action.detach().cpu().numpy() #.squeeze(-1)
 
   def get_logprob(self, obs: torch.Tensor, act: torch.Tensor):
-    act = (act - self.act_bound[0]) / (self.act_bound[1] - self.act_bound[0]) # scale back to (0,1)
+    # act = (act - self.act_bound[0]) / (self.act_bound[1] - self.act_bound[0]) # scale back to (0,1)
     alpha, beta = self.get_policy(obs)
     dist = torch.distributions.Beta(alpha, beta)
     logprob = dist.log_prob(act)
@@ -115,6 +115,8 @@ class ActorCritic(nn.Module):
   def __init__(self, obs_dim: int, hidden_sizes: dict[str, list[int]], act_dim: int, discrete: bool = False, shared_layers: bool = True, act_bound: tuple[float, float] = None) -> None:
     super(ActorCritic, self).__init__()
     model_class = MLPGaussian if not act_bound else MLPBeta
+
+    print(model_class)
       
     if model_class == MLPBeta: # if bounded then use MLPBeta
       self.actor = model_class(obs_dim, hidden_sizes["pi"], act_dim, act_bound=act_bound)

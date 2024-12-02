@@ -7,6 +7,13 @@ def get_feynman_dataset(name):
     
     tpi = torch.tensor(torch.pi)
     
+    symbol = None
+    expr = None
+
+    if name == 'basic':
+        f = lambda x: x
+        ranges = [[-2,2]]
+
     if name == 'test':
         symbol = x, y = symbols('x, y')
         expr = (x+y) * sin(exp(2*y))
