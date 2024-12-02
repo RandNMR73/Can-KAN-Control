@@ -76,7 +76,7 @@ class PPO:
     for _ in range(max_steps):
       state_tensor = torch.FloatTensor(state).to(device)
       action = model.get_action(state_tensor, deterministic=deterministic)
-      next_state, reward, terminated, truncated, info = env.step(action)
+      next_state, reward, terminated, truncated, info = env.step(action, p=deterministic)
       states.append(state)
       actions.append(action)
       rewards.append(reward)

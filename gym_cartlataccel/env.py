@@ -95,12 +95,13 @@ class BatchedCartLatAccelEnv(gym.Env):
       self.render()
     return np.array(self.state, dtype=np.float32), {}
 
-  def step(self, action):
+  def step(self, action, p):
     theta_prev = np.transpose(self.state[:,:-1])
     target = self.state[:,-1]
-    theta = np.transpose(action.squeeze())
+    theta = action
     # noisy_theta = self.noise_model.add_lat_noise(self.curr_step, action)
     x = self.f(torch.tensor(theta)).detach().cpu().numpy()
+    x, theta = np.transpose(x), np.transpose(theta)
 
     new_target = self.x_targets[:, self.curr_step]
 
@@ -108,8 +109,9 @@ class BatchedCartLatAccelEnv(gym.Env):
 
     alpha = 0.5
 
-    error = abs(x - target) + alpha * abs(theta - theta_prev)
+    error = np.sum(abs(x - target) + alpha * abs(theta - theta_prev), axis=0)
     reward = -error/self.max_episode_steps # scale reward
+    # print(reward.shape)
 
     if self.render_mode == "human":
       self.render()
@@ -134,7 +136,13 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.surf.fill((255, 255, 255))
 
     # Only render the first episode in the batch
-    first_cart_x = int((self.state[0, 0] / self.max_x_frame) * 300 + 300)  # center is 300
+    theta = self.state[0, :-1].reshape(1, -1)
+    print(theta)
+    print(theta.shape)
+    cart_x = self.f(torch.tensor(theta)).detach().cpu().numpy()[0][0]
+    print(cart_x)
+
+    first_cart_x = int((cart_x / self.max_x_frame) * 300 + 300)  # center is 300
     first_target_x = int((self.x_targets[0, self.curr_step] / self.max_x_frame) * 300 + 300)
 
     pygame.draw.rect(self.surf, (0, 0, 0), pygame.Rect(first_cart_x - 10, 180, 20, 40))  # cart
