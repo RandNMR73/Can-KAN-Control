@@ -40,6 +40,9 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.low = [x[0] for x in self.ranges]
     self.high = [x[1] for x in self.ranges]
 
+    self.min, self.max = self.find_minmax()
+    print(self.min)
+
     # Action space is theta
     action_low = np.stack([np.array(self.low) for _ in range(self.bs)])
     action_high = np.stack([np.array(self.high) for _ in range(self.bs)])
@@ -67,13 +70,27 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.noise_mode = noise_mode
     self.moving_target = moving_target
 
+  def find_minmax(self, num_samples = 10000):
+    samples = np.zeros((num_samples, self.action_dim))
+    for i in range(self.action_dim):
+      samples[:, i] = np.random.uniform(low=self.low[i], high=self.high[i], size=num_samples)
+    
+    out = self.f(torch.tensor(samples))
+    return min(out).item(), max(out).item()
+
   def generate_traj(self, n_traj=1, n_points=10):
     # generates smooth curve using cubic interpolation
     t_control = np.linspace(0, self.max_episode_steps - 1, n_points)
     control_points = self.np_random.uniform(-2, 2, (n_traj, n_points)) # slightly less than max x
     f = interp1d(t_control, control_points, kind='cubic')
     t = np.arange(self.max_episode_steps)
-    return f(t)
+
+    traj = f(t)
+    row_min = traj.min(axis=1, keepdims=True)
+    row_max = traj.max(axis=1, keepdims=True)
+    scaled_traj = self.min + (traj - row_min) * (self.max - self.min) / (row_max - row_min)
+
+    return scaled_traj
 
   def reset(self, seed=None, options=None):
     super().reset(seed=seed)
