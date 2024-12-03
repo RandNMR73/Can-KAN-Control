@@ -27,8 +27,7 @@ class KANLinear(torch.nn.Module):
         h = (grid_range[1] - grid_range[0]) / grid_size
         grid = (
             (
-        torch.arange(-spline_order, grid_size + spline_order + 1) * h # Number of parameter
-        s: G + k + 1
+                torch.arange(-spline_order, grid_size + spline_order + 1) * h # Number of parameter
                 + grid_range[0]
             )
             .expand(in_features, -1)

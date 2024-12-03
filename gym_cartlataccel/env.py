@@ -132,7 +132,8 @@ class BatchedCartLatAccelEnv(gym.Env):
 
     alpha = 0.5
 
-    error = np.sum(abs(x - target) + alpha * abs(theta - theta_prev), axis=0)
+    # error = np.sum(abs(x - target) + alpha * abs(theta - theta_prev), axis=0)
+    error = np.sum(abs(x - target), axis=0)
     reward = -error/self.max_episode_steps # scale reward
 
     if self.render_mode == "human":
