@@ -123,15 +123,15 @@ class BatchedCartLatAccelEnv(gym.Env):
 
     self.state = np.stack(np.concatenate((theta, new_target.reshape(1, -1)), axis=0), axis=1)
 
-    alpha = 0.5
+    alpha = 0.1
 
     step_weight = 1 - (self.curr_step / self.max_episode_steps)
     dist = abs(x - target)
-    jerk = np.clip(abs(theta - theta_prev) - 0.05, 0, None)
+    jerk = abs(theta - theta_prev)
+    # jerk = np.clip(jerk - 0.05, 0, None)
 
     error = np.sum(dist + alpha * jerk, axis=0)
-    reward = -error * step_weight #/ self.max_episode_steps
-    # reward = -np.sum(dist, axis=0)
+    reward = -error * step_weight
 
     if self.render_mode == "human":
       self.render()
