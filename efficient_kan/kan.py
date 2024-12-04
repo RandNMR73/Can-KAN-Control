@@ -27,7 +27,7 @@ class KANLinear(torch.nn.Module):
         h = (grid_range[1] - grid_range[0]) / grid_size
         grid = (
             (
-                torch.arange(-spline_order, grid_size + spline_order + 1) * h
+                torch.arange(-spline_order, grid_size + spline_order + 1) * h # Number of parameter
                 + grid_range[0]
             )
             .expand(in_features, -1)
@@ -91,7 +91,7 @@ class KANLinear(torch.nn.Module):
             self.grid
         )  # (in_features, grid_size + 2 * spline_order + 1)
         x = x.unsqueeze(-1)
-        bases = ((x >= grid[:, :-1]) & (x < grid[:, 1:])).to(x.dtype)
+        bases = ((x >= grid[:, :-1]) & (x < grid[:, 1:])).to(x.dtype)  # this is just lerp'ing, x is being passed in as t
         for k in range(1, self.spline_order + 1):
             bases = (
                 (x - grid[:, : -(k + 1)])
@@ -155,12 +155,12 @@ class KANLinear(torch.nn.Module):
         original_shape = x.shape
         x = x.reshape(-1, self.in_features)
 
-        base_output = F.linear(self.base_activation(x), self.base_weight)
+        base_output = F.linear(self.base_activation(x), self.base_weight) # w * base(x)
         spline_output = F.linear(
             self.b_splines(x).view(x.size(0), -1),
             self.scaled_spline_weight.view(self.out_features, -1),
-        )
-        output = base_output + spline_output
+        ) # w * spline(x)
+        output = base_output + spline_output # phi(x) = w * (base(x) + spline(x))
         
         output = output.reshape(*original_shape[:-1], self.out_features)
         return output
