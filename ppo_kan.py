@@ -60,7 +60,7 @@ class PPO:
     new_logprob, entropy = self.model.actor.get_logprob(states, actions)
     # entropy = (torch.log(self.model.actor.std) + 0.5 * (1 + torch.log(torch.tensor(2 * torch.pi)))).sum(dim=-1)
     ratio = torch.exp(new_logprob-logprob).squeeze()
-    print(ratio.shape, advantages.shape, logprob.shape)
+    # print(ratio.shape, advantages.shape, logprob.shape)
     surr1 = ratio * advantages
     surr2 = torch.clamp(ratio, 1-self.clip_range, 1+self.clip_range) * advantages
     actor_loss = -torch.min(surr1, surr2).mean()
@@ -141,27 +141,25 @@ class PPO:
       self.replay_buffer.empty() # clear buffer
       update_time = time.perf_counter() - start
 
-      # debug info
-      if self.debug:
-        print(f"critic loss {costs['critic'].item():.3f} entropy {costs['entropy'].item():.3f} mean action {np.mean(abs(np.array(actions)))}")
-        print(f"Runtimes: rollout {rollout_time:.3f}, gae {gae_time:.3f}, buffer {buffer_time:.3f}, update {update_time:.3f}")
-
       eps += self.env_bs
       avg_reward = np.sum(rewards)/self.env_bs
 
       if eps > max_evals:
         print(f"Total time: {time.time() - self.start}")
         break
-      else:
-        # print(f'actor KAN weights {self.model.actor.kan.layers[0].scaled_spline_weight.mean():3f}')
-        # print(f"mean action {np.mean(abs(np.array(actions)))} std {self.model.actor.std.mean().item()}")
+      # debug info
+      if self.debug:
+        print(f"critic loss {costs['critic'].item():.3f} entropy {costs['entropy'].item():.3f} mean action {np.mean(abs(np.array(actions)))}")
+        print(f"Runtimes: rollout {rollout_time:.3f}, gae {gae_time:.3f}, buffer {buffer_time:.3f}, update {update_time:.3f}")
         print(f"eps {eps:.2f}, reward {avg_reward:.3f}, t {time.time()-self.start:.2f}")
         print(f"Runtimes: rollout {rollout_time:.3f}, gae {gae_time:.3f}, buffer {buffer_time:.3f}, update {update_time:.3f}")
-        self.hist['iter'].append(eps)
-        self.hist['reward'].append(avg_reward)
-        self.hist['value_loss'].append(costs['critic'].item())
-        self.hist['policy_loss'].append(costs['actor'].item())
-        self.hist['total_loss'].append(loss.item())
+        # print(f'actor KAN weights {self.model.actor.kan.layers[0].scaled_spline_weight.mean():3f}')
+        # print(f"mean action {np.mean(abs(np.array(actions)))} std {self.model.actor.std.mean().item()}")
+      self.hist['iter'].append(eps)
+      self.hist['reward'].append(avg_reward)
+      self.hist['value_loss'].append(costs['critic'].item())
+      self.hist['policy_loss'].append(costs['actor'].item())
+      self.hist['total_loss'].append(loss.item())
 
     return self.model.actor, self.hist
 
@@ -175,11 +173,12 @@ if __name__ == "__main__":
   parser.add_argument("--seed", type=int, default=42)
   parser.add_argument("--render", default="human")
   parser.add_argument("--hidden_sizes", type=int, default=32)
+  parser.add_argument("--eq", type=int, default=12)
   args = parser.parse_args()
 
   print(f"training ppo with max_evals {args.max_evals}") 
   # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=args.env_bs)
-  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=args.env_bs)
+  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=args.env_bs, eq=args.eq)
   if args.model == "kan":
     model = KANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))
   else:
