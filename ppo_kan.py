@@ -56,8 +56,7 @@ class PPO:
     return returns, advantages
 
   def evaluate_cost(self, states, actions, returns, advantages, logprob):
-    kan_reg_loss = 0
-    # kan_reg_loss = 0.01 * (self.model.actor.kan.regularization_loss()) if not self.is_mlp else 0
+    kan_reg_loss = 0.01 * (self.model.actor.kan.regularization_loss()) if not self.is_mlp else 0
     new_logprob, entropy = self.model.actor.get_logprob(states, actions)
     # entropy = (torch.log(self.model.actor.std) + 0.5 * (1 + torch.log(torch.tensor(2 * torch.pi)))).sum(dim=-1)
     ratio = torch.exp(new_logprob-logprob).squeeze()

@@ -10,7 +10,7 @@ def get_feynman_dataset(name):
     symbol = None
     expr = None
 
-    if name == 'basic':
+    if name == 'basic' or name == 0:
         f = lambda x: x
         ranges = [[-2,2]]
 
