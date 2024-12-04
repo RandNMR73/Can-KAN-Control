@@ -179,14 +179,14 @@ class KANGaussian(nn.Module):
         entropy = (torch.log(std) + 0.5 * (1 + torch.log(torch.tensor(2*torch.pi))))
         return logprob.sum(dim=-1), entropy.sum(dim=-1)
 
-# class KANCritic(nn.Module):
-#   def __init__(self, obs_dim, hidden_sizes, grid_size=5, spline_order=3, seed=42):
-#     super(KANCritic, self).__init__()
-#     layers = [obs_dim] + list(hidden_sizes) + [1]
-#     self.kan = KAN(layers, grid_size=grid_size, spline_order=spline_order)
+class KANCritic(nn.Module):
+  def __init__(self, obs_dim, hidden_sizes, grid_size=5, spline_order=3, seed=42):
+    super(KANCritic, self).__init__()
+    layers = [obs_dim] + list(hidden_sizes) + [1]
+    self.kan = KAN(layers, grid_size=grid_size, spline_order=spline_order)
 
-#   def forward(self, x: torch.Tensor):
-#     return self.kan(x)
+  def forward(self, x: torch.Tensor):
+    return self.kan(x)
 
 class KANBeta(nn.Module):
     '''Beta distribution for bounded continuous control using KAN architecture, output between 0 and 1'''
@@ -238,7 +238,7 @@ class KANActorCritic(nn.Module):
       self.actor = model_class(obs_dim, hidden_sizes["pi"], act_dim, act_bound=act_bound)
     else:
       self.actor = model_class(obs_dim, hidden_sizes["pi"], act_dim)
-    self.critic = MLPCritic(obs_dim, hidden_sizes["vf"])
+    self.critic = KANCritic(obs_dim, hidden_sizes["vf"])
 
   def forward(self, x: torch.Tensor):
     actor_out = self.actor(x)
