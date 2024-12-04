@@ -75,7 +75,7 @@ def evaluate_model(model, eval_seeds, device):
 def main():
     train_seed = 42
     eval_seeds = range(10)
-    max_evals = 50000
+    max_evals = 100000
     env_bs = 1000
     hidden_size = 32
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
