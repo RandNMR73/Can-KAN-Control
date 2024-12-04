@@ -29,13 +29,13 @@ class PPO:
     self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
     self.replay_buffer = ReplayBuffer(storage=LazyTensorStorage(max_size=10000, device=device), batch_size=bs)
     self.bs = bs
-    self.hist = []
     self.start = time.time()
     self.device = device
     self.debug = debug
     self.seed = seed
     self.seed_env()
     self.is_mlp = isinstance(self.model, ActorCritic)
+    self.hist = {'iter': [], 'reward': [], 'value_loss': [], 'policy_loss': [], 'total_loss': []}
 
   def seed_env(self):
     np.random.seed(self.seed)
@@ -157,7 +157,11 @@ class PPO:
         # print(f"mean action {np.mean(abs(np.array(actions)))} std {self.model.actor.std.mean().item()}")
         print(f"eps {eps:.2f}, reward {avg_reward:.3f}, t {time.time()-self.start:.2f}")
         print(f"Runtimes: rollout {rollout_time:.3f}, gae {gae_time:.3f}, buffer {buffer_time:.3f}, update {update_time:.3f}")
-        self.hist.append((eps, avg_reward))
+        self.hist['iter'].append(eps)
+        self.hist['reward'].append(avg_reward)
+        self.hist['value_loss'].append(costs['critic'].item())
+        self.hist['policy_loss'].append(costs['actor'].item())
+        self.hist['total_loss'].append(loss.item())
 
     return self.model.actor, self.hist
 
