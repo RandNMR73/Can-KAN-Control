@@ -99,6 +99,7 @@ class BatchedCartLatAccelEnv(gym.Env):
       high=self.obs_high,
       size=(self.bs, self.action_dim+1)
     )
+    self.obs = self.state
 
     if self.moving_target:
       self.x_targets = self.generate_traj(self.bs)
@@ -118,13 +119,16 @@ class BatchedCartLatAccelEnv(gym.Env):
     scaled_action = action * (np.array(self.high) - np.array(self.low)) + np.array(self.low)
 
     theta = scaled_action
-    # noisy_theta = self.noise_model.add_lat_noise(self.curr_step, action)
+    # noisy_theta = self.noise_model.add_lat_noise(self.curr_step, scaled_action)
+
     x = self.f(torch.tensor(theta)).detach().cpu().numpy()
     x, theta = np.transpose(x), np.transpose(theta)
 
     new_target = self.x_targets[:, self.curr_step]
+    noisy_target = self.noise_model.add_lat_noise(self.curr_step, new_target)
 
     self.state = np.stack(np.concatenate((theta, new_target.reshape(1, -1)), axis=0), axis=1)
+    self.obs = np.stack(np.concatenate((theta, noisy_target.reshape(1, -1)), axis=0), axis=1)
 
     alpha = 0.1
 
@@ -142,7 +146,7 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.curr_step += 1
     truncated = self.curr_step >= self.max_episode_steps
     info = {"action": action, "noisy_action": theta, "x": x, "x_target": new_target}
-    return np.array(self.state, dtype=np.float32), reward, False, truncated, info
+    return np.array(self.obs, dtype=np.float32), reward, False, truncated, info
 
   def render(self):
     if self.screen is None:
