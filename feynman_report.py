@@ -2,6 +2,7 @@ import os
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
+import logging
 from ppo_kan import PPO, CartLatAccelEnv, KANActorCritic, ActorCritic
 
 def plot_losses(hist, save_path=None, title=None):
@@ -67,11 +68,22 @@ def evaluate_model(model, eq_num, eval_seeds, device):
             'seed': seed,
             'reward': final_reward,
         })
-        print(f"Seed {seed} final reward: {final_reward:.3f}")
+        logging.info(f"{seed} reward: {final_reward:.3f}")
     
     return results
 
 def main():
+    # log results to file
+    os.makedirs('results', exist_ok=True)
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(message)s',
+        handlers=[
+            logging.FileHandler('results/feynman_results.txt'),
+            logging.StreamHandler()
+        ]
+    )
+    
     train_seed = 42
     eval_seeds = range(10)
     max_evals = 100000
@@ -83,12 +95,14 @@ def main():
     
     all_results = {'kan': [], 'mlp': []}
     
-    for eq_num in range(1, 10): #121):
-        print(f"equation {eq_num}")
+    for eq_num in range(1, 121):
+        logging.info(f"equation {eq_num}")
         
         kan_model, kan_hist = train_model(eq_num, 'kan', hidden_size, max_evals, env_bs, train_seed)
         mlp_model, mlp_hist = train_model(eq_num, 'mlp', hidden_size, max_evals, env_bs, train_seed)
+        logging.info(f"kan")
         kan_results = evaluate_model(kan_model, eq_num, eval_seeds, device)
+        logging.info(f"mlp")
         mlp_results = evaluate_model(mlp_model, eq_num, eval_seeds, device)
         kan_rewards = [r['reward'] for r in kan_results]
         mlp_rewards = [r['reward'] for r in mlp_results]
@@ -108,16 +122,20 @@ def main():
             plot_losses(hist, 
                        save_path=f'results/eq{eq_num}_{model_type.lower()}_learning_curve.png',
                        title=f'{model_type} Learning Curve - Equation {eq_num}')
-    
-    print("\nOverall Results:")
+    logging.info("\n=== DETAILED RESULTS ===")
+    for model_type in ['kan', 'mlp']:
+        logging.info(f"\n{model_type.upper()} RESULTS:")
+        for i, result in enumerate(all_results[model_type]):
+            logging.info(f"\nEquation {i+1}:")
+            logging.info(f"Mean: {result['mean']:.3f}")
+            logging.info(f"Std: {result['std']:.3f}")
+
+    logging.info("\n=== SUMMARY STATISTICS ===")
     for model_type in ['kan', 'mlp']:
         means = [r['mean'] for r in all_results[model_type]]
-        print(f"\n{model_type.upper()}:")
-        print(f"Average across all equations - Mean: {np.mean(means):.3f}, Std: {np.std(means):.3f}")
-        
-        with open(f'results/{model_type}_detailed_results.txt', 'w') as f:
-            for result in all_results[model_type]:
-                f.write(f"Equation {result['eq']}: Mean = {result['mean']:.3f}, Std = {result['std']:.3f}\n")
+        logging.info(f"\n{model_type.upper()}:")
+        logging.info(f"Mean: {np.mean(means):.3f}")
+        logging.info(f"Std: {np.std(means):.3f}")
 
 if __name__ == "__main__":
     main()
