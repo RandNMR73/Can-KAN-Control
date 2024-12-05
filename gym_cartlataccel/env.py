@@ -145,7 +145,7 @@ class BatchedCartLatAccelEnv(gym.Env):
     jerk = abs(theta - theta_prev)
     # jerk = np.clip(jerk - 0.05, 0, None)
 
-    error = np.sum(dist + alpha * np.transpose(jerk), axis=1)
+    error = np.sum(np.transpose(dist) + alpha * jerk, axis=0)
     reward = -error * step_weight / np.sum(self.max_x - self.min_x)
 
     if self.render_mode == "human":
@@ -174,11 +174,13 @@ class BatchedCartLatAccelEnv(gym.Env):
     theta = self.state[0, :-2].reshape(1, -1)
     print(theta)
     print(theta.shape)
-    cart_x = self.f(torch.tensor(theta)).detach().cpu().numpy()[0][0] # second to last one is index
+    cart_x = self.f(torch.tensor(theta)).detach().cpu().numpy()[1][0] # second to last one is index
     print(cart_x)
 
     first_cart_x = int((cart_x / self.max_x_frame) * 300 + 300)  # center is 300
-    first_target_x = int((self.x_targets[0, self.curr_step, 0] / self.max_x_frame) * 300 + 300)
+    first_target_x = int((self.x_targets[0, self.curr_step, 1] / self.max_x_frame) * 300 + 300)
+
+    ma_sines = "i kan't stay awake"
 
     pygame.draw.rect(self.surf, (0, 0, 0), pygame.Rect(first_cart_x - 10, 180, 20, 40))  # cart
     pygame.draw.circle(self.surf, (255, 0, 0), (first_target_x, 200), 5)  # target
