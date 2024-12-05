@@ -102,7 +102,9 @@ class PPO:
         state_tensor = torch.FloatTensor(np.array(states)).to(self.device)
         next_state_tensor = torch.FloatTensor(next_state).to(self.device)
         action_tensor = torch.FloatTensor(np.array(actions)).to(self.device)
+        print(state_tensor.shape)
         values = self.model.critic(state_tensor).cpu().numpy().squeeze()
+        print(values.shape)
         next_values = self.model.critic(next_state_tensor).cpu().numpy().squeeze()
 
         # self.model.actor.std = self.model.actor.log_std.exp().to(self.device) # update std

@@ -37,8 +37,10 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.high = [x[1] for x in self.ranges]
 
     self.min_x, self.max_x = self.find_minmax()
-    self.min_x = max(-2, self.min_x)
-    self.max_x = min(2, self.max_x)
+    self.min_x = np.clip(self.min_x, 0, None)
+    self.max_x = np.clip(self.max_x, None, 2)
+
+    self.obs_dim = len(self.min_x) + self.action_dim
 
     # Action space is theta
     action_low = np.stack([np.array(self.low) for _ in range(self.bs)])
@@ -48,13 +50,13 @@ class BatchedCartLatAccelEnv(gym.Env):
     )
 
     # Obs space is [theta_prev, target]
-    self.obs_low = np.stack([np.array(self.low + [self.min_x]) for _ in range(self.bs)])
-    self.obs_high = np.stack([np.array(self.high + [self.max_x]) for _ in range(self.bs)])
+    self.obs_low = np.stack([np.array(self.low + list(self.min_x)) for _ in range(self.bs)])
+    self.obs_high = np.stack([np.array(self.high + list(self.max_x)) for _ in range(self.bs)])
 
     self.observation_space = spaces.Box(
       low=self.obs_low,
       high=self.obs_high,
-      shape=(self.bs, self.action_dim+1),
+      shape=(self.bs, self.obs_dim),
       dtype=np.float32
     )
 
@@ -72,17 +74,23 @@ class BatchedCartLatAccelEnv(gym.Env):
     for i in range(self.action_dim):
       samples[:, i] = np.random.uniform(low=self.low[i], high=self.high[i], size=num_samples)
     
-    out = self.f(torch.tensor(samples))
-    return min(out).item(), max(out).item()
+    out = self.f(torch.tensor(samples)).cpu().detach().numpy()
+    return np.min(out, 1), np.max(out, 1)
 
-  def generate_traj(self, n_traj=1, n_points=10):
+  def generate_traj(self, n_traj=1, n_points=10, n_outputs=2):
     # generates smooth curve using cubic interpolation
     t_control = np.linspace(0, self.max_episode_steps - 1, n_points)
-    control_points = self.np_random.uniform(-2, 2, (n_traj, n_points)) # slightly less than max x
-    f = interp1d(t_control, control_points, kind='cubic')
-    t = np.arange(self.max_episode_steps)
 
-    traj = f(t)
+    control_points = self.np_random.uniform(-2, 2, (n_traj, n_points, n_outputs))
+
+    # Initialize the trajectory array
+    traj = np.zeros((n_traj, self.max_episode_steps, n_outputs))
+    
+    # Interpolate for each output dimension
+    for output_idx in range(n_outputs):
+        f = interp1d(t_control, control_points[:, :, output_idx], kind='cubic', axis=1)
+        t = np.arange(self.max_episode_steps)
+        traj[:, :, output_idx] = f(t)
 
     row_min = traj.min(axis=1, keepdims=True)
     row_max = traj.max(axis=1, keepdims=True)
@@ -97,7 +105,7 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.state = self.np_random.uniform(
       low=self.obs_low,
       high=self.obs_high,
-      size=(self.bs, self.action_dim+1)
+      size=(self.bs, self.obs_dim)
     )
     self.obs = self.state
 
@@ -113,8 +121,8 @@ class BatchedCartLatAccelEnv(gym.Env):
     return np.array(self.state, dtype=np.float32), {}
 
   def step(self, action):
-    theta_prev = np.transpose(self.state[:,:-1])
-    target = self.state[:,-1]
+    theta_prev = np.transpose(self.state[:,:-2])
+    target = self.state[:,-2:]
 
     scaled_action = action * (np.array(self.high) - np.array(self.low)) + np.array(self.low)
 
@@ -127,8 +135,8 @@ class BatchedCartLatAccelEnv(gym.Env):
     new_target = self.x_targets[:, self.curr_step]
     noisy_target = self.noise_model.add_lat_noise(self.curr_step, new_target)
 
-    self.state = np.stack(np.concatenate((theta, new_target.reshape(1, -1)), axis=0), axis=1)
-    self.obs = np.stack(np.concatenate((theta, noisy_target.reshape(1, -1)), axis=0), axis=1)
+    self.state = np.stack(np.concatenate((theta, np.transpose(new_target)), axis=0), axis=1)
+    self.obs = np.stack(np.concatenate((theta, np.transpose(noisy_target)), axis=0), axis=1)
 
     alpha = 0.1
 
@@ -137,8 +145,8 @@ class BatchedCartLatAccelEnv(gym.Env):
     jerk = abs(theta - theta_prev)
     # jerk = np.clip(jerk - 0.05, 0, None)
 
-    error = np.sum(dist + alpha * jerk, axis=0)
-    reward = -error * step_weight / (self.max_x - self.min_x)
+    error = np.sum(dist + alpha * np.transpose(jerk), axis=0)
+    reward = -error * step_weight / np.sum(self.max_x - self.min_x)
 
     if self.render_mode == "human":
       self.render()
