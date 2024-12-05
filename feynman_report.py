@@ -2,7 +2,7 @@ import os
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-from ppo_kan import PPO, CartLatAccelEnv, KANActorCritic, ActorCritic
+from ppo_kan import PPO, CartLatAccelEnv, KANActorCritic, FourierKANActorCritic, WaveletKANActorCritic, ActorCritic
 
 def plot_losses(hist, save_path=None, title=None):
     plt.figure(figsize=(10, 6))
@@ -35,6 +35,20 @@ def train_model(eq_num, model_type='kan', hidden_size=32, max_evals=1000, env_bs
     env = CartLatAccelEnv(noise_mode=None, env_bs=env_bs, eq=eq_num)
     if model_type == 'kan':
         model = KANActorCritic(
+            env.observation_space.shape[-1], 
+            {"pi": [hidden_size], "vf": [32]}, 
+            env.action_space.shape[-1], 
+            act_bound=(-1,1)
+        )
+    elif model_type == 'Fkan':
+        model = FourierKANActorCritic(
+            env.observation_space.shape[-1], 
+            {"pi": [hidden_size], "vf": [32]}, 
+            env.action_space.shape[-1], 
+            act_bound=(-1,1)
+        )
+    elif model_type == 'Wkan':
+        model = WaveletKANActorCritic(
             env.observation_space.shape[-1], 
             {"pi": [hidden_size], "vf": [32]}, 
             env.action_space.shape[-1], 
@@ -81,16 +95,22 @@ def main():
     
     os.makedirs('results', exist_ok=True)
     
-    all_results = {'kan': [], 'mlp': []}
+    all_results = {'kan': [], 'Fkan':[], 'Wkan':[], 'mlp': []}
     
     for eq_num in range(1, 10): #121):
         print(f"equation {eq_num}")
         
         kan_model, kan_hist = train_model(eq_num, 'kan', hidden_size, max_evals, env_bs, train_seed)
+        Fkan_model, Fkan_hist = train_model(eq_num, 'Fkan', hidden_size, max_evals, env_bs, train_seed)
+        Wkan_model, Wkan_hist = train_model(eq_num, 'Wkan', hidden_size, max_evals, env_bs, train_seed)
         mlp_model, mlp_hist = train_model(eq_num, 'mlp', hidden_size, max_evals, env_bs, train_seed)
         kan_results = evaluate_model(kan_model, eq_num, eval_seeds, device)
+        Fkan_results = evaluate_model(Fkan_model, eq_num, eval_seeds, device)
+        Wkan_results = evaluate_model(Wkan_model, eq_num, eval_seeds, device)
         mlp_results = evaluate_model(mlp_model, eq_num, eval_seeds, device)
         kan_rewards = [r['reward'] for r in kan_results]
+        Fkan_rewards = [r['reward'] for r in Fkan_results]
+        Wkan_rewards = [r['reward'] for r in Wkan_results]
         mlp_rewards = [r['reward'] for r in mlp_results]
         
         all_results['kan'].append({
@@ -98,19 +118,29 @@ def main():
             'mean': np.mean(kan_rewards),
             'std': np.std(kan_rewards)
         })
+        all_results['Fkan'].append({
+            'eq': eq_num,
+            'mean': np.mean(Fkan_rewards),
+            'std': np.std(Fkan_rewards)
+        })
+        all_results['Wkan'].append({
+            'eq': eq_num,
+            'mean': np.mean(Wkan_rewards),
+            'std': np.std(Wkan_rewards)
+        })
         all_results['mlp'].append({
             'eq': eq_num,
             'mean': np.mean(mlp_rewards),
             'std': np.std(mlp_rewards)
         })
         
-        for model_type, hist in [('KAN', kan_hist), ('MLP', mlp_hist)]:
+        for model_type, hist in [('KAN', kan_hist), ('FKAN', Fkan_hist), ('WKAN', Wkan_hist), ('MLP', mlp_hist)]:
             plot_losses(hist, 
                        save_path=f'results/eq{eq_num}_{model_type.lower()}_learning_curve.png',
                        title=f'{model_type} Learning Curve - Equation {eq_num}')
     
     print("\nOverall Results:")
-    for model_type in ['kan', 'mlp']:
+    for model_type in ['kan', 'Fkan', 'Wkan' 'mlp']:
         means = [r['mean'] for r in all_results[model_type]]
         print(f"\n{model_type.upper()}:")
         print(f"Average across all equations - Mean: {np.mean(means):.3f}, Std: {np.std(means):.3f}")

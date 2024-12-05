@@ -20,6 +20,7 @@ def get_feynman_dataset(name):
         f = lambda x: (x[:,[0]] + x[:,[1]])*torch.sin(torch.exp(2*x[:,[1]]))
         ranges = [-1,1]
     
+    # FourierKAN does better 
     if name == 'I.6.20a' or name == 1:
         symbol = theta = symbols('theta')
         symbol = [symbol]

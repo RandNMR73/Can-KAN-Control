@@ -244,3 +244,188 @@ class KANActorCritic(nn.Module):
     actor_out = self.actor(x)
     critic_out = self.critic(x)
     return actor_out, critic_out
+
+#----------------------------------------------------------------------------#
+
+from fftKAN import FourierKAN
+
+class FourierKANGaussian(nn.Module):
+    def __init__(self, obs_dim, hidden_sizes, act_dim, grid_size=5, log_std=0.):
+        super(FourierKANGaussian, self).__init__()
+        layers = [obs_dim] + list(hidden_sizes) + [act_dim]
+        self.kan = FourierKAN(
+        layers,
+        grid_size=grid_size,
+    )
+        self.log_std = torch.nn.Parameter(torch.full((act_dim,), log_std, dtype=torch.float32))
+
+    def forward(self, x: torch.Tensor):
+        return self.kan(x)
+
+    def get_policy(self, obs: torch.Tensor):
+        mean = self.forward(obs)
+        std = self.log_std.exp()
+        return mean, std
+
+    def get_action(self, obs: torch.Tensor, deterministic=False):
+        mean, std = self.get_policy(obs)
+        action = mean if deterministic else torch.normal(mean, std)
+        return action.detach().cpu().numpy()
+
+    def get_logprob(self, obs: torch.Tensor, act: torch.Tensor):
+        mean, std = self.get_policy(obs)
+        logprob = -0.5 * (((act - mean)**2) / std**2 + 2 * self.log_std + torch.log(torch.tensor(2*torch.pi)))
+        entropy = (torch.log(std) + 0.5 * (1 + torch.log(torch.tensor(2*torch.pi))))
+        return logprob.sum(dim=-1), entropy.sum(dim=-1)
+
+class FourierKANCritic(nn.Module):
+  def __init__(self, obs_dim, hidden_sizes, grid_size=5, seed=42):
+    super(FourierKANCritic, self).__init__()
+    layers = [obs_dim] + list(hidden_sizes) + [1]
+    self.kan = FourierKAN(layers, grid_size=grid_size)
+
+  def forward(self, x: torch.Tensor):
+    return self.kan(x)
+
+class FourierKANBeta(nn.Module):
+    '''Beta distribution for bounded continuous control using KAN architecture, output between 0 and 1'''
+    def __init__(self, obs_dim, hidden_sizes, act_dim, grid_size=5, act_bound=(0, 1)):
+        super(FourierKANBeta, self).__init__()
+        layers = [obs_dim] + list(hidden_sizes) + [act_dim * 2]  # *2 for alpha and beta parameters
+        self.kan = FourierKAN(
+            layers,
+            grid_size=grid_size,
+        )
+        self.act_dim = act_dim
+        self.act_bound = act_bound
+
+    def forward(self, x: torch.Tensor):
+        return self.kan(x)
+
+    def get_policy(self, obs: torch.Tensor):
+        alpha_beta = self.forward(obs)
+        alpha, beta = torch.split(alpha_beta, self.act_dim, dim=-1)
+        alpha = F.softplus(alpha) + 1
+        beta = F.softplus(beta) + 1
+        return alpha, beta
+
+    def get_action(self, obs: torch.Tensor, deterministic=False):
+        alpha, beta = self.get_policy(obs)
+        action = alpha / (alpha + beta) if deterministic else torch.distributions.Beta(alpha, beta).sample()
+        return action.detach().cpu().numpy()
+
+    def get_logprob(self, obs: torch.Tensor, act: torch.Tensor):
+        alpha, beta = self.get_policy(obs)
+        dist = torch.distributions.Beta(alpha, beta)
+        logprob = dist.log_prob(act)
+        entropy = dist.entropy()
+        return logprob.sum(dim=-1), entropy.sum(dim=-1)
+
+class FourierKANActorCritic(nn.Module):
+  def __init__(self, obs_dim, hidden_sizes, act_dim, act_bound=None):
+    super(FourierKANActorCritic, self).__init__()
+    model_class = FourierKANGaussian if not act_bound else FourierKANBeta
+    
+    if model_class == FourierKANBeta:
+      self.actor = model_class(obs_dim, hidden_sizes["pi"], act_dim, act_bound=act_bound)
+    else:
+      self.actor = model_class(obs_dim, hidden_sizes["pi"], act_dim)
+    self.critic = FourierKANCritic(obs_dim, hidden_sizes["vf"])
+
+  def forward(self, x: torch.Tensor):
+    actor_out = self.actor(x)
+    critic_out = self.critic(x)
+    return actor_out, critic_out
+
+#----------------------------------------------------------------------------#
+
+from waveletKAN import WaveletKAN
+
+class WaveletKANGaussian(nn.Module):
+    def __init__(self, obs_dim, hidden_sizes, act_dim, grid_size=5, log_std=0.):
+        super(WaveletKANGaussian, self).__init__()
+        layers = [obs_dim] + list(hidden_sizes) + [act_dim]
+        self.kan = WaveletKAN(
+        layers,
+        grid_size=grid_size,
+    )
+        self.log_std = torch.nn.Parameter(torch.full((act_dim,), log_std, dtype=torch.float32))
+
+    def forward(self, x: torch.Tensor):
+        return self.kan(x)
+
+    def get_policy(self, obs: torch.Tensor):
+        mean = self.forward(obs)
+        std = self.log_std.exp()
+        return mean, std
+
+    def get_action(self, obs: torch.Tensor, deterministic=False):
+        mean, std = self.get_policy(obs)
+        action = mean if deterministic else torch.normal(mean, std)
+        return action.detach().cpu().numpy()
+
+    def get_logprob(self, obs: torch.Tensor, act: torch.Tensor):
+        mean, std = self.get_policy(obs)
+        logprob = -0.5 * (((act - mean)**2) / std**2 + 2 * self.log_std + torch.log(torch.tensor(2*torch.pi)))
+        entropy = (torch.log(std) + 0.5 * (1 + torch.log(torch.tensor(2*torch.pi))))
+        return logprob.sum(dim=-1), entropy.sum(dim=-1)
+
+class WaveletKANCritic(nn.Module):
+  def __init__(self, obs_dim, hidden_sizes, grid_size=5, seed=42):
+    super(WaveletKANCritic, self).__init__()
+    layers = [obs_dim] + list(hidden_sizes) + [1]
+    self.kan = WaveletKAN(layers, grid_size=grid_size)
+
+  def forward(self, x: torch.Tensor):
+    return self.kan(x)
+
+class WaveletKANBeta(nn.Module):
+    '''Beta distribution for bounded continuous control using KAN architecture, output between 0 and 1'''
+    def __init__(self, obs_dim, hidden_sizes, act_dim, grid_size=5, act_bound=(0, 1)):
+        super(WaveletKANBeta, self).__init__()
+        layers = [obs_dim] + list(hidden_sizes) + [act_dim * 2]  # *2 for alpha and beta parameters
+        self.kan = WaveletKAN(
+            layers,
+            grid_size=grid_size,
+        )
+        self.act_dim = act_dim
+        self.act_bound = act_bound
+
+    def forward(self, x: torch.Tensor):
+        return self.kan(x)
+
+    def get_policy(self, obs: torch.Tensor):
+        alpha_beta = self.forward(obs)
+        alpha, beta = torch.split(alpha_beta, self.act_dim, dim=-1)
+        alpha = F.softplus(alpha) + 1
+        beta = F.softplus(beta) + 1
+        return alpha, beta
+
+    def get_action(self, obs: torch.Tensor, deterministic=False):
+        alpha, beta = self.get_policy(obs)
+        action = alpha / (alpha + beta) if deterministic else torch.distributions.Beta(alpha, beta).sample()
+        return action.detach().cpu().numpy()
+
+    def get_logprob(self, obs: torch.Tensor, act: torch.Tensor):
+        alpha, beta = self.get_policy(obs)
+        dist = torch.distributions.Beta(alpha, beta)
+        logprob = dist.log_prob(act)
+        entropy = dist.entropy()
+        return logprob.sum(dim=-1), entropy.sum(dim=-1)
+
+class WaveletKANActorCritic(nn.Module):
+  def __init__(self, obs_dim, hidden_sizes, act_dim, act_bound=None):
+    super(WaveletKANActorCritic, self).__init__()
+    model_class = WaveletKANGaussian if not act_bound else WaveletKANBeta
+    
+    if model_class == WaveletKANBeta:
+      self.actor = model_class(obs_dim, hidden_sizes["pi"], act_dim, act_bound=act_bound)
+    else:
+      self.actor = model_class(obs_dim, hidden_sizes["pi"], act_dim)
+    self.critic = WaveletKANCritic(obs_dim, hidden_sizes["vf"])
+
+  def forward(self, x: torch.Tensor):
+    actor_out = self.actor(x)
+    critic_out = self.critic(x)
+    return actor_out, critic_out
+

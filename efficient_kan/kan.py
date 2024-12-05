@@ -8,7 +8,7 @@ class KANLinear(torch.nn.Module):
         self,
         in_features,
         out_features,
-        grid_size=5,
+        grid_size=5, 
         spline_order=3,
         scale_noise=0.1,
         scale_base=1.0,
@@ -227,8 +227,8 @@ class KANLinear(torch.nn.Module):
         weights. The authors implementation also includes this term in addition to the
         sample-based regularization.
         """
-        l1_fake = self.spline_weight.abs().mean(-1)
-        regularization_loss_activation = l1_fake.sum()
+        l1_fake = self.spline_weight.abs().mean(-1)  # (o, i, g+k) -> (o,i)
+        regularization_loss_activation = l1_fake.sum()  # scalar
         p = l1_fake / regularization_loss_activation
         regularization_loss_entropy = -torch.sum(p * p.log())
         return (

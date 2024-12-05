@@ -10,7 +10,7 @@ import gymnasium as gym
 from gym_cartlataccel.env import BatchedCartLatAccelEnv as CartLatAccelEnv
 from torchrl.data import ReplayBuffer, LazyTensorStorage
 from tensordict import TensorDict
-from model import ActorCritic, KANActorCritic
+from model import ActorCritic, KANActorCritic, FourierKANActorCritic, WaveletKANActorCritic
 
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -161,6 +161,9 @@ class PPO:
       self.hist['policy_loss'].append(costs['actor'].item())
       self.hist['total_loss'].append(loss.item())
 
+      if eps % 1000 == 0:
+        print(eps)
+        
     return self.model.actor, self.hist
 
 if __name__ == "__main__":
@@ -181,6 +184,10 @@ if __name__ == "__main__":
   env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=args.env_bs, eq=args.eq)
   if args.model == "kan":
     model = KANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))
+  elif args.model == "Fkan":
+    model = FourierKANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1)) 
+  elif args.model == "Wkan":
+    model = WaveletKANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))    
   else:
     model = ActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))
   device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -189,7 +196,7 @@ if __name__ == "__main__":
 
   print(f"rolling out best model") 
   # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
-  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
+  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=1, render_mode=args.render, eq=args.eq)
   env.reset(seed=args.seed)
   states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=200, device=device, deterministic=True)
   print(f"reward {sum(rewards)[0]}")
