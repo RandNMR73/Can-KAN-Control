@@ -161,6 +161,9 @@ class PPO:
       self.hist['policy_loss'].append(costs['actor'].item())
       self.hist['total_loss'].append(loss.item())
 
+      if eps % 1000 == 0:
+        print(eps)
+
     return self.model.actor, self.hist
 
 if __name__ == "__main__":
@@ -189,7 +192,7 @@ if __name__ == "__main__":
 
   print(f"rolling out best model") 
   # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
-  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
+  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=1, render_mode=args.render, eq=args.eq)
   env.reset(seed=args.seed)
   states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=200, device=device, deterministic=True)
   print(f"reward {sum(rewards)[0]}")
