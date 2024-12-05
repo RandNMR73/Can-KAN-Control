@@ -37,6 +37,8 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.high = [x[1] for x in self.ranges]
 
     self.min_x, self.max_x = self.find_minmax()
+    self.min_x = max(-2, self.min_x)
+    self.max_x = min(2, self.max_x)
 
     # Action space is theta
     action_low = np.stack([np.array(self.low) for _ in range(self.bs)])
@@ -84,6 +86,7 @@ class BatchedCartLatAccelEnv(gym.Env):
 
     row_min = traj.min(axis=1, keepdims=True)
     row_max = traj.max(axis=1, keepdims=True)
+
     scaled_traj = self.min_x + (traj - row_min) * (self.max_x - self.min_x) / (row_max - row_min)
 
     return scaled_traj
@@ -93,7 +96,7 @@ class BatchedCartLatAccelEnv(gym.Env):
 
     self.state = self.np_random.uniform(
       low=self.obs_low,
-      high=self.obs_low,
+      high=self.obs_high,
       size=(self.bs, self.action_dim+1)
     )
 
@@ -131,7 +134,7 @@ class BatchedCartLatAccelEnv(gym.Env):
     # jerk = np.clip(jerk - 0.05, 0, None)
 
     error = np.sum(dist + alpha * jerk, axis=0)
-    reward = -error * step_weight
+    reward = -error * step_weight / (self.max_x - self.min_x)
 
     if self.render_mode == "human":
       self.render()

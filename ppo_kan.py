@@ -161,7 +161,7 @@ class PPO:
       self.hist['policy_loss'].append(costs['actor'].item())
       self.hist['total_loss'].append(loss.item())
 
-      if eps % 1000 == 0:
+      if eps % 10000 == 0:
         print(eps)
 
     return self.model.actor, self.hist
