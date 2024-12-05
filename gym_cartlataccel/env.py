@@ -37,6 +37,8 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.high = [x[1] for x in self.ranges]
 
     self.min_x, self.max_x = self.find_minmax()
+    self.min_x = max(-2, self.min_x)
+    self.max_x = min(2, self.max_x)
 
     # Action space is theta
     action_low = np.stack([np.array(self.low) for _ in range(self.bs)])
@@ -93,7 +95,7 @@ class BatchedCartLatAccelEnv(gym.Env):
 
     self.state = self.np_random.uniform(
       low=self.obs_low,
-      high=self.obs_low,
+      high=self.obs_high,
       size=(self.bs, self.action_dim+1)
     )
 
