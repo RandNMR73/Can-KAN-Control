@@ -18,7 +18,7 @@ def get_feynman_dataset(name):
         symbol = x, y = symbols('x, y')
         expr = (x+y) * sin(exp(2*y))
         f = lambda x: (x[:,[0]] + x[:,[1]])*torch.sin(torch.exp(2*x[:,[1]]))
-        ranges = [-1,1]
+        ranges = [[-1,1],[-1,1]]
     
     if name == 'I.6.20a' or name == 1:
         symbol = theta = symbols('theta')
@@ -61,13 +61,13 @@ def get_feynman_dataset(name):
         symbol = x1, y1, x2, y2, x3, y3 = symbols('x1 y1 x2 y2 x3 y3')
         expr = x1*y1 + x2*y2 + x3*y3
         f = lambda x: x[:,[0]]*x[:,[1]] + x[:,[2]]*x[:,[3]] + x[:,[4]]*x[:,[5]]
-        ranges = [-1,1]
+        ranges = [[-1,1],[-1,1],[-1,1],[-1,1],[-1,1],[-1,1]]
     
     if name == 'I.12.1' or name == 8:
         symbol = mu, Nn = symbols('mu N_n')
         expr = mu * Nn
         f = lambda x: x[:,[0]]*x[:,[1]]
-        ranges = [-1,1]
+        ranges = [[-1,1],[-1,1]]
         
     if name == 'I.12.2' or name == 9:
         symbol = q1, q2, eps, r = symbols('q1 q2 epsilon r')
@@ -85,7 +85,7 @@ def get_feynman_dataset(name):
         symbol = q2, Ef = symbols('q2, E_f')
         expr = q2*Ef
         f = lambda x: x[:,[0]]*x[:,[1]]
-        ranges = [-1,1]
+        ranges = [[-1,1],[-1,1]]
         
     if name == 'I.12.11' or name == 12:
         symbol = q, Ef, B, v, theta = symbols('q E_f B v theta')
@@ -692,7 +692,7 @@ def get_feynman_dataset(name):
         symbol = p, q, A, c, m, Ve = symbols('p q A c m V_e')
         expr = sqrt((p-q*A)**2*c**2+m**2*c**4) + q*Ve
         f = lambda x: torch.sqrt((x[:,[0]]-x[:,[1]]*x[:,[2]])**2*x[:,[3]]**2+x[:,[4]]**2*x[:,[3]]**4) + x[:,[1]]*x[:,[5]]
-        ranges = [0,1]
+        ranges = [[0,1],[0,1],[0,1],[0,1],[0,1],[0,1]]
         
     if name == 'Goldstein 12.80' or name == 113:
         symbol = m, p, omega, x, alpha, y = symbols('m p omega x alpha y')
