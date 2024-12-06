@@ -11,8 +11,8 @@ def get_feynman_dataset(name):
     expr = None
 
     if name == 'arm' or name == -1:
-        a1 = 1
-        a2 = 1
+        a1 = 0.115
+        a2 = 0.067
         f = lambda x: torch.stack((a1 * torch.cos(x[:, 0]) + a2 * torch.cos(x[:, 0] + x[:, 1]),
                                    a1 * torch.sin(x[:, 0]) + a2 * torch.sin(x[:, 0] + x[:, 1])))
         ranges = [[0,1.4], [0,1.4]]

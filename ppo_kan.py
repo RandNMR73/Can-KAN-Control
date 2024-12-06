@@ -11,6 +11,7 @@ from gym_cartlataccel.env import BatchedCartLatAccelEnv as CartLatAccelEnv
 from torchrl.data import ReplayBuffer, LazyTensorStorage
 from tensordict import TensorDict
 from model import ActorCritic, KANActorCritic
+import matplotlib.pyplot as plt
 
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -166,6 +167,30 @@ class PPO:
 
     return self.model.actor, self.hist
 
+def plot_losses(hist, save_path=None, title=None):
+    plt.figure(figsize=(10, 6))
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
+
+    ax1.plot(hist['iter'], hist['total_loss'], label='Total Loss')
+    ax1.plot(hist['iter'], hist['value_loss'], label='Value Loss')
+    ax1.plot(hist['iter'], hist['policy_loss'], label='Policy Loss')
+    ax1.set_xlabel('n_iters')
+    ax1.set_ylabel('loss')
+    ax1.legend()
+
+    ax2.plot(hist['iter'], hist['reward'], label='Average Reward', color='green')
+    ax2.set_xlabel('n_iters')
+    ax2.set_ylabel('reward')
+    ax2.legend()
+    
+    if title:
+        plt.suptitle(title)
+    plt.tight_layout()
+    if save_path:
+        plt.savefig(save_path)
+    # plt.show()
+    # plt.close(fig)
+
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
   parser.add_argument("--max_evals", type=int, default=50000)
@@ -187,7 +212,7 @@ if __name__ == "__main__":
   else:
     model = ActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))
   device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-  ppo = PPO(env, model, env_bs=args.env_bs, device=device, seed=args.seed)
+  ppo = PPO(env, model, env_bs=args.env_bs, device=device, seed=args.seed, debug=True)
   best_model, hist = ppo.train(args.max_evals)
 
   print(f"rolling out best model") 
@@ -196,6 +221,8 @@ if __name__ == "__main__":
   env.reset(seed=args.seed)
   states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=200, device=device, deterministic=True)
   print(f"reward {sum(rewards)[0]}")
+
+  plot_losses(hist, save_path="results/2d_test.png")
 
   if args.save_model:
     os.makedirs('out', exist_ok=True)

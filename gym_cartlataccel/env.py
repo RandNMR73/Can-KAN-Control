@@ -24,10 +24,12 @@ class BatchedCartLatAccelEnv(gym.Env):
     "render_fps": 50,
   }
 
-  def __init__(self, render_mode: str = None, noise_mode: str = None, moving_target: bool = True, env_bs: int = 1, eq = 12):
+  def __init__(self, render_mode: str = None, noise_mode: str = None, moving_target: bool = True, env_bs: int = 1, eq = 12, scale = 10):
     print("eq", eq)
+    self.scale = scale
     self.tau = 0.02  # Time step
-    self.max_x_frame = 2.2 # size of render frame
+    self.max_x_frame = 0.25 # size of render frame
+    self.max_y_frame = 0.25
 
     _, _, self.f, self.ranges = get_feynman_dataset(eq)
     self.action_dim = len(self.ranges)
@@ -145,23 +147,15 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.state = np.stack(np.concatenate((theta, np.transpose(new_target)), axis=0), axis=1)
     self.obs = np.stack(np.concatenate((theta, np.transpose(noisy_target)), axis=0), axis=1)
 
-    alpha = 0.1
+    alpha = 0.0
 
     step_weight = 1 - (self.curr_step / self.max_episode_steps)
-    dist = np.sum(abs(x - target), axis=1)
-    jerk = np.sum(abs(theta - theta_prev), axis=0)
-    # jerk = np.clip(jerk - 0.05, 0, None)
-    # print(dist.shape)
-    # print(jerk.shape)
 
-    # print(x[:5, :])
-    # print(target[:5, :])
-    # print(dist[:5, :])
-    # print()
+    dist = np.sqrt(np.sum(np.square(abs(x - target)), axis=1))
+    jerk = np.sqrt(np.sum(np.square(abs(theta - theta_prev)), axis=0))
 
-    # print(np.transpose(jerk)[:10, :])
     error = dist + alpha * jerk
-    reward = -error * step_weight / np.sum(self.max_x - self.min_x)
+    reward = -error * step_weight / np.sum(self.max_x - self.min_x) * self.scale
 
     if self.render_mode == "human":
       self.render()
@@ -173,49 +167,64 @@ class BatchedCartLatAccelEnv(gym.Env):
 
   def render(self):
     if self.screen is None:
-      pygame.init()
-      if self.render_mode == "human":
-        pygame.display.init()
-        self.screen = pygame.display.set_mode((600, 400))
-      else:  # rgb_array
-        self.screen = pygame.Surface((600, 400))
+        pygame.init()
+        if self.render_mode == "human":
+            pygame.display.init()
+            self.screen = pygame.display.set_mode((600, 400))
+        else:  # rgb_array
+            self.screen = pygame.Surface((600, 400))
     if self.clock is None:
-      self.clock = pygame.time.Clock()
+        self.clock = pygame.time.Clock()
 
     self.surf = pygame.Surface((600, 400))
     self.surf.fill((255, 255, 255))
 
-    # Only render the first episode in the batch
-    coord = 0
-
+    # Extract coordinates for 2D visualization
     theta = self.state[0, :-2].reshape(1, -1)
-    print(theta)
-    print(theta.shape)
-    cart_x = self.f(torch.tensor(theta)).detach().cpu().numpy()[coord][0]
-    print(cart_x)
 
-    first_cart_x = int((cart_x / self.max_x_frame) * 300 + 300)  # center is 300
-    first_target_x = int((self.x_targets[0, self.curr_step, coord] / self.max_x_frame) * 300 + 300)
+    # Get x and y positions for the cart
+    cart_x = self.f(torch.tensor(theta)).detach().cpu().numpy()[0][0]  # coord=0
+    cart_y = self.f(torch.tensor(theta)).detach().cpu().numpy()[1][0]  # coord=1
 
-    pygame.draw.rect(self.surf, (0, 0, 0), pygame.Rect(first_cart_x - 10, 180, 20, 40))  # cart
-    pygame.draw.circle(self.surf, (255, 0, 0), (first_target_x, 200), 5)  # target
-    pygame.draw.line(self.surf, (0, 0, 0), (0, 220), (600, 220))  # line
+    # Get x and y positions for the target
+    target_x = self.x_targets[0, self.curr_step, 0]  # coord=0
+    target_y = self.x_targets[0, self.curr_step, 1]  # coord=1
 
+    # Scale positions to fit within the display
+    first_cart_x = int((cart_x / self.max_x_frame) * 300 + 300)  # Center is 300
+    first_cart_y = int((cart_y / self.max_y_frame) * 200 + 200)  # Center is 200
+    first_target_x = int((target_x / self.max_x_frame) * 300 + 300)
+    first_target_y = int((target_y / self.max_y_frame) * 200 + 200)
+
+    # Draw the cart as a rectangle and the target as a circle
+    pygame.draw.rect(
+        self.surf,
+        (0, 0, 0),
+        pygame.Rect(first_cart_x - 10, first_cart_y - 20, 20, 40)  # Cart dimensions
+    )
+    pygame.draw.circle(
+        self.surf,
+        (255, 0, 0),
+        (first_target_x, first_target_y),
+        5  # Target radius
+    )
+
+    # Display the surface
     self.screen.blit(self.surf, (0, 0))
     if self.render_mode == "human":
-      pygame.event.pump()
-      self.clock.tick(self.metadata["render_fps"])
-      pygame.display.flip()
+        pygame.event.pump()
+        self.clock.tick(self.metadata["render_fps"])
+        pygame.display.flip()
     elif self.render_mode == "rgb_array":
-      return np.transpose(
-        np.array(pygame.surfarray.pixels3d(self.screen)), axes=(1, 0, 2)
-      )
+        return np.transpose(
+            np.array(pygame.surfarray.pixels3d(self.screen)), axes=(1, 0, 2)
+        )
 
-  def close(self):
+def close(self):
     if self.screen is not None:
-      import pygame
-      pygame.display.quit()
-      pygame.quit()
+        import pygame
+        pygame.display.quit()
+        pygame.quit()
 
 # if __name__ == "__main__":
 #   from stable_baselines3.common.env_checker import check_env
