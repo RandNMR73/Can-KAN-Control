@@ -1,9 +1,11 @@
 import pygame
 import numpy as np
+import torch
 import gymnasium as gym
 from gymnasium import spaces
 from scipy.interpolate import interp1d
 from gym_cartlataccel.noise import SimNoise
+from gym_cartlataccel.feynman import get_feynman_dataset
 
 class BatchedCartLatAccelEnv(gym.Env):
   """
@@ -22,26 +24,37 @@ class BatchedCartLatAccelEnv(gym.Env):
     "render_fps": 50,
   }
 
-  def __init__(self, render_mode: str = None, noise_mode: str = None, moving_target: bool = True, env_bs: int = 1):
-    self.force_mag = 10.0 # steer -> accel
+  def __init__(self, render_mode: str = None, noise_mode: str = None, moving_target: bool = True, env_bs: int = 1, eq = 12):
     self.tau = 0.02  # Time step
-    self.max_u = 10.0 # steer/action
-    self.max_v = 5.0 # init small v
-    self.max_x = 10.0 # max x to clip
     self.max_x_frame = 2.2 # size of render frame
 
+    _, _, self.f, self.ranges = get_feynman_dataset(eq)
+    self.action_dim = len(self.ranges)
+
     self.bs = env_bs
-    # Action space is continuous steer/accel
+
+    self.low = [x[0] for x in self.ranges]
+    self.high = [x[1] for x in self.ranges]
+
+    self.min_x, self.max_x = self.find_minmax()
+    self.min_x = max(-2, self.min_x)
+    self.max_x = min(2, self.max_x)
+
+    # Action space is theta
+    action_low = np.stack([np.array(self.low) for _ in range(self.bs)])
+    action_high = np.stack([np.array(self.high) for _ in range(self.bs)])
     self.action_space = spaces.Box(
-      low=-self.max_u, high=self.max_u, shape=(self.bs, 1), dtype=np.float32
+      low=action_low, high=action_high, shape=(self.bs, self.action_dim), dtype=np.float32
     )
 
-    # Obs space is [pos, velocity, target]
-    obs_low = np.stack([np.array([-self.max_x, -self.max_v, -self.max_x]) for _ in range(self.bs)])
+    # Obs space is [theta_prev, target]
+    self.obs_low = np.stack([np.array(self.low + [self.min_x]) for _ in range(self.bs)])
+    self.obs_high = np.stack([np.array(self.high + [self.max_x]) for _ in range(self.bs)])
+
     self.observation_space = spaces.Box(
-      low=obs_low,
-      high=-obs_low,
-      shape=(self.bs, 3),
+      low=self.obs_low,
+      high=self.obs_high,
+      shape=(self.bs, self.action_dim+1),
       dtype=np.float32
     )
 
@@ -54,22 +67,39 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.noise_mode = noise_mode
     self.moving_target = moving_target
 
+  def find_minmax(self, num_samples = 10000):
+    samples = np.zeros((num_samples, self.action_dim))
+    for i in range(self.action_dim):
+      samples[:, i] = np.random.uniform(low=self.low[i], high=self.high[i], size=num_samples)
+    
+    out = self.f(torch.tensor(samples))
+    return min(out).item(), max(out).item()
+
   def generate_traj(self, n_traj=1, n_points=10):
     # generates smooth curve using cubic interpolation
     t_control = np.linspace(0, self.max_episode_steps - 1, n_points)
     control_points = self.np_random.uniform(-2, 2, (n_traj, n_points)) # slightly less than max x
     f = interp1d(t_control, control_points, kind='cubic')
     t = np.arange(self.max_episode_steps)
-    return f(t)
+
+    traj = f(t)
+
+    row_min = traj.min(axis=1, keepdims=True)
+    row_max = traj.max(axis=1, keepdims=True)
+
+    scaled_traj = self.min_x + (traj - row_min) * (self.max_x - self.min_x) / (row_max - row_min)
+
+    return scaled_traj
 
   def reset(self, seed=None, options=None):
     super().reset(seed=seed)
 
     self.state = self.np_random.uniform(
-      low=[-self.max_x_frame, -self.max_v, -self.max_x_frame],
-      high=[self.max_x_frame, self.max_v, self.max_x_frame],
-      size=(self.bs, 3)
+      low=self.obs_low,
+      high=self.obs_high,
+      size=(self.bs, self.action_dim+1)
     )
+    self.obs = self.state
 
     if self.moving_target:
       self.x_targets = self.generate_traj(self.bs)
@@ -83,49 +113,40 @@ class BatchedCartLatAccelEnv(gym.Env):
     return np.array(self.state, dtype=np.float32), {}
 
   def step(self, action):
-    x = self.state[:,0]
-    v = self.state[:,1]
-    action = action.squeeze()
-    noisy_action = self.noise_model.add_lat_noise(self.curr_step, action)
+    theta_prev = np.transpose(self.state[:,:-1])
+    target = self.state[:,-1]
 
-    # CHANGE HERE
-    new_a = noisy_action * self.force_mag # steer * force
-    friction_term = 0.1 * np.sign(v) * v**2  # Quadratic drag
-    nonlinear_coupling = 0.05 * np.sin(2 * x) * v  # Position-velocity coupling
-    stiffness_term = 0.15 * np.sin(3 * x)  # Nonlinear position dependent force
-    
-    # Updated dynamics with nonlinear terms
-    # new_x = (0.5 * new_a * self.tau**2 + 
-    #          v * self.tau + 
-    #          x - 
-    #          friction_term * self.tau - 
-    #          nonlinear_coupling * self.tau -
-    #          stiffness_term * self.tau)
-    
-    # new_x = np.clip(new_x, -self.max_x, self.max_x)
-    # new_v = ((new_a - friction_term - nonlinear_coupling - stiffness_term) * 
-    #          self.tau + v)
-    # new_x_target = self.x_targets[:, self.curr_step]
+    scaled_action = action * (np.array(self.high) - np.array(self.low)) + np.array(self.low)
 
-    # self.state = np.stack([new_x, new_v, new_x_target], axis=1)
+    theta = scaled_action
+    # noisy_theta = self.noise_model.add_lat_noise(self.curr_step, scaled_action)
 
-    new_x = 0.5 * new_a * self.tau**2 + v * self.tau + x
-    new_x = np.clip(new_x, -self.max_x, self.max_x)
-    new_v = new_a * self.tau + v
-    new_x_target = self.x_targets[:, self.curr_step]
+    x = self.f(torch.tensor(theta)).detach().cpu().numpy()
+    x, theta = np.transpose(x), np.transpose(theta)
 
-    self.state = np.stack([new_x, new_v, new_x_target], axis=1)
+    new_target = self.x_targets[:, self.curr_step]
+    noisy_target = self.noise_model.add_lat_noise(self.curr_step, new_target)
 
-    error = abs(new_x - new_x_target)
-    reward = -error/self.max_episode_steps # scale reward
+    self.state = np.stack(np.concatenate((theta, new_target.reshape(1, -1)), axis=0), axis=1)
+    self.obs = np.stack(np.concatenate((theta, noisy_target.reshape(1, -1)), axis=0), axis=1)
+
+    alpha = 0.1
+
+    step_weight = 1 - (self.curr_step / self.max_episode_steps)
+    dist = abs(x - target)
+    jerk = abs(theta - theta_prev)
+    # jerk = np.clip(jerk - 0.05, 0, None)
+
+    error = np.sum(dist + alpha * jerk, axis=0)
+    reward = -error * step_weight / (self.max_x - self.min_x)
 
     if self.render_mode == "human":
       self.render()
 
     self.curr_step += 1
     truncated = self.curr_step >= self.max_episode_steps
-    info = {"action": action, "noisy_action": noisy_action, "x": new_x, "x_target": new_x_target}
-    return np.array(self.state, dtype=np.float32), reward, False, truncated, info
+    info = {"action": action, "noisy_action": theta, "x": x, "x_target": new_target}
+    return np.array(self.obs, dtype=np.float32), reward, False, truncated, info
 
   def render(self):
     if self.screen is None:
@@ -142,7 +163,13 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.surf.fill((255, 255, 255))
 
     # Only render the first episode in the batch
-    first_cart_x = int((self.state[0, 0] / self.max_x_frame) * 300 + 300)  # center is 300
+    theta = self.state[0, :-1].reshape(1, -1)
+    print(theta)
+    print(theta.shape)
+    cart_x = self.f(torch.tensor(theta)).detach().cpu().numpy()[0][0]
+    print(cart_x)
+
+    first_cart_x = int((cart_x / self.max_x_frame) * 300 + 300)  # center is 300
     first_target_x = int((self.x_targets[0, self.curr_step] / self.max_x_frame) * 300 + 300)
 
     pygame.draw.rect(self.surf, (0, 0, 0), pygame.Rect(first_cart_x - 10, 180, 20, 40))  # cart

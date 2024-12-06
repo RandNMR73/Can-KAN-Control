@@ -29,13 +29,13 @@ class PPO:
     self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
     self.replay_buffer = ReplayBuffer(storage=LazyTensorStorage(max_size=10000, device=device), batch_size=bs)
     self.bs = bs
-    self.hist = []
     self.start = time.time()
     self.device = device
     self.debug = debug
     self.seed = seed
     self.seed_env()
     self.is_mlp = isinstance(self.model, ActorCritic)
+    self.hist = {'iter': [], 'reward': [], 'value_loss': [], 'policy_loss': [], 'total_loss': []}
 
   def seed_env(self):
     np.random.seed(self.seed)
@@ -56,11 +56,11 @@ class PPO:
     return returns, advantages
 
   def evaluate_cost(self, states, actions, returns, advantages, logprob):
-    kan_reg_loss = 0
-    # kan_reg_loss = 0.01 * (self.model.actor.kan.regularization_loss()) if not self.is_mlp else 0
-    new_logprob = self.model.actor.get_logprob(states, actions)
-    entropy = (torch.log(self.model.actor.std) + 0.5 * (1 + torch.log(torch.tensor(2 * torch.pi)))).sum(dim=-1)
+    kan_reg_loss = 0.01 * (self.model.actor.kan.regularization_loss()) if not self.is_mlp else 0
+    new_logprob, entropy = self.model.actor.get_logprob(states, actions)
+    # entropy = (torch.log(self.model.actor.std) + 0.5 * (1 + torch.log(torch.tensor(2 * torch.pi)))).sum(dim=-1)
     ratio = torch.exp(new_logprob-logprob).squeeze()
+    # print(ratio.shape, advantages.shape, logprob.shape)
     surr1 = ratio * advantages
     surr2 = torch.clamp(ratio, 1-self.clip_range, 1+self.clip_range) * advantages
     actor_loss = -torch.min(surr1, surr2).mean()
@@ -105,8 +105,9 @@ class PPO:
         values = self.model.critic(state_tensor).cpu().numpy().squeeze()
         next_values = self.model.critic(next_state_tensor).cpu().numpy().squeeze()
 
-        self.model.actor.std = self.model.actor.log_std.exp().to(self.device) # update std
-        logprobs_tensor = self.model.actor.get_logprob(state_tensor, action_tensor).cpu().numpy().squeeze()
+        # self.model.actor.std = self.model.actor.log_std.exp().to(self.device) # update std
+        logprobs_tensor, _ = self.model.actor.get_logprob(state_tensor, action_tensor)
+        logprobs_tensor = logprobs_tensor.cpu().numpy()
 
       returns, advantages = self.compute_gae(np.array(rewards), values, np.array(dones), next_values)
       gae_time = time.perf_counter()-start
@@ -140,23 +141,28 @@ class PPO:
       self.replay_buffer.empty() # clear buffer
       update_time = time.perf_counter() - start
 
-      # debug info
-      if self.debug:
-        print(f"critic loss {costs['critic'].item():.3f} entropy {costs['entropy'].item():.3f} mean action {np.mean(abs(np.array(actions)))}")
-        print(f"Runtimes: rollout {rollout_time:.3f}, gae {gae_time:.3f}, buffer {buffer_time:.3f}, update {update_time:.3f}")
-
       eps += self.env_bs
       avg_reward = np.sum(rewards)/self.env_bs
 
       if eps > max_evals:
         print(f"Total time: {time.time() - self.start}")
         break
-      else:
-        # print(f'actor KAN weights {self.model.actor.kan.layers[0].scaled_spline_weight.mean():3f}')
-        print(f"mean action {np.mean(abs(np.array(actions)))} std {self.model.actor.std.mean().item()}")
+      # debug info
+      if self.debug:
+        print(f"critic loss {costs['critic'].item():.3f} entropy {costs['entropy'].item():.3f} mean action {np.mean(abs(np.array(actions)))}")
+        print(f"Runtimes: rollout {rollout_time:.3f}, gae {gae_time:.3f}, buffer {buffer_time:.3f}, update {update_time:.3f}")
         print(f"eps {eps:.2f}, reward {avg_reward:.3f}, t {time.time()-self.start:.2f}")
         print(f"Runtimes: rollout {rollout_time:.3f}, gae {gae_time:.3f}, buffer {buffer_time:.3f}, update {update_time:.3f}")
-        self.hist.append((eps, avg_reward))
+        # print(f'actor KAN weights {self.model.actor.kan.layers[0].scaled_spline_weight.mean():3f}')
+        # print(f"mean action {np.mean(abs(np.array(actions)))} std {self.model.actor.std.mean().item()}")
+      self.hist['iter'].append(eps)
+      self.hist['reward'].append(avg_reward)
+      self.hist['value_loss'].append(costs['critic'].item())
+      self.hist['policy_loss'].append(costs['actor'].item())
+      self.hist['total_loss'].append(loss.item())
+
+      if eps % 10000 == 0:
+        print(eps)
 
     return self.model.actor, self.hist
 
@@ -170,22 +176,23 @@ if __name__ == "__main__":
   parser.add_argument("--seed", type=int, default=42)
   parser.add_argument("--render", default="human")
   parser.add_argument("--hidden_sizes", type=int, default=32)
+  parser.add_argument("--eq", type=int, default=-1)
   args = parser.parse_args()
 
   print(f"training ppo with max_evals {args.max_evals}") 
   # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=args.env_bs)
-  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=args.env_bs)
+  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=args.env_bs, eq=args.eq)
   if args.model == "kan":
-    model = KANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1])
+    model = KANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))
   else:
-    model = ActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1])
+    model = ActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))
   device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
   ppo = PPO(env, model, env_bs=args.env_bs, device=device, seed=args.seed)
   best_model, hist = ppo.train(args.max_evals)
 
   print(f"rolling out best model") 
   # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
-  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
+  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=1, render_mode=args.render, eq=args.eq)
   env.reset(seed=args.seed)
   states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=200, device=device, deterministic=True)
   print(f"reward {sum(rewards)[0]}")
@@ -193,3 +200,4 @@ if __name__ == "__main__":
   if args.save_model:
     os.makedirs('out', exist_ok=True)
     torch.save(best_model, 'out/best.pt')
+    

@@ -93,9 +93,7 @@ def main():
     
     all_results = {'kan': [], 'mlp': []}
     
-    for eq_num in range(32, 121):
-        if torch.cuda.is_available(): # prevent out of memory
-            torch.cuda.empty_cache()
+    for eq_num in range(1, 121):
         logging.info(f"equation {eq_num}")
         
         kan_model, kan_hist = train_model(eq_num, 'kan', hidden_size, max_evals, env_bs, train_seed)

@@ -3508,3 +3508,29 @@ Std: 143.290
 MLP:
 Mean: -78.067
 Std: 149.449
+
+equation 1
+kan
+0 reward: -1.386
+1 reward: -1.190
+2 reward: -1.019
+3 reward: -1.156
+4 reward: -1.322
+5 reward: -1.179
+6 reward: -1.524
+7 reward: -1.089
+8 reward: -1.053
+9 reward: -1.341
+mlp
+0 reward: -34.726
+1 reward: -16.000
+2 reward: -40.118
+3 reward: -40.056
+4 reward: -37.028
+5 reward: -40.261
+6 reward: -30.989
+7 reward: -42.574
+8 reward: -28.090
+9 reward: -31.199
+equation 2
+equation 1
