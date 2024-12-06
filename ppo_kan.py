@@ -203,14 +203,6 @@ if __name__ == "__main__":
   parser.add_argument("--hidden_sizes", type=int, default=32)
   parser.add_argument("--eq", type=int, default=-1)
   args = parser.parse_args()
-  
-  # best_seed = 0
-  # best_val = -1000
-  # for seed in range(50):
-  #   args.seed = seed
-  #   print("=== SEED ===")
-  #   print(seed)
-  #   print()
 
   print(f"training ppo with max_evals {args.max_evals}") 
   # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=args.env_bs)
@@ -223,23 +215,14 @@ if __name__ == "__main__":
   ppo = PPO(env, model, env_bs=args.env_bs, device=device, seed=args.seed, debug=True)
   best_model, hist = ppo.train(args.max_evals)
 
+  input()
+
   print(f"rolling out best model") 
   # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
   env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=1, render_mode=args.render, eq=args.eq)
   env.reset(seed=args.seed)
   states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=400, device=device, deterministic=True)
   print(sum(rewards)[0])
-  # print(rewards[:10])
-  # print(f"reward {sum(rewards)[0]}")
-  
-  # if sum(rewards)[0] > best_val:
-  #   best_seed = seed
-  #   best_val = sum(rewards)[0]
-  # print("== REPORT ==")
-  # print(best_seed)
-  # print(best_val)
-  # print()
-  
 
   plot_losses(hist, save_path="results/2d_test.png")
 
