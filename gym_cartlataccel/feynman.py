@@ -631,7 +631,7 @@ def get_feynman_dataset(name):
     if name == 'Friedman equation' or name == 102:
         symbol = G, rho, kf, c, af = symbols('G rho k_f c a_f')
         expr = sqrt(8*pi*G/3*rho-kf*c**2/af**2)
-        f = lambda x: torch.sqrt(8*tpi*x[:,[0]]/3*x[:,[1]] - x[:,[2]]*x[:,[3]]**2/x[:,[4]]**2)
+        f = lambda x: torch.sqrt(8*tpi*x[:,[0]]/3*x[:,[1]] - x[:,[2]]*x[:,[3]]**2/x[:,[4]]**2) - 4
         ranges = [[1,2],[1,2],[0,1],[0,1],[1,2]]
         
     if name == 'Compton scattering' or name == 103:
@@ -703,7 +703,7 @@ def get_feynman_dataset(name):
     if name == 'Jackson 2.11' or name == 114:
         symbol = q, eps, y, Ve, d = symbols('q epsilon y V_e d')
         expr = q/(4*pi*eps*y**2)*(4*pi*eps*Ve*d-q*d*y**3/(y**2-d**2)**2)
-        f = lambda x: x[:,[0]]/(4*tpi*x[:,[1]]*x[:,x[:,[2]]]**2)*(4*tpi*x[:,[1]]*x[:,[3]]*x[:,[4]]-x[:,[0]]*x[:,[4]]*x[:,[2]]**3/(x[:,[2]]**2-x[:,[4]]**2)**2)
+        f = lambda x: x[:,[0]]/(4*tpi*x[:,[1]]*x[:,[2]]**2)*(4*tpi*x[:,[1]]*x[:,[3]]*x[:,[4]]-x[:,[0]]*x[:,[4]]*x[:,[2]]**3/(x[:,[2]]**2-x[:,[4]]**2)**2)
         ranges = [[0,1],[0.5,2],[1,2],[0,1],[0,1]]
         
     if name == 'Jackson 3.45' or name == 115:
