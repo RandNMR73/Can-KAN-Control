@@ -76,8 +76,14 @@ class ChebyKAN(torch.nn.Module):
             )
 
     def forward(self, x: torch.Tensor):
+        orig_shape = x.shape[:-1]
+        x = x.view(-1, x.shape[-1])
+
         for layer in self.layers:
             x = layer(x)
+
+        x = x.view(*orig_shape, -1)
+        
         return x
 
     def regularization_loss(self, regularize_activation=1.0, regularize_entropy=1.0):
