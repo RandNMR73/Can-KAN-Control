@@ -2,7 +2,7 @@ import os
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-from ppo_kan import PPO, CartLatAccelEnv, KANActorCritic, FourierKANActorCritic, WaveletKANActorCritic, ActorCritic
+from ppo_kan import PPO, CartLatAccelEnv, KANActorCritic, FourierKANActorCritic, WaveletKANActorCritic, LegendreKANActorCritic, LaplaceKANActorCritic, MixedKANActorCritic, ActorCritic, ChebyKANActorCritic
 
 def plot_losses(hist, save_path=None, title=None):
     plt.figure(figsize=(10, 6))
@@ -54,6 +54,34 @@ def train_model(eq_num, model_type='kan', hidden_size=32, max_evals=1000, env_bs
             env.action_space.shape[-1], 
             act_bound=(-1,1)
         )
+    elif model_type == 'Lkan':
+        model = LaplaceKANActorCritic(
+            env.observation_space.shape[-1], 
+            {"pi": [hidden_size], "vf": [32]}, 
+            env.action_space.shape[-1], 
+            act_bound=(-1,1)
+        )
+    elif model_type == 'Ckan':
+        model = LaplaceKANActorCritic(
+            env.observation_space.shape[-1], 
+            {"pi": [hidden_size], "vf": [32]}, 
+            env.action_space.shape[-1], 
+            act_bound=(-1,1)
+        )
+    # elif model_type == 'Lekan':
+    #     model = LegendreKANActorCritic(
+    #         env.observation_space.shape[-1], 
+    #         {"pi": [hidden_size], "vf": [32]}, 
+    #         env.action_space.shape[-1], 
+    #         act_bound=(-1,1)
+    #     )
+    elif model_type == 'Mkan':
+        model = MixedKANActorCritic(
+            env.observation_space.shape[-1], 
+            {"pi": [hidden_size], "vf": [32]}, 
+            env.action_space.shape[-1], 
+            act_bound=(-1,1)
+        )
     else:
         model = ActorCritic(
             env.observation_space.shape[-1], 
@@ -95,22 +123,34 @@ def main():
     
     os.makedirs('results', exist_ok=True)
     
-    all_results = {'kan': [], 'Fkan':[], 'Wkan':[], 'mlp': []}
+    all_results = {'kan': [], 'Fkan':[], 'Wkan':[], 'Lkan':[], 'Mkan':[], 'Ckan':[],'mlp': []}
     
-    for eq_num in range(1, 10): #121):
+    for eq_num in range(1): #121):
         print(f"equation {eq_num}")
         
         kan_model, kan_hist = train_model(eq_num, 'kan', hidden_size, max_evals, env_bs, train_seed)
         Fkan_model, Fkan_hist = train_model(eq_num, 'Fkan', hidden_size, max_evals, env_bs, train_seed)
         Wkan_model, Wkan_hist = train_model(eq_num, 'Wkan', hidden_size, max_evals, env_bs, train_seed)
+        Lkan_model, Lkan_hist = train_model(eq_num, 'Lkan', hidden_size, max_evals, env_bs, train_seed)
+        # Lekan_model, Lekan_hist = train_model(eq_num, 'Lekan', hidden_size, max_evals, env_bs, train_seed)
+        Mkan_model, Mkan_hist = train_model(eq_num, 'Mkan', hidden_size, max_evals, env_bs, train_seed)
+        Ckan_model, Ckan_hist = train_model(eq_num, 'Ckan', hidden_size, max_evals, env_bs, train_seed)
         mlp_model, mlp_hist = train_model(eq_num, 'mlp', hidden_size, max_evals, env_bs, train_seed)
         kan_results = evaluate_model(kan_model, eq_num, eval_seeds, device)
         Fkan_results = evaluate_model(Fkan_model, eq_num, eval_seeds, device)
         Wkan_results = evaluate_model(Wkan_model, eq_num, eval_seeds, device)
+        Lkan_results = evaluate_model(Lkan_model, eq_num, eval_seeds, device)
+        Ckan_results = evaluate_model(Ckan_model, eq_num, eval_seeds, device)
+        # Lekan_results = evaluate_model(Lekan_model, eq_num, eval_seeds, device)
+        Mkan_results = evaluate_model(Mkan_model, eq_num, eval_seeds, device)
         mlp_results = evaluate_model(mlp_model, eq_num, eval_seeds, device)
         kan_rewards = [r['reward'] for r in kan_results]
         Fkan_rewards = [r['reward'] for r in Fkan_results]
         Wkan_rewards = [r['reward'] for r in Wkan_results]
+        Lkan_rewards = [r['reward'] for r in Lkan_results]
+        Ckan_rewards = [r['reward'] for r in Ckan_results]
+        # Lekan_rewards = [r['reward'] for r in Lekan_results]
+        Mkan_rewards = [r['reward'] for r in Mkan_results]
         mlp_rewards = [r['reward'] for r in mlp_results]
         
         all_results['kan'].append({
@@ -128,13 +168,33 @@ def main():
             'mean': np.mean(Wkan_rewards),
             'std': np.std(Wkan_rewards)
         })
+        all_results['Lkan'].append({
+            'eq': eq_num,
+            'mean': np.mean(Lkan_rewards),
+            'std': np.std(Lkan_rewards)
+        })
+        all_results['Ckan'].append({
+            'eq': eq_num,
+            'mean': np.mean(Ckan_rewards),
+            'std': np.std(Ckan_rewards)
+        })
+        # all_results['Lekan'].append({
+        #     'eq': eq_num,
+        #     'mean': np.mean(Lekan_rewards),
+        #     'std': np.std(Lekan_rewards)
+        # })
+        all_results['Mkan'].append({
+            'eq': eq_num,
+            'mean': np.mean(Mkan_rewards),
+            'std': np.std(Mkan_rewards)
+        })
         all_results['mlp'].append({
             'eq': eq_num,
             'mean': np.mean(mlp_rewards),
             'std': np.std(mlp_rewards)
         })
         
-        for model_type, hist in [('KAN', kan_hist), ('FKAN', Fkan_hist), ('WKAN', Wkan_hist), ('MLP', mlp_hist)]:
+        for model_type, hist in [('KAN', kan_hist), ('FKAN', Fkan_hist), ('WKAN', Wkan_hist), ('LKAN', Lkan_hist), ('MKAN', Mkan_hist), ('CKAN', Ckan_hist),('MLP', mlp_hist)]:
             plot_losses(hist, 
                        save_path=f'results/eq{eq_num}_{model_type.lower()}_learning_curve.png',
                        title=f'{model_type} Learning Curve - Equation {eq_num}')

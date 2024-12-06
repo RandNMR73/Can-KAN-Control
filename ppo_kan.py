@@ -10,7 +10,7 @@ import gymnasium as gym
 from gym_cartlataccel.env import BatchedCartLatAccelEnv as CartLatAccelEnv
 from torchrl.data import ReplayBuffer, LazyTensorStorage
 from tensordict import TensorDict
-from model import ActorCritic, KANActorCritic, FourierKANActorCritic, WaveletKANActorCritic
+from model import ActorCritic, KANActorCritic, FourierKANActorCritic, WaveletKANActorCritic, LegendreKANActorCritic, LaplaceKANActorCritic, MixedKANActorCritic, ChebyKANActorCritic
 
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -107,6 +107,7 @@ class PPO:
 
         # self.model.actor.std = self.model.actor.log_std.exp().to(self.device) # update std
         logprobs_tensor, _ = self.model.actor.get_logprob(state_tensor, action_tensor)
+        print('logprobs_tensor shape: ', logprobs_tensor.shape)
         logprobs_tensor = logprobs_tensor.cpu().numpy()
 
       returns, advantages = self.compute_gae(np.array(rewards), values, np.array(dones), next_values)
@@ -163,7 +164,7 @@ class PPO:
 
       if eps % 1000 == 0:
         print(eps)
-        
+
     return self.model.actor, self.hist
 
 if __name__ == "__main__":
@@ -187,7 +188,17 @@ if __name__ == "__main__":
   elif args.model == "Fkan":
     model = FourierKANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1)) 
   elif args.model == "Wkan":
-    model = WaveletKANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))    
+    model = WaveletKANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))     
+  elif args.model == "Lkan":
+    model = LaplaceKANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))     
+  elif args.model == "Mkan":
+    model = MixedKANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))      
+  elif args.model == "Ckan":
+    model = ChebyKANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))      
+  elif args.model == "Bkan":
+    model = ChebyKANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))     
+  # elif args.model == "Lekan":
+  #   model = LegendreKANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))    
   else:
     model = ActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))
   device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

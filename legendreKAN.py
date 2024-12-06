@@ -26,6 +26,7 @@ class RecurrentLegendreLayer(nn.Module):
 
         # Initialize P0 and P1 for the recurrence relation
         P_n_minus_2 = torch.ones((batch_size, self.input_dim), device=x.device)
+        print('initial x shape (should be same as P_n_minus_1.shape): ', x.shape)
         P_n_minus_1 = x.clone()
 
         # Store all polynomial values
@@ -33,6 +34,8 @@ class RecurrentLegendreLayer(nn.Module):
 
         # Compute higher order polynomials up to max_degree
         for n in range(2, self.max_degree + 1):
+            print('P_n_minus_1.shape: ', P_n_minus_1.shape)
+            print('P_n_minus_2.shape: ', P_n_minus_2.shape)
             P_n = ((2 * n - 1) * x * P_n_minus_1 - (n - 1) * P_n_minus_2) / n
             polys.append(P_n.unsqueeze(-1))
             P_n_minus_2, P_n_minus_1 = P_n_minus_1, P_n
@@ -72,8 +75,8 @@ class LegendreKAN(torch.nn.Module):
         self,
         layers_hidden,
         max_degree, 
-        input_dim, 
-        output_dim 
+        # input_dim, 
+        # output_dim 
     ):
         super(LegendreKAN, self).__init__()
 

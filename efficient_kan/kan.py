@@ -1,5 +1,6 @@
 import torch
 import torch.nn.functional as F
+import torch.nn as nn
 import math
 
 
@@ -24,6 +25,7 @@ class KANLinear(torch.nn.Module):
         self.grid_size = grid_size
         self.spline_order = spline_order
 
+        print('grid_range: ', grid_range)
         h = (grid_range[1] - grid_range[0]) / grid_size
         grid = (
             (
@@ -153,16 +155,20 @@ class KANLinear(torch.nn.Module):
     def forward(self, x: torch.Tensor):
         assert x.size(-1) == self.in_features
         original_shape = x.shape
+        # print('x shape before reshape: ', x.shape)
         x = x.reshape(-1, self.in_features)
-
+        # print('x shape after reshape: ', x.shape)
+        
         base_output = F.linear(self.base_activation(x), self.base_weight) # w * base(x)
         spline_output = F.linear(
             self.b_splines(x).view(x.size(0), -1),
             self.scaled_spline_weight.view(self.out_features, -1),
         ) # w * spline(x)
-        output = base_output + spline_output # phi(x) = w * (base(x) + spline(x))
         
+        output = base_output + spline_output # phi(x) = w * (base(x) + spline(x))
+        # print('output shape before reshape: ', output.shape)
         output = output.reshape(*original_shape[:-1], self.out_features)
+        # print('output shape after reshape: ', output.shape)
         return output
 
     @torch.no_grad()
@@ -283,3 +289,4 @@ class KAN(torch.nn.Module):
             layer.regularization_loss(regularize_activation, regularize_entropy)
             for layer in self.layers
         )
+    
