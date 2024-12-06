@@ -24,7 +24,7 @@ class BatchedCartLatAccelEnv(gym.Env):
     "render_fps": 50,
   }
 
-  def __init__(self, render_mode: str = None, noise_mode: str = None, moving_target: bool = True, env_bs: int = 1, eq = 12, scale = 20):
+  def __init__(self, render_mode: str = None, noise_mode: str = None, moving_target: bool = True, env_bs: int = 1, eq = 12, scale = 20, test=False):
     print("eq", eq)
     self.scale = scale
     self.tau = 0.02  # Time step
@@ -71,10 +71,12 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.screen = None
     self.clock = None
 
-    self.max_episode_steps = 500
+    self.max_episode_steps = 300
     self.curr_step = 0
     self.noise_mode = noise_mode
     self.moving_target = moving_target
+
+    self.test = test
 
   def find_minmax(self, num_samples = 10000):
     # print("action dim", self.action_dim)
@@ -115,32 +117,48 @@ class BatchedCartLatAccelEnv(gym.Env):
       weights = np.linspace(0, 1, num_points).reshape(1, num_points, 1)
       interpolated_points = (1 - weights) * initial_points[:, np.newaxis, :] + weights * first_points[:, np.newaxis, :]
 
-      scaled_traj = np.concatenate((interpolated_points, scaled_traj), axis=1)
+      # scaled_traj = np.concatenate((interpolated_points, scaled_traj), axis=1)
 
     # print("==")
     # print(scaled_traj.shape)
 
     return scaled_traj
+  
+  def a_to_b(self, n_traj, n_outputs=2, starts=np.array([]), ends = np.array([])):
+    if starts.size == 0:
+      starts = np.random.uniform(low=self.min_x, high=self.max_x, size=(n_traj, n_outputs))
+
+    if ends.size == 0:
+      ends = np.random.uniform(low=self.min_x, high=self.max_x, size=(n_traj, n_outputs))
+
+    self.cutoff = self.max_episode_steps // 2
+    interpolated_sequences = np.array([
+        np.vstack((
+            np.linspace(start, end, self.cutoff),
+            np.tile(end, (self.max_episode_steps - self.cutoff, 1))
+        ))
+        for start, end in zip(starts, ends)
+    ])
+    return interpolated_sequences
 
   def reset(self, seed=None, options=None):
     super().reset(seed=seed)
-
     self.state = self.np_random.uniform(
       low=self.obs_low,
       high=self.obs_high,
       size=(self.bs, self.obs_dim)
     )
-
-    # print("**")
-    # print(self.state.shape)
-
     # cheating
     self.state[:, 2:4] = np.transpose(self.f(torch.tensor(self.state[:, :2])).detach().cpu().numpy())
-    # print(self.state[:10, 2:4])
     self.state[:, 4:6] = self.state[:, 2:4]
+    # print(self.state[:10, 2:4])
+    # self.state[:, 4:6] = self.state[:, 2:4]
 
     if self.moving_target:
-      self.x_targets = self.generate_traj(self.bs, initial_points=self.state[:, 4:])
+      if self.test:
+        self.x_targets = self.a_to_b(self.bs, starts=self.state[:, 2:4])
+      else:
+        self.x_targets = self.generate_traj(self.bs, initial_points=self.state[:, 4:], n_points=20)
     else:
       self.x_targets = np.full((self.bs, self.max_episode_steps), self.state[-1]) # fixed target
     self.noise_model = SimNoise(self.max_episode_steps, 1/self.tau, self.noise_mode, seed=seed)
@@ -172,15 +190,15 @@ class BatchedCartLatAccelEnv(gym.Env):
 
     step_weight = 1 - (self.curr_step / self.max_episode_steps)
     temp = np.power(np.abs(x[:, 0] - target[:, 0]), 2) + 2 * np.power(np.abs(x[:, 1] - target[:, 1]), 2)
+    # temp = np.abs(x[:, 0] - target[:, 0]) + np.abs(x[:, 1] - target[:, 1])
     dist = temp
-    # dist = np.power(temp, 2)
-    # dist = np.power(np.sum(np.power(abs(x - target), 3), axis=1), 2)
-    # dist = (x[:, 1] - target[:, 1]) + abs(x[:, 1] - target[:, 1])
-    # print(np.sum(dist))
     jerk = np.sqrt(np.sum(np.square(abs(theta - theta_prev)), axis=0))
 
     error = dist + alpha * jerk
-    reward = -error * 400
+    reward = -error * 200
+
+    # if self.curr_step > self.cutoff:
+    #    reward
 
     if self.render_mode == "human":
       self.render()
@@ -206,7 +224,6 @@ class BatchedCartLatAccelEnv(gym.Env):
 
     # Extract coordinates for 2D visualization
     theta = self.state[0, :-2].reshape(1, -1)
-
     # Get x and y positions for the cart
     cart_x = self.f(torch.tensor(theta)).detach().cpu().numpy()[0][0]  # coord=0
     cart_y = self.f(torch.tensor(theta)).detach().cpu().numpy()[1][0]  # coord=1

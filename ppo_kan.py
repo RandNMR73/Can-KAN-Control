@@ -17,7 +17,7 @@ import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 
 class PPO:
-  def __init__(self, env, model, lr=1e-1, gamma=0.99, lam=0.95, clip_range=0.2, epochs=1, n_steps=100, ent_coeff=0.01, bs=100, env_bs=1, device='cuda', debug=False, seed=42):
+  def __init__(self, env, model, lr=1e-1, gamma=0.99, lam=0.95, clip_range=0.2, epochs=1, n_steps=200, ent_coeff=0.01, bs=100, env_bs=1, device='cuda', debug=False, seed=42):
     self.env = env
     self.env_bs = env_bs
     self.model = model.to(device)
@@ -206,7 +206,7 @@ if __name__ == "__main__":
 
   print(f"training ppo with max_evals {args.max_evals}") 
   # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=args.env_bs)
-  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=args.env_bs, eq=args.eq)
+  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=args.env_bs, eq=args.eq, test=True)
   if args.model == "kan":
     model = KANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))
   else:
@@ -219,9 +219,9 @@ if __name__ == "__main__":
 
   print(f"rolling out best model") 
   # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
-  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=1, render_mode=args.render, eq=args.eq)
+  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=1, render_mode=args.render, eq=args.eq, test=True)
   env.reset(seed=args.seed)
-  states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=400, device=device, deterministic=True)
+  states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=300, device=device, deterministic=True)
   print(sum(rewards)[0])
 
   plot_losses(hist, save_path="results/2d_test.png")
