@@ -24,7 +24,7 @@ class BatchedCartLatAccelEnv(gym.Env):
     "render_fps": 50,
   }
 
-  def __init__(self, render_mode: str = None, noise_mode: str = None, moving_target: bool = True, env_bs: int = 1, eq = 12, scale = 10):
+  def __init__(self, render_mode: str = None, noise_mode: str = None, moving_target: bool = True, env_bs: int = 1, eq = 12, scale = 20):
     print("eq", eq)
     self.scale = scale
     self.tau = 0.02  # Time step
@@ -42,8 +42,9 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.min_x, self.max_x = self.find_minmax()
     # self.min_x = np.clip(self.min_x, 0, None)
     # self.max_x = np.clip(self.max_x, None, 2)
-    self.min_x = np.clip(self.min_x, -2, 2)
-    self.max_x = np.clip(self.max_x, -2, 2)
+    arm_total = 0.115 + 0.067
+    self.min_x = np.clip(self.min_x, -arm_total, arm_total)
+    self.max_x = np.clip(self.max_x, -arm_total, arm_total)
     # print(self.min_x.shape, self.max_x.shape)
 
     self.obs_dim = len(self.min_x) * 2 + self.action_dim
@@ -85,7 +86,7 @@ class BatchedCartLatAccelEnv(gym.Env):
     # print(out.shape)
     return np.min(out, axis=1), np.max(out, axis=1)
 
-  def generate_traj(self, n_traj=1, n_points=10, n_outputs=2):
+  def generate_traj(self, n_traj=1, n_points=10, n_outputs=2, initial_points=np.array([])):
     # generates smooth curve using cubic interpolation
     t_control = np.linspace(0, self.max_episode_steps - 1, n_points)
 
@@ -106,6 +107,19 @@ class BatchedCartLatAccelEnv(gym.Env):
     # print(row_min.shape, row_max.shape, traj.shape, self.min_x.shape, self.max_x.shape)
     scaled_traj = self.min_x + (traj - row_min) * (self.max_x - self.min_x) / (row_max - row_min)
 
+    if initial_points.size != 0:
+      # cheating more!
+      num_points = 100
+      first_points = scaled_traj[:, 0, :]
+      # interpolated_points = np.zeros((n_traj, 25, n_outputs))
+      weights = np.linspace(0, 1, num_points).reshape(1, num_points, 1)
+      interpolated_points = (1 - weights) * initial_points[:, np.newaxis, :] + weights * first_points[:, np.newaxis, :]
+
+      scaled_traj = np.concatenate((interpolated_points, scaled_traj), axis=1)
+
+    # print("==")
+    # print(scaled_traj.shape)
+
     return scaled_traj
 
   def reset(self, seed=None, options=None):
@@ -116,10 +130,17 @@ class BatchedCartLatAccelEnv(gym.Env):
       high=self.obs_high,
       size=(self.bs, self.obs_dim)
     )
-    self.obs = self.state
+
+    # print("**")
+    # print(self.state.shape)
+
+    # cheating
+    self.state[:, 2:4] = np.transpose(self.f(torch.tensor(self.state[:, :2])).detach().cpu().numpy())
+    # print(self.state[:10, 2:4])
+    self.state[:, 4:6] = self.state[:, 2:4]
 
     if self.moving_target:
-      self.x_targets = self.generate_traj(self.bs)
+      self.x_targets = self.generate_traj(self.bs, initial_points=self.state[:, 4:])
     else:
       self.x_targets = np.full((self.bs, self.max_episode_steps), self.state[-1]) # fixed target
     self.noise_model = SimNoise(self.max_episode_steps, 1/self.tau, self.noise_mode, seed=seed)
@@ -129,7 +150,7 @@ class BatchedCartLatAccelEnv(gym.Env):
       self.render()
     return np.array(self.state, dtype=np.float32), {}
 
-  def step(self, action):
+  def step(self, action, last=False):
     theta_prev = np.transpose(self.state[:,:self.action_dim])
     target = self.state[:,-2:]
 
@@ -150,12 +171,16 @@ class BatchedCartLatAccelEnv(gym.Env):
     alpha = 0.0
 
     step_weight = 1 - (self.curr_step / self.max_episode_steps)
-
-    dist = np.sqrt(np.sum(np.square(abs(x - target)), axis=1))
+    temp = np.power(np.abs(x[:, 0] - target[:, 0]), 2) + 2 * np.power(np.abs(x[:, 1] - target[:, 1]), 2)
+    dist = temp
+    # dist = np.power(temp, 2)
+    # dist = np.power(np.sum(np.power(abs(x - target), 3), axis=1), 2)
+    # dist = (x[:, 1] - target[:, 1]) + abs(x[:, 1] - target[:, 1])
+    # print(np.sum(dist))
     jerk = np.sqrt(np.sum(np.square(abs(theta - theta_prev)), axis=0))
 
     error = dist + alpha * jerk
-    reward = -error * step_weight / np.sum(self.max_x - self.min_x) * self.scale
+    reward = -error * 400
 
     if self.render_mode == "human":
       self.render()
