@@ -46,7 +46,7 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.max_x = np.clip(self.max_x, -2, 2)
     # print(self.min_x.shape, self.max_x.shape)
 
-    self.obs_dim = len(self.min_x) + self.action_dim
+    self.obs_dim = len(self.min_x) * 2 + self.action_dim
 
     # Action space is theta
     action_low = np.stack([np.array(self.low) for _ in range(self.bs)])
@@ -56,8 +56,8 @@ class BatchedCartLatAccelEnv(gym.Env):
     )
 
     # Obs space is [theta_prev, target]
-    self.obs_low = np.stack([np.array(self.low + list(self.min_x)) for _ in range(self.bs)])
-    self.obs_high = np.stack([np.array(self.high + list(self.max_x)) for _ in range(self.bs)])
+    self.obs_low = np.stack([np.array(self.low + list(self.min_x) + list(self.min_x)) for _ in range(self.bs)])
+    self.obs_high = np.stack([np.array(self.high + list(self.max_x) + list(self.max_x)) for _ in range(self.bs)])
 
     self.observation_space = spaces.Box(
       low=self.obs_low,
@@ -130,7 +130,7 @@ class BatchedCartLatAccelEnv(gym.Env):
     return np.array(self.state, dtype=np.float32), {}
 
   def step(self, action):
-    theta_prev = np.transpose(self.state[:,:-2])
+    theta_prev = np.transpose(self.state[:,:self.action_dim])
     target = self.state[:,-2:]
 
     scaled_action = action * (np.array(self.high) - np.array(self.low)) + np.array(self.low)
@@ -144,8 +144,8 @@ class BatchedCartLatAccelEnv(gym.Env):
     new_target = self.x_targets[:, self.curr_step]
     noisy_target = new_target # self.noise_model.add_lat_noise(self.curr_step, new_target)
 
-    self.state = np.stack(np.concatenate((theta, np.transpose(new_target)), axis=0), axis=1)
-    self.obs = np.stack(np.concatenate((theta, np.transpose(noisy_target)), axis=0), axis=1)
+    self.state = np.stack(np.concatenate((theta, np.transpose(x), np.transpose(new_target)), axis=0), axis=1)
+    self.obs = np.stack(np.concatenate((theta, np.transpose(x), np.transpose(noisy_target)), axis=0), axis=1)
 
     alpha = 0.0
 
