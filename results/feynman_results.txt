@@ -1,0 +1,3510 @@
+equation 1
+kan
+0 reward: -3.914
+1 reward: -2.948
+2 reward: -2.354
+3 reward: -2.251
+4 reward: -2.464
+5 reward: -2.050
+6 reward: -3.986
+7 reward: -1.975
+8 reward: -2.012
+9 reward: -3.234
+mlp
+0 reward: -88.220
+1 reward: -41.584
+2 reward: -102.757
+3 reward: -102.422
+4 reward: -95.086
+5 reward: -103.744
+6 reward: -79.320
+7 reward: -108.473
+8 reward: -71.403
+9 reward: -79.688
+equation 1
+kan
+0 reward: -5.424
+1 reward: -4.737
+2 reward: -4.440
+3 reward: -4.342
+4 reward: -4.431
+5 reward: -4.070
+6 reward: -5.310
+7 reward: -4.043
+8 reward: -4.056
+9 reward: -4.821
+mlp
+0 reward: -88.219
+1 reward: -41.587
+2 reward: -102.818
+3 reward: -102.367
+4 reward: -95.179
+5 reward: -103.777
+6 reward: -79.320
+7 reward: -108.475
+8 reward: -71.403
+9 reward: -79.689
+equation 2
+kan
+0 reward: -1.845
+1 reward: -1.389
+2 reward: -1.494
+3 reward: -1.388
+4 reward: -2.241
+5 reward: -1.592
+6 reward: -2.439
+7 reward: -1.693
+8 reward: -1.333
+9 reward: -1.845
+mlp
+0 reward: -8.063
+1 reward: -10.696
+2 reward: -9.458
+3 reward: -8.872
+4 reward: -8.227
+5 reward: -9.708
+6 reward: -11.290
+7 reward: -7.095
+8 reward: -8.887
+9 reward: -11.301
+equation 3
+kan
+0 reward: -12.260
+1 reward: -12.732
+2 reward: -15.317
+3 reward: -12.443
+4 reward: -8.122
+5 reward: -12.240
+6 reward: -11.502
+7 reward: -6.651
+8 reward: -7.147
+9 reward: -13.054
+mlp
+0 reward: -47.221
+1 reward: -41.359
+2 reward: -56.067
+3 reward: -38.859
+4 reward: -19.713
+5 reward: -35.164
+6 reward: -33.235
+7 reward: -26.765
+8 reward: -23.651
+9 reward: -37.606
+equation 4
+kan
+0 reward: -3.101
+1 reward: -4.726
+2 reward: -5.749
+3 reward: -4.727
+4 reward: -5.034
+5 reward: -4.166
+6 reward: -3.451
+7 reward: -3.878
+8 reward: -3.364
+9 reward: -6.933
+mlp
+0 reward: -8.668
+1 reward: -6.528
+2 reward: -9.202
+3 reward: -7.611
+4 reward: -8.598
+5 reward: -7.227
+6 reward: -5.149
+7 reward: -6.607
+8 reward: -3.798
+9 reward: -11.574
+equation 5
+kan
+0 reward: -17.327
+1 reward: -22.569
+2 reward: -24.559
+3 reward: -24.718
+4 reward: -26.709
+5 reward: -21.239
+6 reward: -17.337
+7 reward: -16.861
+8 reward: -21.235
+9 reward: -17.717
+mlp
+0 reward: -50.764
+1 reward: -34.434
+2 reward: -52.163
+3 reward: -107.201
+4 reward: -43.849
+5 reward: -45.919
+6 reward: -56.015
+7 reward: -70.383
+8 reward: -37.440
+9 reward: -39.262
+equation 6
+kan
+0 reward: -2.083
+1 reward: -1.714
+2 reward: -2.153
+3 reward: -2.768
+4 reward: -3.550
+5 reward: -1.807
+6 reward: -2.047
+7 reward: -3.304
+8 reward: -2.950
+9 reward: -2.487
+mlp
+0 reward: -4.588
+1 reward: -8.936
+2 reward: -5.430
+3 reward: -15.804
+4 reward: -19.345
+5 reward: -7.115
+6 reward: -12.819
+7 reward: -17.751
+8 reward: -17.917
+9 reward: -13.217
+equation 7
+kan
+0 reward: -7.889
+1 reward: -6.632
+2 reward: -7.817
+3 reward: -7.327
+4 reward: -6.949
+5 reward: -9.687
+6 reward: -10.813
+7 reward: -8.694
+8 reward: -8.575
+9 reward: -10.890
+mlp
+0 reward: -8.319
+1 reward: -7.242
+2 reward: -7.740
+3 reward: -7.375
+4 reward: -8.491
+5 reward: -9.416
+6 reward: -11.059
+7 reward: -7.359
+8 reward: -10.548
+9 reward: -8.507
+equation 8
+kan
+0 reward: -2.580
+1 reward: -3.751
+2 reward: -3.143
+3 reward: -2.098
+4 reward: -4.069
+5 reward: -2.785
+6 reward: -3.527
+7 reward: -3.222
+8 reward: -1.617
+9 reward: -2.939
+mlp
+0 reward: -3.389
+1 reward: -4.846
+2 reward: -3.796
+3 reward: -3.074
+4 reward: -3.809
+5 reward: -4.385
+6 reward: -3.860
+7 reward: -3.363
+8 reward: -2.022
+9 reward: -3.777
+equation 9
+kan
+0 reward: -14.516
+1 reward: -4.254
+2 reward: -5.908
+3 reward: -6.183
+4 reward: -8.821
+5 reward: -12.608
+6 reward: -3.354
+7 reward: -12.999
+8 reward: -5.899
+9 reward: -5.583
+mlp
+0 reward: -129.474
+1 reward: -119.670
+2 reward: -49.180
+3 reward: -94.889
+4 reward: -105.403
+5 reward: -156.788
+6 reward: -74.470
+7 reward: -163.793
+8 reward: -141.395
+9 reward: -60.735
+equation 10
+kan
+0 reward: -7.239
+1 reward: -6.682
+2 reward: -8.340
+3 reward: -5.797
+4 reward: -5.102
+5 reward: -4.505
+6 reward: -6.695
+7 reward: -4.407
+8 reward: -4.079
+9 reward: -5.199
+mlp
+0 reward: -2.131
+1 reward: -2.206
+2 reward: -1.910
+3 reward: -2.629
+4 reward: -3.459
+5 reward: -2.207
+6 reward: -2.915
+7 reward: -3.056
+8 reward: -2.364
+9 reward: -3.476
+equation 11
+kan
+0 reward: -1.674
+1 reward: -1.256
+2 reward: -1.637
+3 reward: -1.348
+4 reward: -2.114
+5 reward: -1.228
+6 reward: -2.152
+7 reward: -2.241
+8 reward: -0.994
+9 reward: -1.678
+mlp
+0 reward: -2.109
+1 reward: -1.858
+2 reward: -2.765
+3 reward: -3.344
+4 reward: -2.613
+5 reward: -2.523
+6 reward: -3.762
+7 reward: -3.813
+8 reward: -3.295
+9 reward: -3.108
+equation 12
+kan
+0 reward: -34.432
+1 reward: -12.827
+2 reward: -9.979
+3 reward: -25.914
+4 reward: -47.999
+5 reward: -40.118
+6 reward: -14.055
+7 reward: -67.118
+8 reward: -45.751
+9 reward: -12.719
+mlp
+0 reward: -30.714
+1 reward: -90.660
+2 reward: -68.995
+3 reward: -54.933
+4 reward: -50.462
+5 reward: -58.906
+6 reward: -30.811
+7 reward: -55.900
+8 reward: -63.660
+9 reward: -69.293
+equation 13
+kan
+0 reward: -5.283
+1 reward: -9.125
+2 reward: -4.935
+3 reward: -8.872
+4 reward: -5.232
+5 reward: -7.861
+6 reward: -8.460
+7 reward: -7.615
+8 reward: -10.379
+9 reward: -6.351
+mlp
+0 reward: -5.238
+1 reward: -22.960
+2 reward: -38.029
+3 reward: -30.443
+4 reward: -36.375
+5 reward: -10.484
+6 reward: -10.888
+7 reward: -6.615
+8 reward: -12.553
+9 reward: -52.372
+equation 14
+kan
+0 reward: -11.275
+1 reward: -24.497
+2 reward: -16.924
+3 reward: -14.498
+4 reward: -21.215
+5 reward: -11.010
+6 reward: -9.045
+7 reward: -16.446
+8 reward: -18.687
+9 reward: -64.741
+mlp
+0 reward: -19.900
+1 reward: -146.896
+2 reward: -126.909
+3 reward: -97.575
+4 reward: -19.122
+5 reward: -48.901
+6 reward: -75.244
+7 reward: -20.808
+8 reward: -26.293
+9 reward: -176.040
+equation 15
+kan
+0 reward: -81.668
+1 reward: -65.068
+2 reward: -103.039
+3 reward: -47.285
+4 reward: -17.877
+5 reward: -48.138
+6 reward: -38.086
+7 reward: -37.846
+8 reward: -26.667
+9 reward: -49.497
+mlp
+0 reward: -6.680
+1 reward: -5.048
+2 reward: -6.215
+3 reward: -3.928
+4 reward: -2.548
+5 reward: -5.144
+6 reward: -4.313
+7 reward: -3.936
+8 reward: -2.962
+9 reward: -4.328
+equation 16
+kan
+0 reward: -3.576
+1 reward: -1.938
+2 reward: -2.766
+3 reward: -2.912
+4 reward: -3.098
+5 reward: -2.799
+6 reward: -3.338
+7 reward: -3.871
+8 reward: -2.245
+9 reward: -3.169
+mlp
+0 reward: -2.593
+1 reward: -1.795
+2 reward: -2.383
+3 reward: -1.918
+4 reward: -3.439
+5 reward: -2.175
+6 reward: -2.747
+7 reward: -3.596
+8 reward: -1.704
+9 reward: -2.472
+equation 17
+kan
+0 reward: -6.183
+1 reward: -3.999
+2 reward: -4.377
+3 reward: -4.109
+4 reward: -3.233
+5 reward: -4.414
+6 reward: -3.205
+7 reward: -4.863
+8 reward: -2.626
+9 reward: -4.443
+mlp
+0 reward: -3.855
+1 reward: -3.901
+2 reward: -3.718
+3 reward: -4.136
+4 reward: -3.529
+5 reward: -5.068
+6 reward: -3.522
+7 reward: -4.741
+8 reward: -3.984
+9 reward: -3.819
+equation 18
+kan
+0 reward: -50.590
+1 reward: -33.481
+2 reward: -31.692
+3 reward: -26.210
+4 reward: -47.921
+5 reward: -54.967
+6 reward: -12.527
+7 reward: -55.237
+8 reward: -23.975
+9 reward: -45.178
+mlp
+0 reward: -25.978
+1 reward: -9.413
+2 reward: -12.570
+3 reward: -11.082
+4 reward: -13.459
+5 reward: -20.609
+6 reward: -7.240
+7 reward: -22.321
+8 reward: -4.792
+9 reward: -14.999
+equation 19
+kan
+0 reward: -5.895
+1 reward: -4.113
+2 reward: -5.136
+3 reward: -4.201
+4 reward: -3.329
+5 reward: -3.841
+6 reward: -3.712
+7 reward: -4.926
+8 reward: -3.408
+9 reward: -4.572
+mlp
+0 reward: -35.694
+1 reward: -48.481
+2 reward: -44.366
+3 reward: -92.385
+4 reward: -108.398
+5 reward: -37.052
+6 reward: -55.216
+7 reward: -104.263
+8 reward: -86.902
+9 reward: -68.649
+equation 20
+kan
+0 reward: -21.235
+1 reward: -3.211
+2 reward: -6.353
+3 reward: -3.774
+4 reward: -4.798
+5 reward: -9.184
+6 reward: -5.641
+7 reward: -4.022
+8 reward: -3.861
+9 reward: -3.623
+mlp
+0 reward: -6.703
+1 reward: -8.538
+2 reward: -3.592
+3 reward: -5.602
+4 reward: -3.955
+5 reward: -4.636
+6 reward: -7.589
+7 reward: -4.444
+8 reward: -3.913
+9 reward: -14.214
+equation 21
+kan
+0 reward: -5.077
+1 reward: -4.139
+2 reward: -6.357
+3 reward: -5.012
+4 reward: -5.566
+5 reward: -5.160
+6 reward: -4.155
+7 reward: -4.340
+8 reward: -3.042
+9 reward: -5.480
+mlp
+0 reward: -2.683
+1 reward: -2.121
+2 reward: -2.103
+3 reward: -2.380
+4 reward: -1.629
+5 reward: -3.102
+6 reward: -1.683
+7 reward: -3.330
+8 reward: -2.029
+9 reward: -2.883
+equation 22
+kan
+0 reward: -14.298
+1 reward: -9.716
+2 reward: -11.774
+3 reward: -19.320
+4 reward: -22.563
+5 reward: -11.536
+6 reward: -12.535
+7 reward: -22.390
+8 reward: -19.815
+9 reward: -12.463
+mlp
+0 reward: -129.925
+1 reward: -122.695
+2 reward: -151.205
+3 reward: -138.559
+4 reward: -111.266
+5 reward: -98.448
+6 reward: -90.344
+7 reward: -141.716
+8 reward: -114.242
+9 reward: -121.139
+equation 23
+kan
+0 reward: -60.368
+1 reward: -63.286
+2 reward: -66.399
+3 reward: -59.049
+4 reward: -92.126
+5 reward: -70.154
+6 reward: -35.847
+7 reward: -63.077
+8 reward: -45.506
+9 reward: -92.101
+mlp
+0 reward: -157.378
+1 reward: -165.077
+2 reward: -154.167
+3 reward: -155.847
+4 reward: -211.682
+5 reward: -177.272
+6 reward: -119.978
+7 reward: -160.956
+8 reward: -155.628
+9 reward: -215.045
+equation 24
+kan
+0 reward: -10.672
+1 reward: -11.573
+2 reward: -21.064
+3 reward: -12.605
+4 reward: -10.647
+5 reward: -11.577
+6 reward: -13.110
+7 reward: -12.588
+8 reward: -12.988
+9 reward: -9.863
+mlp
+0 reward: -26.284
+1 reward: -29.257
+2 reward: -26.317
+3 reward: -28.521
+4 reward: -29.634
+5 reward: -21.599
+6 reward: -22.874
+7 reward: -26.426
+8 reward: -19.962
+9 reward: -28.162
+equation 25
+kan
+0 reward: -0.710
+1 reward: -1.214
+2 reward: -1.378
+3 reward: -0.809
+4 reward: -1.038
+5 reward: -1.145
+6 reward: -1.381
+7 reward: -0.832
+8 reward: -0.783
+9 reward: -1.253
+mlp
+0 reward: -1.976
+1 reward: -2.867
+2 reward: -2.170
+3 reward: -1.528
+4 reward: -2.617
+5 reward: -2.391
+6 reward: -2.331
+7 reward: -0.971
+8 reward: -1.114
+9 reward: -2.122
+equation 26
+kan
+0 reward: -20.719
+1 reward: -44.269
+2 reward: -38.456
+3 reward: -18.746
+4 reward: -32.051
+5 reward: -28.805
+6 reward: -33.302
+7 reward: -13.802
+8 reward: -12.642
+9 reward: -30.982
+mlp
+0 reward: -29.738
+1 reward: -110.248
+2 reward: -72.591
+3 reward: -38.257
+4 reward: -60.153
+5 reward: -67.054
+6 reward: -59.836
+7 reward: -21.661
+8 reward: -21.666
+9 reward: -62.172
+equation 27
+kan
+0 reward: -13.147
+1 reward: -14.018
+2 reward: -17.825
+3 reward: -15.384
+4 reward: -12.306
+5 reward: -12.808
+6 reward: -14.045
+7 reward: -9.906
+8 reward: -10.458
+9 reward: -15.765
+mlp
+0 reward: -13.702
+1 reward: -12.718
+2 reward: -14.862
+3 reward: -10.595
+4 reward: -11.251
+5 reward: -12.550
+6 reward: -10.233
+7 reward: -13.257
+8 reward: -11.099
+9 reward: -12.084
+equation 28
+kan
+0 reward: -1.336
+1 reward: -1.058
+2 reward: -1.334
+3 reward: -2.060
+4 reward: -1.364
+5 reward: -1.864
+6 reward: -2.076
+7 reward: -1.691
+8 reward: -2.333
+9 reward: -2.384
+mlp
+0 reward: -4.770
+1 reward: -1.201
+2 reward: -4.100
+3 reward: -5.827
+4 reward: -4.498
+5 reward: -3.347
+6 reward: -5.610
+7 reward: -8.166
+8 reward: -6.557
+9 reward: -4.461
+equation 29
+kan
+0 reward: -24.996
+1 reward: -49.247
+2 reward: -13.877
+3 reward: -32.529
+4 reward: -25.294
+5 reward: -38.507
+6 reward: -48.407
+7 reward: -42.418
+8 reward: -61.539
+9 reward: -15.172
+mlp
+0 reward: -14.692
+1 reward: -10.050
+2 reward: -14.329
+3 reward: -12.057
+4 reward: -15.973
+5 reward: -14.129
+6 reward: -5.452
+7 reward: -13.946
+8 reward: -6.330
+9 reward: -21.473
+equation 30
+kan
+0 reward: -3.767
+1 reward: -3.543
+2 reward: -4.134
+3 reward: -4.737
+4 reward: -5.325
+5 reward: -3.695
+6 reward: -4.085
+7 reward: -4.910
+8 reward: -4.191
+9 reward: -4.690
+mlp
+0 reward: -4.586
+1 reward: -3.379
+2 reward: -4.330
+3 reward: -3.729
+4 reward: -4.267
+5 reward: -3.680
+6 reward: -2.379
+7 reward: -5.384
+8 reward: -3.624
+9 reward: -3.323
+equation 31
+kan
+0 reward: -1.374
+1 reward: -1.253
+2 reward: -2.292
+3 reward: -1.770
+4 reward: -1.792
+5 reward: -1.542
+6 reward: -1.298
+7 reward: -1.605
+8 reward: -1.069
+9 reward: -1.543
+mlp
+0 reward: -26.774
+1 reward: -21.896
+2 reward: -32.292
+3 reward: -22.479
+4 reward: -18.955
+5 reward: -14.811
+6 reward: -16.589
+7 reward: -25.302
+8 reward: -16.610
+9 reward: -14.582equation 32
+kan
+0 reward: -5.044
+1 reward: -8.006
+2 reward: -11.702
+3 reward: -9.123
+4 reward: -13.900
+5 reward: -5.304
+6 reward: -3.087
+7 reward: -4.394
+8 reward: -3.705
+9 reward: -16.982
+mlp
+0 reward: -248.194
+1 reward: -304.120
+2 reward: -455.308
+3 reward: -372.396
+4 reward: -419.820
+5 reward: -232.303
+6 reward: -265.764
+7 reward: -199.622
+8 reward: -219.261
+9 reward: -506.877
+equation 33
+kan
+0 reward: -572.576
+1 reward: -539.525
+2 reward: -658.202
+3 reward: -610.505
+4 reward: -527.821
+5 reward: -641.493
+6 reward: -559.890
+7 reward: -568.943
+8 reward: -402.481
+9 reward: -788.747
+mlp
+0 reward: -572.565
+1 reward: -539.511
+2 reward: -658.186
+3 reward: -610.488
+4 reward: -527.810
+5 reward: -641.477
+6 reward: -559.873
+7 reward: -568.934
+8 reward: -402.470
+9 reward: -788.740
+equation 34
+kan
+0 reward: -4.159
+1 reward: -4.357
+2 reward: -4.023
+3 reward: -6.681
+4 reward: -3.348
+5 reward: -3.974
+6 reward: -2.035
+7 reward: -3.133
+8 reward: -3.013
+9 reward: -3.067
+mlp
+0 reward: -6.028
+1 reward: -9.071
+2 reward: -6.616
+3 reward: -6.391
+4 reward: -6.222
+5 reward: -5.482
+6 reward: -4.591
+7 reward: -5.245
+8 reward: -5.524
+9 reward: -5.307
+equation 35
+kan
+0 reward: -2.789
+1 reward: -3.855
+2 reward: -3.570
+3 reward: -4.291
+4 reward: -3.919
+5 reward: -2.977
+6 reward: -3.636
+7 reward: -3.956
+8 reward: -4.032
+9 reward: -4.061
+mlp
+0 reward: -3.306
+1 reward: -4.001
+2 reward: -3.808
+3 reward: -6.664
+4 reward: -7.761
+5 reward: -4.366
+6 reward: -3.660
+7 reward: -9.540
+8 reward: -8.817
+9 reward: -3.608
+equation 36
+kan
+0 reward: -2.798
+1 reward: -3.252
+2 reward: -3.639
+3 reward: -2.669
+4 reward: -2.842
+5 reward: -2.919
+6 reward: -2.555
+7 reward: -3.256
+8 reward: -2.771
+9 reward: -2.726
+mlp
+0 reward: -6.312
+1 reward: -5.893
+2 reward: -5.890
+3 reward: -6.590
+4 reward: -7.345
+5 reward: -6.585
+6 reward: -5.975
+7 reward: -7.705
+8 reward: -7.592
+9 reward: -6.295
+equation 37
+kan
+0 reward: -3.033
+1 reward: -3.063
+2 reward: -3.132
+3 reward: -3.359
+4 reward: -2.914
+5 reward: -3.304
+6 reward: -3.578
+7 reward: -3.518
+8 reward: -3.139
+9 reward: -3.340
+mlp
+0 reward: -2.373
+1 reward: -2.312
+2 reward: -3.067
+3 reward: -3.785
+4 reward: -2.430
+5 reward: -2.769
+6 reward: -3.845
+7 reward: -3.771
+8 reward: -2.913
+9 reward: -3.129
+equation 38
+kan
+0 reward: -2.949
+1 reward: -2.459
+2 reward: -3.740
+3 reward: -6.845
+4 reward: -9.029
+5 reward: -3.196
+6 reward: -3.304
+7 reward: -10.879
+8 reward: -9.196
+9 reward: -3.530
+mlp
+0 reward: -4.528
+1 reward: -4.448
+2 reward: -5.456
+3 reward: -5.050
+4 reward: -4.674
+5 reward: -4.327
+6 reward: -4.002
+7 reward: -4.700
+8 reward: -4.420
+9 reward: -5.014
+equation 39
+kan
+0 reward: -13.419
+1 reward: -13.394
+2 reward: -14.185
+3 reward: -14.098
+4 reward: -13.223
+5 reward: -13.449
+6 reward: -15.076
+7 reward: -12.606
+8 reward: -13.814
+9 reward: -12.312
+mlp
+0 reward: -16.682
+1 reward: -27.677
+2 reward: -28.766
+3 reward: -27.064
+4 reward: -28.084
+5 reward: -15.440
+6 reward: -21.214
+7 reward: -18.481
+8 reward: -23.674
+9 reward: -37.645
+equation 40
+kan
+0 reward: -1.637
+1 reward: -1.585
+2 reward: -1.407
+3 reward: -1.019
+4 reward: -1.698
+5 reward: -1.362
+6 reward: -1.837
+7 reward: -2.000
+8 reward: -1.292
+9 reward: -1.518
+mlp
+0 reward: -1.194
+1 reward: -2.585
+2 reward: -1.845
+3 reward: -0.969
+4 reward: -2.038
+5 reward: -1.495
+6 reward: -2.035
+7 reward: -1.531
+8 reward: -0.930
+9 reward: -1.928
+equation 41
+kan
+0 reward: -2.089
+1 reward: -2.445
+2 reward: -2.452
+3 reward: -3.734
+4 reward: -4.427
+5 reward: -2.479
+6 reward: -2.797
+7 reward: -5.600
+8 reward: -3.814
+9 reward: -3.703
+mlp
+0 reward: -2.361
+1 reward: -2.945
+2 reward: -2.193
+3 reward: -3.485
+4 reward: -6.042
+5 reward: -3.720
+6 reward: -3.587
+7 reward: -3.985
+8 reward: -6.069
+9 reward: -3.645
+equation 42
+kan
+0 reward: -4.666
+1 reward: -10.530
+2 reward: -13.808
+3 reward: -24.624
+4 reward: -27.971
+5 reward: -12.987
+6 reward: -5.257
+7 reward: -5.174
+8 reward: -5.372
+9 reward: -29.035
+mlp
+0 reward: -4.194
+1 reward: -8.925
+2 reward: -8.089
+3 reward: -8.076
+4 reward: -7.135
+5 reward: -5.775
+6 reward: -8.230
+7 reward: -5.694
+8 reward: -8.515
+9 reward: -12.155
+equation 43
+kan
+0 reward: -24.200
+1 reward: -18.714
+2 reward: -34.044
+3 reward: -13.856
+4 reward: -31.551
+5 reward: -67.046
+6 reward: -36.844
+7 reward: -28.681
+8 reward: -13.726
+9 reward: -33.631
+mlp
+0 reward: -119.794
+1 reward: -23.228
+2 reward: -58.194
+3 reward: -16.200
+4 reward: -39.330
+5 reward: -48.222
+6 reward: -47.446
+7 reward: -30.198
+8 reward: -15.999
+9 reward: -40.988
+equation 44
+kan
+0 reward: -3.491
+1 reward: -65.491
+2 reward: -25.767
+3 reward: -17.466
+4 reward: -4.761
+5 reward: -12.007
+6 reward: -6.830
+7 reward: -6.153
+8 reward: -6.334
+9 reward: -134.273
+mlp
+0 reward: -16.116
+1 reward: -16.530
+2 reward: -14.930
+3 reward: -16.571
+4 reward: -13.878
+5 reward: -14.835
+6 reward: -13.575
+7 reward: -15.995
+8 reward: -14.881
+9 reward: -13.271
+equation 45
+kan
+0 reward: -5.689
+1 reward: -5.864
+2 reward: -11.195
+3 reward: -7.814
+4 reward: -28.056
+5 reward: -5.438
+6 reward: -4.976
+7 reward: -4.708
+8 reward: -4.812
+9 reward: -15.924
+mlp
+0 reward: -7.526
+1 reward: -11.761
+2 reward: -25.102
+3 reward: -12.276
+4 reward: -13.450
+5 reward: -10.217
+6 reward: -10.622
+7 reward: -9.653
+8 reward: -10.140
+9 reward: -17.335
+equation 46
+kan
+0 reward: -2.007
+1 reward: -2.370
+2 reward: -2.066
+3 reward: -1.874
+4 reward: -1.813
+5 reward: -2.211
+6 reward: -1.748
+7 reward: -3.530
+8 reward: -1.304
+9 reward: -2.416
+mlp
+0 reward: -3.241
+1 reward: -4.820
+2 reward: -2.970
+3 reward: -6.906
+4 reward: -8.760
+5 reward: -4.959
+6 reward: -6.508
+7 reward: -7.858
+8 reward: -8.042
+9 reward: -6.636
+equation 47
+kan
+0 reward: -5.511
+1 reward: -8.961
+2 reward: -7.551
+3 reward: -7.841
+4 reward: -7.086
+5 reward: -7.027
+6 reward: -8.557
+7 reward: -7.616
+8 reward: -9.158
+9 reward: -7.941
+mlp
+0 reward: -7.773
+1 reward: -8.370
+2 reward: -11.895
+3 reward: -10.250
+4 reward: -9.409
+5 reward: -8.263
+6 reward: -8.112
+7 reward: -7.355
+8 reward: -6.923
+9 reward: -12.364
+equation 48
+kan
+0 reward: -38.489
+1 reward: -245.128
+2 reward: -153.692
+3 reward: -140.978
+4 reward: -51.668
+5 reward: -124.532
+6 reward: -126.411
+7 reward: -61.726
+8 reward: -74.761
+9 reward: -288.488
+mlp
+0 reward: -49.273
+1 reward: -244.011
+2 reward: -212.243
+3 reward: -128.719
+4 reward: -41.096
+5 reward: -96.263
+6 reward: -139.130
+7 reward: -54.416
+8 reward: -61.629
+9 reward: -313.047
+equation 49
+kan
+0 reward: -3.140
+1 reward: -2.775
+2 reward: -4.140
+3 reward: -3.059
+4 reward: -2.637
+5 reward: -2.473
+6 reward: -2.639
+7 reward: -3.231
+8 reward: -2.603
+9 reward: -3.132
+mlp
+0 reward: -4.962
+1 reward: -3.821
+2 reward: -4.672
+3 reward: -3.219
+4 reward: -3.040
+5 reward: -3.788
+6 reward: -3.464
+7 reward: -4.234
+8 reward: -3.417
+9 reward: -3.749
+equation 50
+kan
+0 reward: -1.264
+1 reward: -1.029
+2 reward: -1.509
+3 reward: -1.813
+4 reward: -2.030
+5 reward: -1.538
+6 reward: -1.472
+7 reward: -1.786
+8 reward: -1.462
+9 reward: -2.002
+mlp
+0 reward: -2.592
+1 reward: -2.818
+2 reward: -2.752
+3 reward: -2.906
+4 reward: -3.836
+5 reward: -3.282
+6 reward: -3.254
+7 reward: -3.119
+8 reward: -3.012
+9 reward: -2.825
+equation 51
+kan
+0 reward: -70.473
+1 reward: -42.210
+2 reward: -22.350
+3 reward: -24.235
+4 reward: -37.226
+5 reward: -77.339
+6 reward: -32.549
+7 reward: -83.396
+8 reward: -50.805
+9 reward: -20.574
+mlp
+0 reward: -72.731
+1 reward: -50.984
+2 reward: -18.728
+3 reward: -27.845
+4 reward: -45.900
+5 reward: -76.592
+6 reward: -32.825
+7 reward: -84.764
+8 reward: -52.812
+9 reward: -24.433
+equation 52
+kan
+0 reward: -4.751
+1 reward: -16.454
+2 reward: -14.729
+3 reward: -8.581
+4 reward: -7.287
+5 reward: -5.853
+6 reward: -8.088
+7 reward: -7.348
+8 reward: -7.043
+9 reward: -4.804
+mlp
+0 reward: -64.279
+1 reward: -16.629
+2 reward: -28.665
+3 reward: -56.006
+4 reward: -64.245
+5 reward: -71.823
+6 reward: -29.250
+7 reward: -68.198
+8 reward: -73.598
+9 reward: -18.685
+equation 53
+kan
+0 reward: -3.282
+1 reward: -6.161
+2 reward: -3.582
+3 reward: -3.254
+4 reward: -4.671
+5 reward: -4.538
+6 reward: -3.967
+7 reward: -2.528
+8 reward: -1.864
+9 reward: -4.787
+mlp
+0 reward: -2.960
+1 reward: -2.317
+2 reward: -2.785
+3 reward: -2.266
+4 reward: -3.817
+5 reward: -2.375
+6 reward: -4.334
+7 reward: -3.998
+8 reward: -1.883
+9 reward: -3.005
+equation 54
+kan
+0 reward: -8.080
+1 reward: -7.906
+2 reward: -8.478
+3 reward: -6.870
+4 reward: -5.876
+5 reward: -9.827
+6 reward: -7.589
+7 reward: -6.506
+8 reward: -5.727
+9 reward: -7.964
+mlp
+0 reward: -13.069
+1 reward: -10.020
+2 reward: -11.770
+3 reward: -9.736
+4 reward: -8.604
+5 reward: -12.329
+6 reward: -9.227
+7 reward: -9.199
+8 reward: -7.560
+9 reward: -12.147
+equation 55
+kan
+0 reward: -154.923
+1 reward: -132.416
+2 reward: -77.135
+3 reward: -117.003
+4 reward: -125.868
+5 reward: -172.579
+6 reward: -114.134
+7 reward: -190.292
+8 reward: -128.657
+9 reward: -113.162
+mlp
+0 reward: -86.138
+1 reward: -52.481
+2 reward: -70.730
+3 reward: -52.797
+4 reward: -73.071
+5 reward: -57.430
+6 reward: -27.834
+7 reward: -43.709
+8 reward: -43.959
+9 reward: -58.562
+equation 56
+kan
+0 reward: -152.806
+1 reward: -132.908
+2 reward: -155.885
+3 reward: -143.320
+4 reward: -141.531
+5 reward: -164.024
+6 reward: -142.218
+7 reward: -142.691
+8 reward: -101.788
+9 reward: -187.103
+mlp
+0 reward: -142.730
+1 reward: -135.133
+2 reward: -168.133
+3 reward: -153.540
+4 reward: -132.257
+5 reward: -160.148
+6 reward: -140.749
+7 reward: -145.491
+8 reward: -105.113
+9 reward: -200.018
+equation 57
+kan
+0 reward: -156.119
+1 reward: -167.677
+2 reward: -149.733
+3 reward: -158.753
+4 reward: -220.725
+5 reward: -229.139
+6 reward: -105.459
+7 reward: -167.232
+8 reward: -97.500
+9 reward: -214.085
+mlp
+0 reward: -155.251
+1 reward: -166.189
+2 reward: -163.748
+3 reward: -156.970
+4 reward: -236.319
+5 reward: -182.064
+6 reward: -101.475
+7 reward: -166.361
+8 reward: -152.790
+9 reward: -210.166
+equation 58
+kan
+0 reward: -17.925
+1 reward: -18.318
+2 reward: -21.908
+3 reward: -22.307
+4 reward: -18.628
+5 reward: -16.347
+6 reward: -17.591
+7 reward: -22.841
+8 reward: -18.128
+9 reward: -21.467
+mlp
+0 reward: -45.382
+1 reward: -33.204
+2 reward: -55.237
+3 reward: -30.460
+4 reward: -16.842
+5 reward: -35.523
+6 reward: -24.758
+7 reward: -22.313
+8 reward: -15.992
+9 reward: -31.481
+equation 59
+kan
+0 reward: -2.521
+1 reward: -4.768
+2 reward: -2.529
+3 reward: -2.304
+4 reward: -3.056
+5 reward: -3.420
+6 reward: -2.880
+7 reward: -1.676
+8 reward: -2.156
+9 reward: -3.669
+mlp
+0 reward: -2.129
+1 reward: -2.831
+2 reward: -2.251
+3 reward: -1.428
+4 reward: -2.323
+5 reward: -1.911
+6 reward: -3.210
+7 reward: -2.088
+8 reward: -1.436
+9 reward: -2.391
+equation 60
+kan
+0 reward: -2.497
+1 reward: -2.817
+2 reward: -3.022
+3 reward: -8.716
+4 reward: -5.620
+5 reward: -2.703
+6 reward: -3.111
+7 reward: -5.208
+8 reward: -6.369
+9 reward: -3.855
+mlp
+0 reward: -2.959
+1 reward: -4.422
+2 reward: -4.334
+3 reward: -5.662
+4 reward: -5.148
+5 reward: -4.010
+6 reward: -4.096
+7 reward: -5.074
+8 reward: -6.952
+9 reward: -5.125
+equation 61
+kan
+0 reward: -7.719
+1 reward: -59.611
+2 reward: -17.636
+3 reward: -28.436
+4 reward: -7.445
+5 reward: -8.549
+6 reward: -9.501
+7 reward: -6.747
+8 reward: -6.807
+9 reward: -98.067
+mlp
+0 reward: -29.849
+1 reward: -26.303
+2 reward: -27.875
+3 reward: -26.537
+4 reward: -31.313
+5 reward: -33.546
+6 reward: -37.852
+7 reward: -25.263
+8 reward: -30.206
+9 reward: -21.995
+equation 62
+kan
+0 reward: -89.946
+1 reward: -62.950
+2 reward: -65.691
+3 reward: -41.894
+4 reward: -47.673
+5 reward: -77.192
+6 reward: -109.775
+7 reward: -65.093
+8 reward: -59.080
+9 reward: -103.272
+mlp
+0 reward: -32.544
+1 reward: -35.823
+2 reward: -15.740
+3 reward: -10.748
+4 reward: -19.371
+5 reward: -33.814
+6 reward: -63.051
+7 reward: -23.497
+8 reward: -71.947
+9 reward: -20.611
+equation 63
+kan
+0 reward: -13.829
+1 reward: -92.631
+2 reward: -32.234
+3 reward: -29.506
+4 reward: -16.378
+5 reward: -22.909
+6 reward: -21.243
+7 reward: -17.136
+8 reward: -19.764
+9 reward: -113.513
+mlp
+0 reward: -224.748
+1 reward: -638.498
+2 reward: -525.010
+3 reward: -424.880
+4 reward: -231.116
+5 reward: -352.104
+6 reward: -429.464
+7 reward: -221.248
+8 reward: -249.746
+9 reward: -720.695
+equation 64
+kan
+0 reward: -4.945
+1 reward: -6.635
+2 reward: -5.496
+3 reward: -6.166
+4 reward: -6.954
+5 reward: -5.240
+6 reward: -4.819
+7 reward: -4.887
+8 reward: -5.571
+9 reward: -9.560
+mlp
+0 reward: -14.722
+1 reward: -8.507
+2 reward: -13.547
+3 reward: -10.917
+4 reward: -13.602
+5 reward: -14.721
+6 reward: -9.134
+7 reward: -10.332
+8 reward: -5.278
+9 reward: -13.032
+equation 65
+kan
+0 reward: -8.657
+1 reward: -7.285
+2 reward: -7.569
+3 reward: -5.718
+4 reward: -11.025
+5 reward: -6.574
+6 reward: -9.803
+7 reward: -12.927
+8 reward: -6.461
+9 reward: -6.986
+mlp
+0 reward: -7.802
+1 reward: -2.569
+2 reward: -5.226
+3 reward: -5.702
+4 reward: -6.970
+5 reward: -4.688
+6 reward: -7.048
+7 reward: -9.505
+8 reward: -7.077
+9 reward: -5.574
+equation 66
+kan
+0 reward: -4.361
+1 reward: -4.411
+2 reward: -19.988
+3 reward: -17.885
+4 reward: -6.080
+5 reward: -5.063
+6 reward: -4.004
+7 reward: -6.244
+8 reward: -6.188
+9 reward: -6.049
+mlp
+0 reward: -7.560
+1 reward: -10.979
+2 reward: -11.823
+3 reward: -12.731
+4 reward: -18.264
+5 reward: -8.665
+6 reward: -7.351
+7 reward: -7.910
+8 reward: -6.049
+9 reward: -82.392
+equation 67
+kan
+0 reward: -2.320
+1 reward: -2.611
+2 reward: -2.484
+3 reward: -3.577
+4 reward: -5.684
+5 reward: -2.584
+6 reward: -3.099
+7 reward: -5.061
+8 reward: -4.447
+9 reward: -3.170
+mlp
+0 reward: -4.657
+1 reward: -8.338
+2 reward: -5.848
+3 reward: -13.764
+4 reward: -16.343
+5 reward: -6.188
+6 reward: -10.454
+7 reward: -16.056
+8 reward: -15.286
+9 reward: -11.501
+equation 68
+kan
+0 reward: -3.827
+1 reward: -6.148
+2 reward: -4.729
+3 reward: -7.002
+4 reward: -9.700
+5 reward: -5.368
+6 reward: -6.719
+7 reward: -8.139
+8 reward: -8.421
+9 reward: -6.629
+mlp
+0 reward: -5.953
+1 reward: -7.551
+2 reward: -4.738
+3 reward: -12.153
+4 reward: -16.802
+5 reward: -8.257
+6 reward: -11.135
+7 reward: -14.649
+8 reward: -15.735
+9 reward: -10.253
+equation 69
+kan
+0 reward: -60.355
+1 reward: -56.090
+2 reward: -72.899
+3 reward: -88.451
+4 reward: -85.890
+5 reward: -49.892
+6 reward: -51.945
+7 reward: -94.058
+8 reward: -80.036
+9 reward: -69.566
+mlp
+0 reward: -50.875
+1 reward: -38.660
+2 reward: -54.768
+3 reward: -35.056
+4 reward: -15.127
+5 reward: -33.925
+6 reward: -26.771
+7 reward: -25.337
+8 reward: -19.251
+9 reward: -34.110
+equation 70
+kan
+0 reward: -63.342
+1 reward: -53.825
+2 reward: -69.122
+3 reward: -47.744
+4 reward: -22.314
+5 reward: -46.099
+6 reward: -38.113
+7 reward: -35.019
+8 reward: -28.342
+9 reward: -48.971
+mlp
+0 reward: -78.370
+1 reward: -76.772
+2 reward: -98.862
+3 reward: -104.804
+4 reward: -93.862
+5 reward: -61.315
+6 reward: -64.343
+7 reward: -106.254
+8 reward: -90.546
+9 reward: -87.829
+equation 71
+kan
+0 reward: -226.100
+1 reward: -637.087
+2 reward: -523.040
+3 reward: -424.460
+4 reward: -229.244
+5 reward: -351.377
+6 reward: -428.051
+7 reward: -221.242
+8 reward: -252.446
+9 reward: -716.778
+mlp
+0 reward: -43.410
+1 reward: -133.670
+2 reward: -103.898
+3 reward: -91.080
+4 reward: -45.617
+5 reward: -68.155
+6 reward: -78.672
+7 reward: -44.203
+8 reward: -48.168
+9 reward: -161.225
+equation 72
+kan
+0 reward: -3.007
+1 reward: -2.891
+2 reward: -2.989
+3 reward: -6.080
+4 reward: -8.190
+5 reward: -2.881
+6 reward: -3.867
+7 reward: -8.543
+8 reward: -8.206
+9 reward: -4.053
+mlp
+0 reward: -7.428
+1 reward: -4.141
+2 reward: -5.512
+3 reward: -4.698
+4 reward: -3.073
+5 reward: -5.098
+6 reward: -3.322
+7 reward: -3.655
+8 reward: -2.613
+9 reward: -3.704
+equation 73
+kan
+0 reward: -2.695
+1 reward: -4.235
+2 reward: -2.997
+3 reward: -4.833
+4 reward: -5.424
+5 reward: -3.937
+6 reward: -5.214
+7 reward: -4.474
+8 reward: -5.280
+9 reward: -4.854
+mlp
+0 reward: -109.286
+1 reward: -162.479
+2 reward: -100.904
+3 reward: -240.776
+4 reward: -310.464
+5 reward: -163.773
+6 reward: -225.238
+7 reward: -264.829
+8 reward: -284.009
+9 reward: -217.770
+equation 74
+kan
+0 reward: -1.768
+1 reward: -1.502
+2 reward: -1.463
+3 reward: -1.074
+4 reward: -1.631
+5 reward: -1.466
+6 reward: -1.755
+7 reward: -1.948
+8 reward: -1.137
+9 reward: -1.574
+mlp
+0 reward: -2.970
+1 reward: -1.760
+2 reward: -3.134
+3 reward: -2.526
+4 reward: -3.271
+5 reward: -1.802
+6 reward: -3.804
+7 reward: -5.893
+8 reward: -3.010
+9 reward: -2.296
+equation 75
+kan
+0 reward: -3.343
+1 reward: -4.733
+2 reward: -4.317
+3 reward: -5.075
+4 reward: -6.734
+5 reward: -4.874
+6 reward: -5.396
+7 reward: -4.926
+8 reward: -5.368
+9 reward: -6.117
+mlp
+0 reward: -31.467
+1 reward: -36.542
+2 reward: -30.627
+3 reward: -33.398
+4 reward: -35.666
+5 reward: -37.869
+6 reward: -43.026
+7 reward: -34.570
+8 reward: -34.481
+9 reward: -43.730
+equation 76
+kan
+0 reward: -6.187
+1 reward: -5.527
+2 reward: -5.575
+3 reward: -4.895
+4 reward: -4.397
+5 reward: -5.760
+6 reward: -5.035
+7 reward: -5.454
+8 reward: -5.667
+9 reward: -5.364
+mlp
+0 reward: -3.680
+1 reward: -4.855
+2 reward: -3.629
+3 reward: -5.060
+4 reward: -5.206
+5 reward: -5.162
+6 reward: -4.694
+7 reward: -4.418
+8 reward: -4.309
+9 reward: -5.683
+equation 77
+kan
+0 reward: -4.304
+1 reward: -4.774
+2 reward: -3.649
+3 reward: -4.067
+4 reward: -6.630
+5 reward: -6.622
+6 reward: -3.574
+7 reward: -5.521
+8 reward: -5.078
+9 reward: -5.426
+mlp
+0 reward: -3.389
+1 reward: -23.516
+2 reward: -22.793
+3 reward: -28.794
+4 reward: -40.554
+5 reward: -7.038
+6 reward: -3.179
+7 reward: -3.281
+8 reward: -5.699
+9 reward: -21.537
+equation 78
+kan
+0 reward: -105.208
+1 reward: -158.831
+2 reward: -97.277
+3 reward: -238.044
+4 reward: -306.248
+5 reward: -160.683
+6 reward: -222.524
+7 reward: -260.196
+8 reward: -280.579
+9 reward: -214.661
+mlp
+0 reward: -13.254
+1 reward: -20.791
+2 reward: -15.947
+3 reward: -21.184
+4 reward: -23.658
+5 reward: -16.943
+6 reward: -18.018
+7 reward: -22.176
+8 reward: -16.435
+9 reward: -23.042
+equation 79
+kan
+0 reward: -5.940
+1 reward: -27.738
+2 reward: -13.367
+3 reward: -17.366
+4 reward: -8.465
+5 reward: -9.365
+6 reward: -11.819
+7 reward: -8.953
+8 reward: -7.613
+9 reward: -50.365
+mlp
+0 reward: -10.040
+1 reward: -13.044
+2 reward: -15.250
+3 reward: -14.112
+4 reward: -8.670
+5 reward: -14.419
+6 reward: -12.782
+7 reward: -8.945
+8 reward: -10.860
+9 reward: -24.211
+equation 80
+kan
+0 reward: -10.844
+1 reward: -4.806
+2 reward: -6.491
+3 reward: -9.973
+4 reward: -11.476
+5 reward: -10.888
+6 reward: -8.459
+7 reward: -11.956
+8 reward: -10.896
+9 reward: -6.388
+mlp
+0 reward: -16.955
+1 reward: -15.234
+2 reward: -15.670
+3 reward: -17.462
+4 reward: -17.744
+5 reward: -17.138
+6 reward: -15.287
+7 reward: -17.691
+8 reward: -16.960
+9 reward: -13.333
+equation 81
+kan
+0 reward: -4.343
+1 reward: -6.032
+2 reward: -3.139
+3 reward: -5.357
+4 reward: -5.018
+5 reward: -6.005
+6 reward: -4.783
+7 reward: -5.420
+8 reward: -5.371
+9 reward: -2.994
+mlp
+0 reward: -3.406
+1 reward: -7.196
+2 reward: -7.383
+3 reward: -6.038
+4 reward: -5.128
+5 reward: -5.709
+6 reward: -4.501
+7 reward: -5.633
+8 reward: -4.397
+9 reward: -8.591
+equation 82
+kan
+0 reward: -3.152
+1 reward: -11.000
+2 reward: -8.972
+3 reward: -6.518
+4 reward: -8.424
+5 reward: -7.063
+6 reward: -8.959
+7 reward: -5.369
+8 reward: -6.417
+9 reward: -8.536
+mlp
+0 reward: -32.870
+1 reward: -32.534
+2 reward: -26.837
+3 reward: -24.253
+4 reward: -21.936
+5 reward: -22.286
+6 reward: -18.454
+7 reward: -31.556
+8 reward: -28.425
+9 reward: -21.699
+equation 83
+kan
+0 reward: -1.606
+1 reward: -2.536
+2 reward: -1.913
+3 reward: -2.160
+4 reward: -2.472
+5 reward: -2.539
+6 reward: -2.815
+7 reward: -1.688
+8 reward: -2.964
+9 reward: -2.797
+mlp
+0 reward: -4.585
+1 reward: -6.543
+2 reward: -4.998
+3 reward: -7.169
+4 reward: -7.222
+5 reward: -6.304
+6 reward: -7.182
+7 reward: -6.388
+8 reward: -7.179
+9 reward: -7.347
+equation 84
+kan
+0 reward: -3.075
+1 reward: -5.824
+2 reward: -4.687
+3 reward: -3.845
+4 reward: -4.799
+5 reward: -3.597
+6 reward: -2.707
+7 reward: -3.007
+8 reward: -2.245
+9 reward: -5.130
+mlp
+0 reward: -9.847
+1 reward: -14.221
+2 reward: -9.847
+3 reward: -10.265
+4 reward: -12.700
+5 reward: -7.853
+6 reward: -7.818
+7 reward: -8.983
+8 reward: -10.284
+9 reward: -13.683
+equation 85
+kan
+0 reward: -4.097
+1 reward: -3.404
+2 reward: -4.722
+3 reward: -4.979
+4 reward: -4.913
+5 reward: -3.338
+6 reward: -5.438
+7 reward: -7.201
+8 reward: -4.725
+9 reward: -4.564
+mlp
+0 reward: -1.767
+1 reward: -2.725
+2 reward: -1.913
+3 reward: -1.516
+4 reward: -2.830
+5 reward: -2.047
+6 reward: -2.942
+7 reward: -2.013
+8 reward: -1.168
+9 reward: -2.371
+equation 86
+kan
+0 reward: -13.384
+1 reward: -9.742
+2 reward: -13.833
+3 reward: -11.535
+4 reward: -12.792
+5 reward: -12.007
+6 reward: -8.523
+7 reward: -11.232
+8 reward: -8.007
+9 reward: -15.135
+mlp
+0 reward: -4.589
+1 reward: -6.347
+2 reward: -5.080
+3 reward: -5.306
+4 reward: -6.310
+5 reward: -5.521
+6 reward: -4.651
+7 reward: -5.681
+8 reward: -5.761
+9 reward: -6.971
+equation 87
+kan
+0 reward: -9.906
+1 reward: -4.470
+2 reward: -5.235
+3 reward: -4.729
+4 reward: -4.925
+5 reward: -6.048
+6 reward: -2.379
+7 reward: -6.998
+8 reward: -2.723
+9 reward: -6.442
+mlp
+0 reward: -7.888
+1 reward: -7.139
+2 reward: -8.976
+3 reward: -7.722
+4 reward: -7.409
+5 reward: -6.116
+6 reward: -5.165
+7 reward: -7.244
+8 reward: -4.875
+9 reward: -10.359
+equation 88
+kan
+0 reward: -1.922
+1 reward: -2.153
+2 reward: -2.079
+3 reward: -2.427
+4 reward: -2.098
+5 reward: -1.811
+6 reward: -2.016
+7 reward: -2.252
+8 reward: -2.194
+9 reward: -2.607
+mlp
+0 reward: -7.003
+1 reward: -7.344
+2 reward: -5.605
+3 reward: -8.243
+4 reward: -9.624
+5 reward: -7.397
+6 reward: -8.649
+7 reward: -9.267
+8 reward: -9.850
+9 reward: -7.882
+equation 89
+kan
+0 reward: -6.279
+1 reward: -5.584
+2 reward: -6.428
+3 reward: -7.160
+4 reward: -8.207
+5 reward: -7.024
+6 reward: -6.921
+7 reward: -7.563
+8 reward: -7.825
+9 reward: -7.371
+mlp
+0 reward: -5.057
+1 reward: -8.695
+2 reward: -5.768
+3 reward: -14.438
+4 reward: -14.486
+5 reward: -6.543
+6 reward: -10.084
+7 reward: -13.530
+8 reward: -13.424
+9 reward: -14.262
+equation 90
+kan
+0 reward: -7.857
+1 reward: -8.551
+2 reward: -12.062
+3 reward: -3.453
+4 reward: -5.762
+5 reward: -14.995
+6 reward: -9.472
+7 reward: -8.842
+8 reward: -5.374
+9 reward: -2.899
+mlp
+0 reward: -55.538
+1 reward: -42.158
+2 reward: -45.271
+3 reward: -44.503
+4 reward: -40.292
+5 reward: -52.251
+6 reward: -41.139
+7 reward: -46.850
+8 reward: -29.782
+9 reward: -55.066
+equation 91
+kan
+0 reward: -8.983
+1 reward: -9.659
+2 reward: -10.583
+3 reward: -10.243
+4 reward: -8.112
+5 reward: -8.309
+6 reward: -10.404
+7 reward: -8.354
+8 reward: -9.103
+9 reward: -11.453
+mlp
+0 reward: -10.859
+1 reward: -10.033
+2 reward: -21.035
+3 reward: -12.854
+4 reward: -12.718
+5 reward: -9.627
+6 reward: -8.301
+7 reward: -8.202
+8 reward: -6.832
+9 reward: -23.627
+equation 92
+kan
+0 reward: -2.497
+1 reward: -1.564
+2 reward: -1.873
+3 reward: -1.489
+4 reward: -2.077
+5 reward: -1.647
+6 reward: -2.058
+7 reward: -1.811
+8 reward: -1.207
+9 reward: -1.994
+mlp
+0 reward: -2.456
+1 reward: -3.201
+2 reward: -2.473
+3 reward: -2.049
+4 reward: -2.593
+5 reward: -2.654
+6 reward: -2.592
+7 reward: -2.159
+8 reward: -1.672
+9 reward: -2.679
+equation 93
+kan
+0 reward: -12.187
+1 reward: -11.079
+2 reward: -11.785
+3 reward: -11.330
+4 reward: -11.568
+5 reward: -11.214
+6 reward: -11.994
+7 reward: -10.990
+8 reward: -10.632
+9 reward: -10.420
+mlp
+0 reward: -10.481
+1 reward: -9.810
+2 reward: -13.115
+3 reward: -11.333
+4 reward: -11.874
+5 reward: -9.407
+6 reward: -9.302
+7 reward: -7.366
+8 reward: -6.291
+9 reward: -14.349
+equation 94
+kan
+0 reward: -55.609
+1 reward: -96.505
+2 reward: -76.781
+3 reward: -73.281
+4 reward: -57.134
+5 reward: -56.063
+6 reward: -52.711
+7 reward: -55.833
+8 reward: -50.009
+9 reward: -134.710
+mlp
+0 reward: -189.511
+1 reward: -590.024
+2 reward: -476.753
+3 reward: -382.012
+4 reward: -196.563
+5 reward: -310.924
+6 reward: -383.508
+7 reward: -191.440
+8 reward: -220.058
+9 reward: -669.636
+equation 95
+kan
+0 reward: -16.203
+1 reward: -17.700
+2 reward: -15.047
+3 reward: -19.956
+4 reward: -23.599
+5 reward: -16.950
+6 reward: -18.605
+7 reward: -22.719
+8 reward: -23.764
+9 reward: -18.250
+mlp
+0 reward: -9.699
+1 reward: -10.673
+2 reward: -9.142
+3 reward: -10.431
+4 reward: -10.295
+5 reward: -9.843
+6 reward: -9.902
+7 reward: -11.080
+8 reward: -10.748
+9 reward: -10.449
+equation 96
+kan
+0 reward: -5.819
+1 reward: -8.026
+2 reward: -6.435
+3 reward: -8.433
+4 reward: -11.289
+5 reward: -8.561
+6 reward: -9.390
+7 reward: -8.713
+8 reward: -9.664
+9 reward: -8.840
+mlp
+0 reward: -3.922
+1 reward: -4.399
+2 reward: -4.491
+3 reward: -4.635
+4 reward: -4.531
+5 reward: -4.443
+6 reward: -4.623
+7 reward: -6.207
+8 reward: -6.174
+9 reward: -3.832
+equation 97
+kan
+0 reward: -5.354
+1 reward: -6.459
+2 reward: -5.874
+3 reward: -11.901
+4 reward: -14.460
+5 reward: -5.330
+6 reward: -6.580
+7 reward: -15.644
+8 reward: -14.220
+9 reward: -8.346
+mlp
+0 reward: -6.544
+1 reward: -8.637
+2 reward: -6.173
+3 reward: -8.440
+4 reward: -9.302
+5 reward: -8.397
+6 reward: -10.313
+7 reward: -7.533
+8 reward: -9.406
+9 reward: -9.027
+equation 98
+kan
+0 reward: -2.557
+1 reward: -2.179
+2 reward: -2.864
+3 reward: -2.165
+4 reward: -2.132
+5 reward: -2.078
+6 reward: -1.760
+7 reward: -2.204
+8 reward: -1.533
+9 reward: -2.345
+mlp
+0 reward: -3.350
+1 reward: -3.579
+2 reward: -3.657
+3 reward: -4.736
+4 reward: -4.368
+5 reward: -3.232
+6 reward: -3.646
+7 reward: -5.166
+8 reward: -4.876
+9 reward: -4.047
+equation 99
+kan
+0 reward: -574.066
+1 reward: -152.618
+2 reward: -266.936
+3 reward: -367.805
+4 reward: -566.409
+5 reward: -436.642
+6 reward: -359.092
+7 reward: -576.248
+8 reward: -541.741
+9 reward: -75.704
+mlp
+0 reward: -564.393
+1 reward: -153.668
+2 reward: -266.783
+3 reward: -363.065
+4 reward: -563.650
+5 reward: -439.171
+6 reward: -363.650
+7 reward: -572.775
+8 reward: -540.417
+9 reward: -74.931
+equation 100
+kan
+0 reward: -6.025
+1 reward: -6.049
+2 reward: -6.869
+3 reward: -6.260
+4 reward: -14.662
+5 reward: -11.796
+6 reward: -4.230
+7 reward: -5.414
+8 reward: -9.275
+9 reward: -7.224
+mlp
+0 reward: -5.519
+1 reward: -3.000
+2 reward: -2.622
+3 reward: -2.939
+4 reward: -2.906
+5 reward: -5.423
+6 reward: -2.471
+7 reward: -15.973
+8 reward: -2.502
+9 reward: -3.127
+equation 101
+kan
+0 reward: -843.049
+1 reward: -478.406
+2 reward: -440.760
+3 reward: -607.393
+4 reward: -535.566
+5 reward: -638.129
+6 reward: -536.591
+7 reward: -841.106
+8 reward: -799.969
+9 reward: -667.151
+mlp
+0 reward: -843.048
+1 reward: -478.405
+2 reward: -440.759
+3 reward: -607.392
+4 reward: -535.565
+5 reward: -638.128
+6 reward: -536.590
+7 reward: -841.105
+8 reward: -799.967
+9 reward: -667.150
+equation 102
+kan
+0 reward: -3.673
+1 reward: -5.459
+2 reward: -5.210
+3 reward: -5.388
+4 reward: -5.506
+5 reward: -5.744
+6 reward: -4.291
+7 reward: -6.883
+8 reward: -5.712
+9 reward: -5.455
+mlp
+0 reward: -2.079
+1 reward: -5.615
+2 reward: -5.153
+3 reward: -3.922
+4 reward: -3.087
+5 reward: -4.043
+6 reward: -3.654
+7 reward: -4.533
+8 reward: -3.750
+9 reward: -6.484
+equation 103
+kan
+0 reward: -2.848
+1 reward: -4.305
+2 reward: -3.215
+3 reward: -4.411
+4 reward: -3.706
+5 reward: -3.725
+6 reward: -4.663
+7 reward: -4.559
+8 reward: -5.256
+9 reward: -4.182
+mlp
+0 reward: -9.845
+1 reward: -9.355
+2 reward: -11.155
+3 reward: -9.847
+4 reward: -7.554
+5 reward: -8.668
+6 reward: -10.000
+7 reward: -9.526
+8 reward: -9.684
+9 reward: -9.942
+equation 104
+kan
+0 reward: -560.983
+1 reward: -148.150
+2 reward: -262.343
+3 reward: -361.032
+4 reward: -558.624
+5 reward: -434.151
+6 reward: -357.485
+7 reward: -567.113
+8 reward: -535.301
+9 reward: -68.278
+mlp
+0 reward: -561.004
+1 reward: -148.149
+2 reward: -262.363
+3 reward: -361.040
+4 reward: -558.622
+5 reward: -434.169
+6 reward: -357.488
+7 reward: -567.129
+8 reward: -535.306
+9 reward: -68.280
+equation 105
+kan
+0 reward: -2.045
+1 reward: -2.913
+2 reward: -2.496
+3 reward: -3.408
+4 reward: -4.776
+5 reward: -2.686
+6 reward: -3.521
+7 reward: -3.114
+8 reward: -3.036
+9 reward: -4.077
+mlp
+0 reward: -3.755
+1 reward: -3.414
+2 reward: -3.539
+3 reward: -4.491
+4 reward: -4.352
+5 reward: -3.661
+6 reward: -3.792
+7 reward: -3.915
+8 reward: -3.957
+9 reward: -4.308
+equation 106
+kan
+0 reward: -6.988
+1 reward: -6.075
+2 reward: -8.919
+3 reward: -7.766
+4 reward: -9.414
+5 reward: -7.182
+6 reward: -5.256
+7 reward: -6.533
+8 reward: -4.825
+9 reward: -10.391
+mlp
+0 reward: -5.252
+1 reward: -4.615
+2 reward: -6.543
+3 reward: -5.602
+4 reward: -5.113
+5 reward: -4.737
+6 reward: -3.958
+7 reward: -4.744
+8 reward: -2.985
+9 reward: -5.687
+equation 107
+kan
+0 reward: -7.309
+1 reward: -5.877
+2 reward: -5.884
+3 reward: -6.994
+4 reward: -7.685
+5 reward: -5.097
+6 reward: -4.604
+7 reward: -6.094
+8 reward: -5.357
+9 reward: -4.212
+mlp
+0 reward: -11.738
+1 reward: -78.379
+2 reward: -55.410
+3 reward: -45.253
+4 reward: -14.018
+5 reward: -26.980
+6 reward: -29.921
+7 reward: -17.493
+8 reward: -21.156
+9 reward: -104.550
+equation 108
+kan
+0 reward: -179.867
+1 reward: -150.236
+2 reward: -87.621
+3 reward: -87.580
+4 reward: -156.876
+5 reward: -128.843
+6 reward: -197.416
+7 reward: -135.305
+8 reward: -238.151
+9 reward: -59.948
+mlp
+0 reward: -145.367
+1 reward: -131.728
+2 reward: -65.987
+3 reward: -78.197
+4 reward: -103.584
+5 reward: -104.300
+6 reward: -164.355
+7 reward: -94.710
+8 reward: -200.527
+9 reward: -40.557
+equation 109
+kan
+0 reward: -90.348
+1 reward: -116.227
+2 reward: -193.899
+3 reward: -148.158
+4 reward: -208.931
+5 reward: -91.057
+6 reward: -63.274
+7 reward: -66.090
+8 reward: -44.523
+9 reward: -256.607
+mlp
+0 reward: -7.247
+1 reward: -18.020
+2 reward: -19.759
+3 reward: -20.458
+4 reward: -25.998
+5 reward: -11.945
+6 reward: -8.329
+7 reward: -11.386
+8 reward: -11.805
+9 reward: -32.878
+equation 110
+kan
+0 reward: -6.212
+1 reward: -8.249
+2 reward: -7.640
+3 reward: -8.033
+4 reward: -7.163
+5 reward: -7.724
+6 reward: -8.096
+7 reward: -7.370
+8 reward: -8.701
+9 reward: -8.044
+mlp
+0 reward: -4.486
+1 reward: -7.312
+2 reward: -6.088
+3 reward: -6.050
+4 reward: -6.890
+5 reward: -6.942
+6 reward: -5.483
+7 reward: -6.214
+8 reward: -6.767
+9 reward: -7.959
+equation 111
+kan
+0 reward: -838.457
+1 reward: -474.104
+2 reward: -436.530
+3 reward: -603.032
+4 reward: -531.319
+5 reward: -633.573
+6 reward: -532.066
+7 reward: -836.547
+8 reward: -795.378
+9 reward: -662.618
+mlp
+0 reward: -838.462
+1 reward: -474.098
+2 reward: -436.523
+3 reward: -603.031
+4 reward: -531.314
+5 reward: -633.568
+6 reward: -532.061
+7 reward: -836.547
+8 reward: -795.383
+9 reward: -662.615
+equation 112
+kan
+0 reward: -9.051
+1 reward: -9.256
+2 reward: -8.610
+3 reward: -7.100
+4 reward: -9.944
+5 reward: -8.022
+6 reward: -7.790
+7 reward: -8.550
+8 reward: -10.907
+9 reward: -9.355
+mlp
+0 reward: -10.323
+1 reward: -6.572
+2 reward: -8.511
+3 reward: -6.651
+4 reward: -6.350
+5 reward: -9.047
+6 reward: -8.072
+7 reward: -9.311
+8 reward: -8.682
+9 reward: -10.019
+equation 113
+kan
+0 reward: -124.612
+1 reward: -83.230
+2 reward: -116.754
+3 reward: -89.558
+4 reward: -79.727
+5 reward: -139.070
+6 reward: -126.506
+7 reward: -91.608
+8 reward: -34.043
+9 reward: -192.479
+mlp
+0 reward: -123.828
+1 reward: -58.284
+2 reward: -132.173
+3 reward: -103.158
+4 reward: -78.260
+5 reward: -160.222
+6 reward: -85.256
+7 reward: -85.914
+8 reward: -40.661
+9 reward: -145.903
+equation 114
+kan
+0 reward: -423.307
+1 reward: -108.233
+2 reward: -178.364
+3 reward: -271.183
+4 reward: -418.588
+5 reward: -299.961
+6 reward: -234.241
+7 reward: -421.791
+8 reward: -398.514
+9 reward: -74.305
+mlp
+0 reward: -422.056
+1 reward: -108.477
+2 reward: -177.397
+3 reward: -271.547
+4 reward: -418.824
+5 reward: -300.094
+6 reward: -224.698
+7 reward: -428.182
+8 reward: -399.007
+9 reward: -62.974
+equation 115
+kan
+0 reward: -11.338
+1 reward: -12.935
+2 reward: -18.523
+3 reward: -14.136
+4 reward: -15.865
+5 reward: -8.592
+6 reward: -8.818
+7 reward: -8.123
+8 reward: -7.597
+9 reward: -21.545
+mlp
+0 reward: -5.934
+1 reward: -9.240
+2 reward: -10.652
+3 reward: -9.273
+4 reward: -10.362
+5 reward: -6.478
+6 reward: -6.152
+7 reward: -7.142
+8 reward: -7.388
+9 reward: -14.211
+equation 116
+kan
+0 reward: -13.623
+1 reward: -8.829
+2 reward: -9.717
+3 reward: -11.555
+4 reward: -14.558
+5 reward: -10.715
+6 reward: -9.466
+7 reward: -13.070
+8 reward: -13.092
+9 reward: -7.385
+mlp
+0 reward: -66.223
+1 reward: -21.060
+2 reward: -24.925
+3 reward: -57.962
+4 reward: -87.032
+5 reward: -75.421
+6 reward: -43.424
+7 reward: -106.559
+8 reward: -95.201
+9 reward: -24.937
+equation 117
+kan
+0 reward: -42.004
+1 reward: -78.510
+2 reward: -112.551
+3 reward: -98.053
+4 reward: -122.737
+5 reward: -57.833
+6 reward: -55.326
+7 reward: -41.753
+8 reward: -58.529
+9 reward: -151.604
+mlp
+0 reward: -22.163
+1 reward: -44.047
+2 reward: -78.193
+3 reward: -58.786
+4 reward: -84.287
+5 reward: -24.040
+6 reward: -16.883
+7 reward: -14.655
+8 reward: -14.130
+9 reward: -112.607
+equation 118
+kan
+0 reward: -5.879
+1 reward: -5.995
+2 reward: -6.587
+3 reward: -7.306
+4 reward: -9.677
+5 reward: -5.951
+6 reward: -5.265
+7 reward: -9.303
+8 reward: -6.968
+9 reward: -90.726
+mlp
+0 reward: -69.542
+1 reward: -431.948
+2 reward: -281.388
+3 reward: -222.097
+4 reward: -68.057
+5 reward: -161.518
+6 reward: -156.199
+7 reward: -70.406
+8 reward: -126.450
+9 reward: -478.437
+equation 119
+kan
+0 reward: -152.419
+1 reward: -138.163
+2 reward: -120.677
+3 reward: -104.188
+4 reward: -139.553
+5 reward: -124.881
+6 reward: -165.698
+7 reward: -126.132
+8 reward: -181.048
+9 reward: -83.529
+mlp
+0 reward: -66.385
+1 reward: -42.670
+2 reward: -61.985
+3 reward: -38.860
+4 reward: -49.900
+5 reward: -65.232
+6 reward: -83.711
+7 reward: -50.466
+8 reward: -67.427
+9 reward: -95.146
+equation 120
+kan
+0 reward: -755.641
+1 reward: -423.532
+2 reward: -388.777
+3 reward: -541.062
+4 reward: -476.290
+5 reward: -567.766
+6 reward: -474.989
+7 reward: -753.924
+8 reward: -716.255
+9 reward: -594.507
+mlp
+0 reward: -813.564
+1 reward: -453.204
+2 reward: -416.926
+3 reward: -580.851
+4 reward: -510.980
+5 reward: -608.678
+6 reward: -508.721
+7 reward: -811.704
+8 reward: -770.576
+9 reward: -637.667
+
+=== DETAILED RESULTS ===
+
+KAN RESULTS:
+
+Equation 1:
+Mean: -8.125
+Std: 4.493
+
+Equation 2:
+Mean: -587.018
+Std: 95.061
+
+Equation 3:
+Mean: -3.779
+Std: 1.172
+
+Equation 4:
+Mean: -3.709
+Std: 0.458
+
+Equation 5:
+Mean: -2.943
+Std: 0.318
+
+Equation 6:
+Mean: -3.238
+Std: 0.205
+
+Equation 7:
+Mean: -5.512
+Std: 2.995
+
+Equation 8:
+Mean: -13.558
+Std: 0.754
+
+Equation 9:
+Mean: -1.535
+Std: 0.268
+
+Equation 10:
+Mean: -3.354
+Std: 1.048
+
+Equation 11:
+Mean: -13.942
+Std: 9.290
+
+Equation 12:
+Mean: -30.229
+Std: 14.625
+
+Equation 13:
+Mean: -28.257
+Std: 39.505
+
+Equation 14:
+Mean: -9.448
+Std: 7.077
+
+Equation 15:
+Mean: -2.134
+Std: 0.558
+
+Equation 16:
+Mean: -7.725
+Std: 1.008
+
+Equation 17:
+Mean: -130.587
+Std: 78.305
+
+Equation 18:
+Mean: -2.983
+Std: 0.462
+
+Equation 19:
+Mean: -1.590
+Std: 0.302
+
+Equation 20:
+Mean: -46.116
+Std: 22.258
+
+Equation 21:
+Mean: -8.494
+Std: 3.767
+
+Equation 22:
+Mean: -3.863
+Std: 1.176
+
+Equation 23:
+Mean: -7.482
+Std: 1.194
+
+Equation 24:
+Mean: -132.617
+Std: 30.862
+
+Equation 25:
+Mean: -146.427
+Std: 20.821
+
+Equation 26:
+Mean: -166.642
+Std: 42.504
+
+Equation 27:
+Mean: -19.546
+Std: 2.209
+
+Equation 28:
+Mean: -2.898
+Std: 0.840
+
+Equation 29:
+Mean: -4.392
+Std: 1.937
+
+Equation 30:
+Mean: -25.052
+Std: 28.956
+
+Equation 31:
+Mean: -72.257
+Std: 21.419
+
+Equation 32:
+Mean: -37.914
+Std: 33.347
+
+Equation 33:
+Mean: -6.027
+Std: 1.370
+
+Equation 34:
+Mean: -8.300
+Std: 2.180
+
+Equation 35:
+Mean: -8.027
+Std: 5.532
+
+Equation 36:
+Mean: -3.504
+Std: 1.115
+
+Equation 37:
+Mean: -6.668
+Std: 1.683
+
+Equation 38:
+Mean: -70.918
+Std: 15.131
+
+Equation 39:
+Mean: -45.289
+Std: 13.997
+
+Equation 40:
+Mean: -400.982
+Std: 169.871
+
+Equation 41:
+Mean: -5.071
+Std: 2.308
+
+Equation 42:
+Mean: -4.394
+Std: 0.894
+
+Equation 43:
+Mean: -1.532
+Std: 0.258
+
+Equation 44:
+Mean: -5.088
+Std: 0.882
+
+Equation 45:
+Mean: -5.386
+Std: 0.476
+
+Equation 46:
+Mean: -4.965
+Std: 1.049
+
+Equation 47:
+Mean: -204.425
+Std: 67.939
+
+Equation 48:
+Mean: -16.099
+Std: 12.911
+
+Equation 49:
+Mean: -9.218
+Std: 2.385
+
+Equation 50:
+Mean: -4.846
+Std: 1.012
+
+Equation 51:
+Mean: -7.441
+Std: 2.103
+
+Equation 52:
+Mean: -2.349
+Std: 0.458
+
+Equation 53:
+Mean: -3.892
+Std: 1.112
+
+Equation 54:
+Mean: -4.738
+Std: 1.040
+
+Equation 55:
+Mean: -11.619
+Std: 2.196
+
+Equation 56:
+Mean: -5.385
+Std: 2.055
+
+Equation 57:
+Mean: -2.156
+Std: 0.222
+
+Equation 58:
+Mean: -7.036
+Std: 0.739
+
+Equation 59:
+Mean: -7.927
+Std: 3.566
+
+Equation 60:
+Mean: -9.520
+Std: 1.071
+
+Equation 61:
+Mean: -1.822
+Std: 0.346
+
+Equation 62:
+Mean: -11.320
+Std: 0.543
+
+Equation 63:
+Mean: -70.864
+Std: 25.309
+
+Equation 64:
+Mean: -19.279
+Std: 2.964
+
+Equation 65:
+Mean: -8.517
+Std: 1.475
+
+Equation 66:
+Mean: -9.417
+Std: 3.964
+
+Equation 67:
+Mean: -2.182
+Std: 0.353
+
+Equation 68:
+Mean: -391.726
+Std: 172.216
+
+Equation 69:
+Mean: -7.780
+Std: 3.057
+
+Equation 70:
+Mean: -638.812
+Std: 140.165
+
+Equation 71:
+Mean: -5.332
+Std: 0.814
+
+Equation 72:
+Mean: -4.087
+Std: 0.682
+
+Equation 73:
+Mean: -385.346
+Std: 170.901
+
+Equation 74:
+Mean: -3.207
+Std: 0.749
+
+Equation 75:
+Mean: -7.335
+Std: 1.713
+
+Equation 76:
+Mean: -5.911
+Std: 1.090
+
+Equation 77:
+Mean: -142.184
+Std: 51.873
+
+Equation 78:
+Mean: -127.911
+Std: 67.639
+
+Equation 79:
+Mean: -7.723
+Std: 0.656
+
+Equation 80:
+Mean: -634.362
+Std: 140.051
+
+Equation 81:
+Mean: -8.858
+Std: 1.044
+
+Equation 82:
+Mean: -107.759
+Std: 40.358
+
+Equation 83:
+Mean: -282.849
+Std: 125.907
+
+Equation 84:
+Mean: -12.747
+Std: 4.528
+
+Equation 85:
+Mean: -11.201
+Std: 2.235
+
+Equation 86:
+Mean: -81.890
+Std: 35.740
+
+Equation 87:
+Mean: -15.366
+Std: 25.158
+
+Equation 88:
+Mean: -133.629
+Std: 27.135
+
+Equation 89:
+Mean: -569.274
+Std: 127.758
+
+MLP RESULTS:
+
+Equation 1:
+Mean: -322.367
+Std: 103.230
+
+Equation 2:
+Mean: -587.005
+Std: 95.061
+
+Equation 3:
+Mean: -6.048
+Std: 1.163
+
+Equation 4:
+Mean: -5.553
+Std: 2.279
+
+Equation 5:
+Mean: -6.618
+Std: 0.658
+
+Equation 6:
+Mean: -3.039
+Std: 0.564
+
+Equation 7:
+Mean: -4.662
+Std: 0.397
+
+Equation 8:
+Mean: -24.473
+Std: 6.414
+
+Equation 9:
+Mean: -1.655
+Std: 0.502
+
+Equation 10:
+Mean: -3.803
+Std: 1.256
+
+Equation 11:
+Mean: -7.679
+Std: 2.072
+
+Equation 12:
+Mean: -43.960
+Std: 28.611
+
+Equation 13:
+Mean: -15.058
+Std: 1.155
+
+Equation 14:
+Mean: -12.808
+Std: 4.795
+
+Equation 15:
+Mean: -6.070
+Std: 1.896
+
+Equation 16:
+Mean: -9.071
+Std: 1.778
+
+Equation 17:
+Mean: -133.983
+Std: 88.961
+
+Equation 18:
+Mean: -3.837
+Std: 0.589
+
+Equation 19:
+Mean: -3.040
+Std: 0.338
+
+Equation 20:
+Mean: -48.762
+Std: 22.046
+
+Equation 21:
+Mean: -49.138
+Std: 21.863
+
+Equation 22:
+Mean: -2.974
+Std: 0.783
+
+Equation 23:
+Mean: -10.366
+Std: 1.745
+
+Equation 24:
+Mean: -56.671
+Std: 15.915
+
+Equation 25:
+Mean: -148.331
+Std: 23.723
+
+Equation 26:
+Mean: -169.133
+Std: 34.052
+
+Equation 27:
+Mean: -31.119
+Std: 11.662
+
+Equation 28:
+Mean: -2.200
+Std: 0.525
+
+Equation 29:
+Mean: -4.778
+Std: 1.027
+
+Equation 30:
+Mean: -29.074
+Std: 4.291
+
+Equation 31:
+Mean: -32.715
+Std: 19.106
+
+Equation 32:
+Mean: -401.751
+Std: 171.134
+
+Equation 33:
+Mean: -11.379
+Std: 2.942
+
+Equation 34:
+Mean: -6.216
+Std: 1.806
+
+Equation 35:
+Mean: -17.372
+Std: 21.936
+
+Equation 36:
+Mean: -10.843
+Std: 4.212
+
+Equation 37:
+Mean: -10.723
+Std: 3.932
+
+Equation 38:
+Mean: -33.388
+Std: 11.984
+
+Equation 39:
+Mean: -86.296
+Std: 14.953
+
+Equation 40:
+Mean: -81.810
+Std: 38.855
+
+Equation 41:
+Mean: -4.324
+Std: 1.347
+
+Equation 42:
+Mean: -207.953
+Std: 67.982
+
+Equation 43:
+Mean: -3.047
+Std: 1.130
+
+Equation 44:
+Mean: -36.138
+Std: 4.164
+
+Equation 45:
+Mean: -4.670
+Std: 0.632
+
+Equation 46:
+Mean: -15.978
+Std: 12.536
+
+Equation 47:
+Mean: -19.145
+Std: 3.317
+
+Equation 48:
+Mean: -13.233
+Std: 4.267
+
+Equation 49:
+Mean: -16.347
+Std: 1.352
+
+Equation 50:
+Mean: -5.798
+Std: 1.489
+
+Equation 51:
+Mean: -26.085
+Std: 4.859
+
+Equation 52:
+Mean: -6.492
+Std: 0.927
+
+Equation 53:
+Mean: -10.550
+Std: 2.151
+
+Equation 54:
+Mean: -2.129
+Std: 0.554
+
+Equation 55:
+Mean: -5.622
+Std: 0.725
+
+Equation 56:
+Mean: -7.289
+Std: 1.567
+
+Equation 57:
+Mean: -8.086
+Std: 1.249
+
+Equation 58:
+Mean: -10.629
+Std: 3.664
+
+Equation 59:
+Mean: -45.285
+Std: 7.380
+
+Equation 60:
+Mean: -12.409
+Std: 5.310
+
+Equation 61:
+Mean: -2.453
+Std: 0.394
+
+Equation 62:
+Mean: -10.333
+Std: 2.337
+
+Equation 63:
+Mean: -361.043
+Std: 164.203
+
+Equation 64:
+Mean: -10.226
+Std: 0.548
+
+Equation 65:
+Mean: -4.726
+Std: 0.777
+
+Equation 66:
+Mean: -8.377
+Std: 1.228
+
+Equation 67:
+Mean: -4.066
+Std: 0.648
+
+Equation 68:
+Mean: -390.250
+Std: 170.511
+
+Equation 69:
+Mean: -4.648
+Std: 3.925
+
+Equation 70:
+Mean: -638.811
+Std: 140.165
+
+Equation 71:
+Mean: -4.232
+Std: 1.207
+
+Equation 72:
+Mean: -9.558
+Std: 0.890
+
+Equation 73:
+Mean: -385.355
+Std: 170.904
+
+Equation 74:
+Mean: -3.918
+Std: 0.343
+
+Equation 75:
+Mean: -4.924
+Std: 0.931
+
+Equation 76:
+Mean: -40.490
+Std: 29.170
+
+Equation 77:
+Mean: -112.931
+Std: 45.678
+
+Equation 78:
+Mean: -16.783
+Std: 7.795
+
+Equation 79:
+Mean: -6.419
+Std: 0.932
+
+Equation 80:
+Mean: -634.360
+Std: 140.055
+
+Equation 81:
+Mean: -8.354
+Std: 1.354
+
+Equation 82:
+Mean: -101.366
+Std: 36.712
+
+Equation 83:
+Mean: -281.326
+Std: 128.894
+
+Equation 84:
+Mean: -8.683
+Std: 2.465
+
+Equation 85:
+Mean: -60.275
+Std: 29.442
+
+Equation 86:
+Mean: -46.979
+Std: 33.155
+
+Equation 87:
+Mean: -206.604
+Std: 140.725
+
+Equation 88:
+Mean: -62.178
+Std: 16.785
+
+Equation 89:
+Mean: -611.287
+Std: 138.359
+
+=== SUMMARY STATISTICS ===
+
+KAN:
+Mean: -68.706
+Std: 143.290
+
+MLP:
+Mean: -78.067
+Std: 149.449
