@@ -176,7 +176,7 @@ if __name__ == "__main__":
   parser.add_argument("--seed", type=int, default=42)
   parser.add_argument("--render", default="human")
   parser.add_argument("--hidden_sizes", type=int, default=32)
-  parser.add_argument("--eq", type=int, default=12)
+  parser.add_argument("--eq", type=int, default=-1)
   args = parser.parse_args()
 
   print(f"training ppo with max_evals {args.max_evals}") 

@@ -25,6 +25,7 @@ class BatchedCartLatAccelEnv(gym.Env):
   }
 
   def __init__(self, render_mode: str = None, noise_mode: str = None, moving_target: bool = True, env_bs: int = 1, eq = 12):
+    print("eq", eq)
     self.tau = 0.02  # Time step
     self.max_x_frame = 2.2 # size of render frame
 
@@ -36,9 +37,12 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.low = [x[0] for x in self.ranges]
     self.high = [x[1] for x in self.ranges]
 
-    self.min_x, self.max_x = self.find_minmax()
-    self.min_x = np.clip(self.min_x, 0, None)
-    self.max_x = np.clip(self.max_x, None, 2)
+    self.min_x, self.max_x = self.find_minmax(self.bs)
+    # self.min_x = np.clip(self.min_x, 0, None)
+    # self.max_x = np.clip(self.max_x, None, 2)
+    self.min_x = np.clip(self.min_x, -2, 2)
+    self.max_x = np.clip(self.max_x, -2, 2)
+    # print(self.min_x.shape, self.max_x.shape)
 
     self.obs_dim = len(self.min_x) + self.action_dim
 
@@ -70,12 +74,14 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.moving_target = moving_target
 
   def find_minmax(self, num_samples = 10000):
+    # print("action dim", self.action_dim)
     samples = np.zeros((num_samples, self.action_dim))
     for i in range(self.action_dim):
       samples[:, i] = np.random.uniform(low=self.low[i], high=self.high[i], size=num_samples)
     
     out = self.f(torch.tensor(samples)).cpu().detach().numpy()
-    return np.min(out, 1), np.max(out, 1)
+    # print(out.shape)
+    return np.min(out, axis=1), np.max(out, axis=1)
 
   def generate_traj(self, n_traj=1, n_points=10, n_outputs=2):
     # generates smooth curve using cubic interpolation
@@ -95,6 +101,7 @@ class BatchedCartLatAccelEnv(gym.Env):
     row_min = traj.min(axis=1, keepdims=True)
     row_max = traj.max(axis=1, keepdims=True)
 
+    # print(row_min.shape, row_max.shape, traj.shape, self.min_x.shape, self.max_x.shape)
     scaled_traj = self.min_x + (traj - row_min) * (self.max_x - self.min_x) / (row_max - row_min)
 
     return scaled_traj
