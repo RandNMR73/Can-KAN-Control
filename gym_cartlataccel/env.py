@@ -37,7 +37,7 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.low = [x[0] for x in self.ranges]
     self.high = [x[1] for x in self.ranges]
 
-    self.min_x, self.max_x = self.find_minmax(self.bs)
+    self.min_x, self.max_x = self.find_minmax()
     # self.min_x = np.clip(self.min_x, 0, None)
     # self.max_x = np.clip(self.max_x, None, 2)
     self.min_x = np.clip(self.min_x, -2, 2)
@@ -117,7 +117,7 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.obs = self.state
 
     if self.moving_target:
-      self.x_targets = self.generate_traj()
+      self.x_targets = self.generate_traj(self.bs)
     else:
       self.x_targets = np.full((self.bs, self.max_episode_steps), self.state[-1]) # fixed target
     self.noise_model = SimNoise(self.max_episode_steps, 1/self.tau, self.noise_mode, seed=seed)
