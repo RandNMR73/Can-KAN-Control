@@ -67,12 +67,19 @@ if kan_avg_per_eq:
     for equation, avg in sorted(kan_avg_per_eq.items()):
         kan_dict[equation] = avg
 print(kan_dict)
+# save kan dict
+import pickle
+with open('kan_dict.pkl', 'wb') as f:
+    pickle.dump(kan_dict, f)
 
 print("\nAverage rewards per equation for mlp:")
 if mlp_avg_per_eq:
     for equation, avg in sorted(mlp_avg_per_eq.items()):
         mlp_dict[equation] = avg
 print(mlp_dict)
+# save mlp dict
+with open('mlp_dict.pkl', 'wb') as f:
+    pickle.dump(mlp_dict, f)
 
 eqs = [2,3,5,12,14,17,20,21,26,27,29,30,31,38,43,48,51,52,56,62,64,80,82,84,90,91,98]
 for elem in [f"KAN: {kan_dict[i]}, MLP: {mlp_dict[i]}" for i in eqs]:
