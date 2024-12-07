@@ -74,12 +74,12 @@ def evaluate_model(model, eq_num, eval_seeds, device):
 
 def main():
     # log results to file
-    os.makedirs('results', exist_ok=True)
+    # os.makedirs('results', exist_ok=True)
     logging.basicConfig(
         level=logging.INFO,
         format='%(message)s',
         handlers=[
-            logging.FileHandler('results/feynman_results.txt'),
+            logging.FileHandler('out/final/feynman_results.txt'),
             logging.StreamHandler()
         ]
     )
@@ -90,8 +90,6 @@ def main():
     env_bs = 1000
     hidden_size = 32
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    
-    os.makedirs('results', exist_ok=True)
     
     all_results = {'kan': [], 'mlp': []}
     
@@ -120,7 +118,7 @@ def main():
         
         for model_type, hist in [('KAN', kan_hist), ('MLP', mlp_hist)]:
             plot_losses(hist, 
-                       save_path=f'results/eq{eq_num}_{model_type.lower()}_learning_curve.png',
+                       save_path=f'out/final/plot/eq{eq_num}_{model_type.lower()}_learning_curve.png',
                        title=f'{model_type} Learning Curve - Equation {eq_num}')
     logging.info("\n=== DETAILED RESULTS ===")
     for model_type in ['kan', 'mlp']:
