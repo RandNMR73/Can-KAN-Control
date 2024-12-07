@@ -1,0 +1,30 @@
+if name == 'I.6.2' or name == 2:
+if name == 'I.6.2b' or name == 3:
+if name == 'I.9.18' or name == 5:
+if name == 'I.12.11' or name == 12:
+if name == 'I.13.12' or name == 14:
+if name == 'I.15.3x' or name == 17:
+if name == 'I.16.6' or name == 20:
+if name == 'I.18.4' or name == 21:
+if name == 'I.26.2' or name == 26:
+if name == 'I.27.6' or name == 27:
+if name == 'I.29.16' or name == 29:
+if name == 'I.30.3' or name == 30:
+if name == 'I.30.5' or name == 31:
+if name == 'I.37.4' or name == 38:
+if name == 'I.40.1' or name == 43:
+if name == 'I.44.4' or name == 48:
+if name == 'I.50.26' or name == 51:
+if name == 'II.2.42' or name == 52:
+if name == 'II.6.15a' or name == 56:
+if name == 'II.11.7' or name == 62:
+if name == 'II.11.27' or name == 64:
+if name == 'II.35.18' or name == 80:
+if name == 'II.36.38' or name == 82:
+if name == 'II.38.3' or name == 84:
+if name == 'III.9.52' or name == 90:
+if name == 'III.10.19' or name == 91:
+if name == 'III.17.37' or name == 98:
+
+
+[2,3,5,12,14,17,20,21,26,27,29,30,31,38,43,48,51,52,56,62,64,80,82,84,90,91,98]
