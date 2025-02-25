@@ -17,6 +17,18 @@ def get_feynman_dataset(name):
                                    a1 * torch.sin(x[:, 0]) + a2 * torch.sin(x[:, 0] + x[:, 1])))
         ranges = [[0,1.5], [0,1.5]]
 
+    if name == 'armx' or name == -2:
+        a1 = 0.115
+        a2 = 0.067
+        f = lambda x: (a1 * torch.cos(x[:, 0]) + a2 * torch.cos(x[:, 0] + x[:, 1]))
+        ranges = [[0,1.5], [0,1.5]]
+    
+    if name == 'army' or name == -3:
+        a1 = 0.115
+        a2 = 0.067
+        f = lambda x: (a1 * torch.sin(x[:, 0]) + a2 * torch.sin(x[:, 0] + x[:, 1]))
+        ranges = [[0,1.5], [0,1.5]]
+    
     if name == 'basic' or name == 0:
         f = lambda x: x
         ranges = [[-2,2]]

@@ -76,7 +76,7 @@ class BatchedCartLatAccelEnv(gym.Env):
     self.noise_mode = noise_mode
     self.moving_target = moving_target
 
-    self.test = test
+    self.test = 0
 
   def find_minmax(self, num_samples = 10000):
     # print("action dim", self.action_dim)
@@ -122,8 +122,9 @@ class BatchedCartLatAccelEnv(gym.Env):
     # print("==")
     # print(scaled_traj.shape)
 
+    scaled_traj[:, :, 0] = scaled_traj[:, 0, 0][:, np.newaxis]    
     return scaled_traj
-  
+
   def a_to_b(self, n_traj, n_outputs=2, starts=np.array([]), ends = np.array([])):
     if starts.size == 0:
       starts = np.random.uniform(low=self.min_x, high=self.max_x, size=(n_traj, n_outputs))

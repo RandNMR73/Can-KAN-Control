@@ -7,7 +7,7 @@ import torch.nn as nn
 import torch.optim as optim
 import gymnasium as gym
 # import gym_cartlataccel
-from gym_cartlataccel.env import BatchedCartLatAccelEnv as CartLatAccelEnv
+from gym_cartlataccel.env_alternating import BatchedCartLatAccelEnv as CartLatAccelEnv
 from torchrl.data import ReplayBuffer, LazyTensorStorage
 from tensordict import TensorDict
 from model import ActorCritic, KANActorCritic
@@ -195,18 +195,18 @@ if __name__ == "__main__":
   parser = argparse.ArgumentParser()
   parser.add_argument("--max_evals", type=int, default=50000)
   parser.add_argument("--env_bs", type=int, default=1000)
-  parser.add_argument("--save_model", default=True)
+  parser.add_argument("--save_model", default=False)
   parser.add_argument("--noise_mode", default=None)
   parser.add_argument("--model", default="kan")
   parser.add_argument("--seed", type=int, default=42)
   parser.add_argument("--render", default="human")
   parser.add_argument("--hidden_sizes", type=int, default=32)
-  parser.add_argument("--eq", type=int, default=-1)
+  parser.add_argument("--eq", type=int, default=-2)
   args = parser.parse_args()
 
   print(f"training ppo with max_evals {args.max_evals}") 
   # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=args.env_bs)
-  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=args.env_bs, eq=args.eq, test=True)
+  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=args.env_bs, eq=args.eq)
   if args.model == "kan":
     model = KANActorCritic(env.observation_space.shape[-1], {"pi": [args.hidden_sizes], "vf": [32]}, env.action_space.shape[-1], act_bound=(-1,1))
   else:
@@ -219,7 +219,7 @@ if __name__ == "__main__":
 
   print(f"rolling out best model") 
   # env = gym.make("CartLatAccel-v0", noise_mode=args.noise_mode, env_bs=1, render_mode=args.render)
-  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=1, render_mode=args.render, eq=args.eq, test=True)
+  env = CartLatAccelEnv(noise_mode=args.noise_mode, env_bs=1, render_mode=args.render, eq=args.eq)
   env.reset(seed=args.seed)
   states, actions, rewards, dones, next_state= ppo.rollout(env, best_model, max_steps=300, device=device, deterministic=True)
   print(sum(rewards)[0])
@@ -228,4 +228,4 @@ if __name__ == "__main__":
 
   if args.save_model:
     os.makedirs('out', exist_ok=True)
-    torch.save(best_model, 'out/best_2.pt')
+    torch.save(best_model, 'out/best.pt')
